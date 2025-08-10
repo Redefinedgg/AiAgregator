@@ -1,0 +1,10 @@
+{
+  "esm": false,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2023"
+  },
+  "ts-node": {
+    "swc": true
+  }
+}
