@@ -24,7 +24,7 @@ const Header = () => {
       </h1>
       <Button
         label="Chats"
-        className={`ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] py-[12px] ${width < 768 ? "text-[24px] h-[40px] w-[100px]" : "text-[40px] h-[60px] w-[250px]"}`}
+        className={`ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center ${width < 768 ? "text-[24px] h-[40px] w-[100px]" : "text-[40px] h-[60px] w-[250px]"}`}
         onClick={navigateToChats}
       />
     </header>

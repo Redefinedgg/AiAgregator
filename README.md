@@ -1,0 +1,11 @@
+крч, проект устанавливается вот так:
+
+надо иметь nodejs, git(giuthub), pgadmin17 (postgresql17), VScode (ну или любую другую IDE-шку)
+
+1. скачиваем зависимости `npm i` в bash терминале фронта и бэка
+2. создаем бдшку в pgadmin17
+3. делаем .env по .env.example образцу
+4. прописываем `npm run gm` (generate + migrate) на бэкенд
+5. выходим в корневую папку и запускам проект `npm run df` (dev full (backend, frontend, prisma studio))
+
+по дэфолту - фронт на 3000, бэкенд на 3001
