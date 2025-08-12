@@ -40,6 +40,7 @@ export class AiService {
     if (!openaiApiKey) {
       this.logger.warn('OPENAI_API_KEY is not configured');
     }
+    
     if (!anthropicApiKey) {
       this.logger.warn('ANTHROPIC_API_KEY is not configured');
     }

@@ -13,7 +13,7 @@ model User {
   nickname  String    @unique
   email     String    @unique
   password  String
-  balance   Float     @default(0)
+  balance   Float     @default(1)
   chats     Chat[]
   messages  Message[]
   createdAt DateTime  @default(now())
