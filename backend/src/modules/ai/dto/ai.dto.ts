@@ -7,5 +7,5 @@ export class SendPromptDto {
 
 export class SendPromptsDto {
     prompt: string;
-    model: Model[];
+    models: Model[];
 }

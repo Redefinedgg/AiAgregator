@@ -55,7 +55,7 @@ export class AiService {
 
   async sendPrompts(body: SendPromptsDto): Promise<SendPromptsResponse> {
     const responses = await Promise.all(
-      body.model.map((model) =>
+      body.models.map((model) =>
         this.sendPrompt({ prompt: body.prompt, model }),
       ),
     );

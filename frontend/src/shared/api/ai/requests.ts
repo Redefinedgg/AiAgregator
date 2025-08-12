@@ -1,16 +1,6 @@
 import axiosInstance from "../client";
 import { Model } from "./enums";
-
-interface SendPromptDto {
-  prompt: string;
-  model: Model;
-}
-
-interface SendPromptResponse {
-  response: string;
-  spent: number;
-  durationMs: string;
-}
+import { SendPromptDto, SendPromptResponse } from "./types";
 
 export const sendPrompt = async (
   body: SendPromptDto

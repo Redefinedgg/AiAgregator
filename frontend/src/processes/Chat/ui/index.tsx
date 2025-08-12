@@ -6,7 +6,7 @@ import NewChatView from "@/views/NewChat";
 import ChatView from "@/views/Chat";
 
 interface Props {
-  uuid: string | undefined;
+  uuid?: string;
 }
 
 const ChatProcess: FC<Props> = ({ uuid }: Props) => {

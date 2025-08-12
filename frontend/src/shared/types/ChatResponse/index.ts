@@ -7,4 +7,6 @@ export interface ChatResponse {
     response: string;
     timeOfResponse: string;
     logo: Logo;
+    isLoading?: boolean;
+    isError?: boolean;
 }

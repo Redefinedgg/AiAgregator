@@ -1,14 +1,17 @@
+// layout.tsx
 import "./globals.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import { Nunito } from "next/font/google";
 import Header from "@/widgets/Header";
 import { ToastContainer } from 'react-toastify';
 import ClientProvider from "./ClientProvider";
+import Footer from "@/widgets/Footer";
+import { FC } from "react";
 
 const nunito = Nunito({
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Добавь нужные веса
-  variable: "--font-nunito", // Для использования через CSS-переменную (если нужно)
+  weight: ["400", "600", "700"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -21,29 +24,26 @@ export const metadata = {
   description: "Dev version",
 };
 
-export default function RootLayout({ children }: Props) {
-    return (
-      <html lang="en" className={nunito.className}>
-        <head>
-          <title>{metadata.title}</title>
-          <meta name="description" content={metadata.description} />
-        </head>
-        <body suppressHydrationWarning={true}>
-          <main className="flex flex-col min-h-screen bg-[#070708] text-[#E9E9E9] p-[10px]">
-            <Header />
-            <main
-              className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]"
-            >
-              {children}
-            <footer className="flex flex-col items-center mt-[12px]">
-              <p>© 2025 AI Aggregator. All rights reserved.</p>
-            </footer>
-            </main>
+const RootLayout: FC<Props> = ({ children }) => {
+  return (
+    <html lang="en" className={nunito.className}>
+      <head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+      </head>
+      <body suppressHydrationWarning={true} className="min-h-screen flex flex-col">
+        <main className="flex flex-col flex-1 bg-[#070708] text-[#E9E9E9] p-[10px]">
+          <Header />
+          <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
+            {children}
           </main>
-          <ToastContainer theme="dark" />
-          <ClientProvider />
-        </body>
-      </html>
-    );
-  }
-  
+          <Footer />
+        </main>
+        <ToastContainer theme="dark" />
+        <ClientProvider />
+      </body>
+    </html>
+  );
+}
+
+export default RootLayout;
