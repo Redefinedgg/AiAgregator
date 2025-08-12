@@ -13,7 +13,6 @@ const ChatProcess: FC<Props> = ({ uuid }: Props) => {
   const { isNewChat, setChatUuid, setIsNewChat } = useChatStore();
 
   useEffect(() => {
-    console.log(uuid)
     if (uuid) {
       setChatUuid(uuid);
       setIsNewChat(false);

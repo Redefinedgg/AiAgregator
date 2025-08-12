@@ -14,12 +14,14 @@
     "d": "nest start --watch",
     "dev:full": "concurrently \"npm run dev\" \"npm run studio\"",
     "df": "concurrently \"npm run dev\" \"npm run studio\"",
+    "db:show": "npx prisma studio --port 3333",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "generate": "npx prisma generate",
     "g": "npx prisma generate",
     "migrate": "npx prisma migrate dev --name init",
     "m": "npx prisma migrate dev --name init",
+    "gm": "npx prisma generate && npx prisma migrate dev --name init",
     "studio": "npx prisma studio --port 3333",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -29,6 +31,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.59.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
@@ -36,6 +39,7 @@
     "@prisma/client": "^6.13.0",
     "concurrently": "^9.2.0",
     "dotenv": "^17.2.1",
+    "openai": "^5.12.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },

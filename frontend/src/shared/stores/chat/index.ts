@@ -8,6 +8,9 @@ interface ChatStore {
   isNewChat: boolean;
   prompt: string;
   chatResponses: ChatResponse[];
+  currentUuid: string;
+  promptWithoutResponse: string;
+  columnsCount: number;
 
   // Actions
   getOneChatResponse: (
@@ -17,6 +20,9 @@ interface ChatStore {
   setIsNewChat: (isNewChat: boolean) => void;
   setPrompt: (prompt: string) => void;
   setChatResponses: (chatResponses: ChatResponse[]) => void;
+  setPromptWithoutResponse: (promptWithoutResponse: string) => void;
+  setColumnsCount: (columnsCount: number) => void;
+
 }
 
 export const useChatStore = create<ChatStore>()(
@@ -27,6 +33,9 @@ export const useChatStore = create<ChatStore>()(
       isNewChat: true,
       prompt: "",
       chatResponses: [],
+      currentUuid: "",
+      promptWithoutResponse: "",
+      columnsCount: 4,
 
       // Actions
       getOneChatResponse: (id: number | undefined) => {
@@ -42,6 +51,9 @@ export const useChatStore = create<ChatStore>()(
       setPrompt: (prompt: string) => set({ prompt }),
       setChatResponses: (chatResponses: ChatResponse[]) =>
         set({ chatResponses }),
+      setPromptWithoutResponse: (promptWithoutResponse: string) =>
+        set({ promptWithoutResponse }),
+      setColumnsCount: (columnsCount: number) => set({ columnsCount }),
     }),
     {
       name: "chatStore",

@@ -8,6 +8,7 @@ type TextareaProps = {
   sendButton?: boolean;
   onClickSendButton?: () => void;
   placeholder?: string;
+  defaultBorder?: boolean;
 };
 
 export default function Textarea({
@@ -17,12 +18,14 @@ export default function Textarea({
   sendButton = false,
   onClickSendButton,
   placeholder,
+  defaultBorder = true,
 }: TextareaProps) {
   return (
     <div className="relative">
       <textarea
         className={
-          "border-none outline-none bg-[#070708] text-[#E9E9E9] rounded-[25px] px-[12px] py-[6px] resize-none" +
+          "outline-none bg-[#070708] text-[#E9E9E9] rounded-[25px] px-[12px] py-[6px] resize-none" +
+          (defaultBorder ? " border-[1px] border-[#E9E9E9]" : "") +
           (sendButton && " z-[1]") +
           (className ? " " + className : "")
         }
@@ -32,7 +35,7 @@ export default function Textarea({
       />
       {sendButton && (
         <Button
-          className="w-[50px] h-[50px] bg-[rgb(133,133,133)] flex rounded-[25px] items-center justify-center absolute bottom-[6px] right-[6px] z-[2]"
+          className="w-[50px] h-[50px] bg-[rgb(133,133,133)] flex rounded-[25px] items-center justify-center absolute bottom-[24px] right-[24px] z-[2]"
           label={<FaLongArrowAltUp size={32} />}
           onClick={onClickSendButton}
           disabled={value.length === 0}

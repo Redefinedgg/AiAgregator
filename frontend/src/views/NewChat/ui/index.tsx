@@ -3,14 +3,17 @@ import NewChatTitle from "@/widgets/NewChatTitle";
 import { useChatStore } from "@/shared/stores/chat";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import AIChoiceButtons from "@/widgets/AIChoiceButtons";
 
 const NewChatView = () => {
-  const { prompt, setPrompt } = useChatStore();
+  const { prompt, setPrompt, setPromptWithoutResponse } = useChatStore();
   const router = useRouter();
 
-  const navigateToChat = () => {
-    console.log(uuidv4());
-    router.push(`/chat/${uuidv4()}`, );
+  const navigateToChat = async () => {
+    setPromptWithoutResponse(prompt)
+    setPrompt("")
+    const uuid = uuidv4()
+    router.push(`/chat/${uuid}`);
   };
 
   return (
@@ -24,6 +27,7 @@ const NewChatView = () => {
         onChange={(value) => setPrompt(value)}
         onClickSendButton={navigateToChat}
       />
+      <AIChoiceButtons />
     </main>
   );
 };

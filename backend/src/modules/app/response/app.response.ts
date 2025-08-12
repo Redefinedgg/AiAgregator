@@ -10,7 +10,7 @@ export class HealthResponse {
   status: 'ok' | 'error';
 
   @ApiProperty({
-    example: 'CN-BE is running',
+    example: 'AIA-BE is running',
     description:
       'Detailed status message. For "ok" it usually contains a confirmation message, for "error" it contains an error description.',
   })

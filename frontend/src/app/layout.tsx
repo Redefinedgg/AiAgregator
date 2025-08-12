@@ -35,6 +35,9 @@ export default function RootLayout({ children }: Props) {
               className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]"
             >
               {children}
+            <footer className="flex flex-col items-center mt-[12px]">
+              <p>© 2025 AI Aggregator. All rights reserved.</p>
+            </footer>
             </main>
           </main>
           <ToastContainer theme="dark" />

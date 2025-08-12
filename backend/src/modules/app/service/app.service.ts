@@ -7,7 +7,7 @@ export class AppService {
     try {
       return {
         status: 'ok',
-        message: 'CN-BE is running',
+        message: 'AIA-BE is running',
         timestamp: new Date(),
       };
     } catch (error: any) {

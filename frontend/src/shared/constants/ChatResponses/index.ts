@@ -8,7 +8,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "7.3s",
-    logo: "GPT"
+    logo: "GPT",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "23.3s",
-    logo: "GPT"
+    logo: "GPT",
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "42.3s",
-    logo: "GPT"
+    logo: "GPT",
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "1.8s",
-    logo: "Claude"
+    logo: "Claude",
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "3.3s",
-    logo: "Claude"
+    logo: "Claude",
   },
   {
     id: 6,
@@ -53,7 +53,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "4.7s",
-    logo: "Claude"
+    logo: "Claude",
   },
   {
     id: 7,
@@ -62,7 +62,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "9.8s",
-    logo: "DeepSeek"
+    logo: "DeepSeek",
   },
   {
     id: 8,
@@ -71,7 +71,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "8.4s",
-    logo: "DeepSeek"
+    logo: "DeepSeek",
   },
   {
     id: 9,
@@ -80,7 +80,7 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "2.5s",
-    logo: "DeepSeek"
+    logo: "DeepSeek",
   },
   {
     id: 10,
@@ -89,6 +89,6 @@ export const chatResponses: ChatResponse[] = [
     response:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
     timeOfResponse: "15.7s",
-    logo: "DeepSeek"
+    logo: "DeepSeek",
   },
 ];
