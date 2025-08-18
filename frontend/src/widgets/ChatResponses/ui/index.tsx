@@ -50,7 +50,7 @@ const ChatResponses: FC = () => {
   const columns = distributeResponses();
 
   return (
-    <div className="flex gap-[12px] w-full m-[10px]">
+    <div className="flex gap-[12px] w-[99%] m-[10px]">
       {columns.map((columnResponses, columnIndex) => (
         <div
           key={columnIndex}

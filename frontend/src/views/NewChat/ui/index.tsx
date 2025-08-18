@@ -1,3 +1,5 @@
+"use client";
+
 import Textarea from "@/shared/ui/Textarea";
 import NewChatTitle from "@/widgets/NewChatTitle";
 import { useChatStore } from "@/shared/stores/chat";

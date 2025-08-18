@@ -2,18 +2,22 @@ import { FC, useEffect, useRef } from "react";
 import ChatResponses from "@/widgets/ChatResponses";
 import ChatWithoutResponses from "@/widgets/ChatWithoutResponses";
 import { useChatStore } from "@/shared/stores/chat";
-import { Logo } from "@/shared/types/ChatResponse";
-import { sendPrompt } from "@/shared/api/ai/requests";
+import { useResponsePlaceholders } from "@/shared/hooks/useResponsePlaceholders";
+import { useModelResponses } from "@/shared/hooks/useModelResponses";
+import { toast } from "react-toastify";
 
 const ChatView: FC = () => {
   const {
     promptWithoutResponse,
     setPromptWithoutResponse,
     setChatResponses,
-    updateChatResponse,
     chatResponses,
     selectedModels,
   } = useChatStore();
+  
+  const { createResponsePlaceholders } = useResponsePlaceholders();
+  const { fetchModelResponses } = useModelResponses();
+
   const sendingRef = useRef(false);
 
   useEffect(() => {
@@ -22,73 +26,30 @@ const ChatView: FC = () => {
       
       const sendPrompts = async () => {
         try {
-          // Очищаем предыдущие ответы
           setChatResponses([]);
           
-          // Создаем placeholder'ы для каждой модели с индикацией загрузки
-          const placeholders = selectedModels.map((selectedModel, index) => ({
-            id: Date.now() + index,
-            model: selectedModel.model,
-            number: selectedModel.number,
-            response: "", // Пустой ответ
-            timeOfResponse: "загружается...",
-            logo: (selectedModel.model.startsWith("claude")
-              ? "Claude"
-              : "GPT") as Logo,
-            isLoading: true,
-          }));
+          const validModels = selectedModels.filter(
+            selectedModel => selectedModel && selectedModel.model
+          );
           
-          // Добавляем все placeholder'ы сразу
+          if (validModels.length === 0) {
+            console.warn("No valid models selected");
+            toast.error("No valid models selected");
+            setPromptWithoutResponse("");
+            sendingRef.current = false;
+            return;
+          }
+          
+          // Создаем placeholders
+          const placeholders = createResponsePlaceholders(validModels);
           setChatResponses(placeholders);
           
-          // Создаем массив промисов для каждой модели
-          const promptPromises = selectedModels.map(async (selectedModel, index) => {
-            const placeholderId = placeholders[index].id;
-            
-            try {
-              const response = await sendPrompt({
-                prompt: promptWithoutResponse,
-                model: selectedModel.model,
-              });
-              
-              const responseData = {
-                id: placeholderId,
-                model: selectedModel.model,
-                number: selectedModel.number,
-                response: response.response,
-                timeOfResponse: response.durationMs,
-                logo: (selectedModel.model.startsWith("claude")
-                  ? "Claude"
-                  : "GPT") as Logo,
-                isLoading: false,
-              };
-              
-              // Обновляем конкретный ответ
-              updateChatResponse(placeholderId, responseData);
-              
-            } catch (error) {
-              console.error(`Ошибка для модели ${selectedModel.model}:`, error);
-              
-              // Обновляем с ошибкой
-              const errorResponse = {
-                id: placeholderId,
-                model: selectedModel.model,
-                number: selectedModel.number,
-                response: "Произошла ошибка при получении ответа",
-                timeOfResponse: "ошибка",
-                logo: (selectedModel.model.startsWith("claude")
-                  ? "Claude"
-                  : "GPT") as Logo,
-                isLoading: false,
-                isError: true,
-              };
-              
-              updateChatResponse(placeholderId, errorResponse);
-            }
+          // Получаем ответы от моделей
+          await fetchModelResponses({
+            prompt: promptWithoutResponse,
+            models: validModels,
+            placeholders,
           });
-          
-          // Ждем завершения всех запросов
-          await Promise.allSettled(promptPromises);
           
           // Очищаем промпт
           setPromptWithoutResponse("");
@@ -102,10 +63,17 @@ const ChatView: FC = () => {
 
       sendPrompts();
     }
-  }, [promptWithoutResponse, selectedModels, setChatResponses, updateChatResponse, setPromptWithoutResponse]);
+  }, [
+    promptWithoutResponse, 
+    selectedModels, 
+    setChatResponses, 
+    setPromptWithoutResponse,
+    createResponsePlaceholders,
+    fetchModelResponses,
+  ]);
 
   return (
-    <section className="w-full">
+    <section className="w-[100%]">
       {chatResponses.length > 0 ? <ChatResponses /> : <ChatWithoutResponses />}
     </section>
   );

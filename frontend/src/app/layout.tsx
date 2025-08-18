@@ -1,12 +1,9 @@
-// layout.tsx
 import "./globals.scss";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Nunito } from "next/font/google";
-import Header from "@/widgets/Header";
-import { ToastContainer } from 'react-toastify';
-import ClientProvider from "./ClientProvider";
+import { ToastContainer } from "react-toastify";
 import Footer from "@/widgets/Footer";
-import { FC } from "react";
+import ClientHeader from "@/widgets/Header/ui/ClientHeader";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -24,26 +21,26 @@ export const metadata = {
   description: "Dev version",
 };
 
-const RootLayout: FC<Props> = ({ children }) => {
+export default async function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={nunito.className}>
+    <html suppressHydrationWarning={true} lang="en">
       <head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </head>
-      <body suppressHydrationWarning={true} className="min-h-screen flex flex-col">
+      <body 
+        className={`min-h-screen flex flex-col ${nunito.className}`} 
+        suppressHydrationWarning={true}
+      >
         <main className="flex flex-col flex-1 bg-[#070708] text-[#E9E9E9] p-[10px]">
-          <Header />
+          <ClientHeader />
           <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
             {children}
           </main>
           <Footer />
         </main>
         <ToastContainer theme="dark" />
-        <ClientProvider />
       </body>
     </html>
   );
 }
-
-export default RootLayout;

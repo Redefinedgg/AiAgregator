@@ -3,6 +3,8 @@ import { FaLongArrowAltUp } from "react-icons/fa";
 import { KeyboardEvent } from "react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
+import { handleSend } from "../helpers/handleSend";
+import { handleKeyDown } from "../helpers/handleKeyDown";
 
 type TextareaProps = {
   className?: string;
@@ -26,22 +28,6 @@ export default function Textarea({
   canSend = true,
 }: TextareaProps) {
 
-  const handleSend = () => {
-    if (canSend && onClickSendButton) {
-      onClickSendButton();
-    }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && canSend) {
-      e.preventDefault();
-      handleSend();
-    } else if (e.key === "Enter" && !e.shiftKey && !canSend) {
-      e.preventDefault();
-      toast.error("You need to write prompt and select models");
-    }
-  };
-
   return (
     <div className="relative">
       <textarea
@@ -53,14 +39,14 @@ export default function Textarea({
         )}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={(e) => handleKeyDown(e, canSend, onClickSendButton)}
         value={value}
       />
       {sendButton && (
         <Button
           className="w-[50px] h-[50px] bg-[rgb(133,133,133)] flex rounded-[25px] items-center justify-center absolute bottom-[25px] right-[25px] z-[2]"
           label={<FaLongArrowAltUp size={32} />}
-          onClick={handleSend}
+          onClick={() => handleSend(canSend, onClickSendButton)}
           disabled={!canSend}
         />
       )}

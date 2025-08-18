@@ -15,27 +15,32 @@ import {
 import {
   SYSTEM_PROMPT,
   TOKEN_PRICES_CLAUDE_SONNET_4_0,
+  TOKEN_PRICES_DEEPSEEK_CHAT,
   TOKEN_PRICES_GPT_3_5_TURBO,
   TOKEN_PRICES_GPT_4O_MINI,
 } from '../constant/ai.constant';
 import { Model } from '../enum/ai.enum';
 import { TokenPricing, AIResponse } from '../types/ai.types';
+import axios, { AxiosInstance } from 'axios';
 
 @Injectable()
 export class AiService {
   private readonly logger = new Logger(AiService.name);
   private readonly openai: OpenAI;
   private readonly anthropic: Anthropic;
+  private readonly deepseek: AxiosInstance;
 
   private readonly modelPricing: Record<string, TokenPricing> = {
     [Model.gpt_3_5_turbo]: TOKEN_PRICES_GPT_3_5_TURBO,
     [Model.gpt_4o_mini]: TOKEN_PRICES_GPT_4O_MINI,
     [Model.claude_sonnet_4_0]: TOKEN_PRICES_CLAUDE_SONNET_4_0,
+    [Model.deepseek_chat]: TOKEN_PRICES_DEEPSEEK_CHAT,
   };
 
   constructor() {
     const openaiApiKey = process.env.OPENAI_API_KEY;
     const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
+    const deepseekApiKey = process.env.DEEPSEEK_API_KEY;
 
     if (!openaiApiKey) {
       this.logger.warn('OPENAI_API_KEY is not configured');
@@ -45,6 +50,10 @@ export class AiService {
       this.logger.warn('ANTHROPIC_API_KEY is not configured');
     }
 
+    if (!deepseekApiKey) {
+      this.logger.warn('DEEPSEEK_API_KEY is not configured');
+    }
+
     this.openai = new OpenAI({
       apiKey: openaiApiKey,
     });
@@ -52,6 +61,14 @@ export class AiService {
     this.anthropic = new Anthropic({
       apiKey: anthropicApiKey,
     });
+
+    this.deepseek = axios.create({
+      baseURL: 'https://api.deepseek.com/v1',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${deepseekApiKey}`,
+      },
+    })
   }
 
   async sendPrompts(body: SendPromptsDto): Promise<SendPromptsResponse> {
@@ -108,24 +125,50 @@ export class AiService {
       throw new BadRequestException('Prompt cannot be empty');
     }
 
-    if (prompt.length > 50000) {
-      // Примерное ограничение
+    if (prompt.length > 20000) {
       throw new BadRequestException('Prompt is too long');
     }
   }
 
-  private async getAIResponse(
-    prompt: string,
-    model: string,
-  ): Promise<AIResponse> {
+  private async getAIResponse(prompt: string, model: Model): Promise<AIResponse> {
     if (this.isOpenAIModel(model)) {
       return this.processOpenAIRequest(prompt, model);
     } else if (this.isAnthropicModel(model)) {
       return this.processAnthropicRequest(prompt, model);
+    } else if (model === Model.deepseek_chat) {
+      return this.processDeepSeekRequest(prompt);
     } else {
-      throw new BadRequestException(
-        `Unsupported model provider for model: ${model}`,
+      throw new BadRequestException(`Unsupported model: ${model}`);
+    }
+  }
+
+  private async processDeepSeekRequest(prompt: string): Promise<AIResponse> {
+    try {
+      const response = await this.deepseek.post('/chat/completions', {
+        model: Model.deepseek_chat,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: TOKEN_PRICES_DEEPSEEK_CHAT.maxOutput,
+      });
+
+      const text = response.data.choices[0]?.message?.content || '';
+      const promptTokens = response.data.usage?.prompt_tokens || 0;
+      const completionTokens = response.data.usage?.completion_tokens || 0;
+
+      if (!text) throw new InternalServerErrorException('Empty response from DeepSeek');
+
+      const { spent, spentWithMarkup } = this.calculateCost(
+        Model.deepseek_chat,
+        promptTokens,
+        completionTokens,
       );
+
+      return { text, promptTokens, completionTokens, spent, spentWithMarkup };
+    } catch (error) {
+      this.logger.error(`DeepSeek API error: ${error.message}`);
+      throw new InternalServerErrorException('DeepSeek request failed');
     }
   }
 

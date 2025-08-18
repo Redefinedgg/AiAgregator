@@ -8,11 +8,15 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique
-  nickname  String    @unique
-  email     String    @unique
-  password  String
+  id       Int    @id @default(autoincrement())
+  uuid     String @unique
+  nickname String @unique
+  email    String @unique
+  password String
+
+  role String @default("USER")
+
+  avatar    String
   balance   Float     @default(1)
   chats     Chat[]
   messages  Message[]
@@ -43,4 +47,13 @@ model Message {
   spent     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  PREMIUM
+  PREMIUM_PLUS
+  PREMIUM_PLUS_PLUS
+  
+  ADMIN
 }
