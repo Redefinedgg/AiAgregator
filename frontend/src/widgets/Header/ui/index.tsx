@@ -16,7 +16,11 @@ const Header = () => {
     router.push("/chat");
   };
 
-  // Don't render anything during SSR to avoid hydration mismatch
+  const navigateToLeaderboard = () => {
+    router.push("/leaderboard");
+  };
+
+  
   if (!isClient) {
     return (
       <div 
@@ -37,11 +41,18 @@ const Header = () => {
       >
         <Link href="/">Ai Aggregator</Link>
       </h1>
-      <Button
-        label="Chats"
-        className="ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[40px] h-[60px] w-[250px] max-[768px]:text-[24px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
-        onClick={navigateToChats}
-      />
+      <div className="flex items-center gap-2 mr-[10px]">
+        <Button
+          label="Leaderboard"
+          className="ml-[30px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[28px] h-[60px] w-[240px] max-[768px]:text-[18px] max-[768px]:h-[40px] max-[768px]:w-[130px]"
+          onClick={navigateToLeaderboard}
+        />
+        <Button
+          label="Chats"
+          className="ml-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[28px] h-[60px] w-[200px] max-[768px]:text-[18px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
+          onClick={navigateToChats}
+        />
+      </div>
     </header>
   );
 };
