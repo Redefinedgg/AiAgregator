@@ -3,6 +3,7 @@ import Link from "next/link";
 import Button from "@/shared/ui/Button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaUser } from "react-icons/fa";
 
 const Header = () => {
   const router = useRouter();
@@ -12,14 +13,10 @@ const Header = () => {
     setIsClient(true);
   }, []);
 
-  const navigateToChats = () => {
-    router.push("/chat");
-  };
-
   // Don't render anything during SSR to avoid hydration mismatch
   if (!isClient) {
     return (
-      <div 
+      <div
         className="w-[100%] bg-[#11141C] rounded-[12px] h-[100px] max-[768px]:h-[60px]"
         suppressHydrationWarning={true}
       />
@@ -37,11 +34,14 @@ const Header = () => {
       >
         <Link href="/">Ai Aggregator</Link>
       </h1>
-      <Button
-        label="Chats"
-        className="ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[40px] h-[60px] w-[250px] max-[768px]:text-[24px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
-        onClick={navigateToChats}
-      />
+      <div className="flex items-center gap-[10px]">
+        <Button
+          label="Chats"
+          className="ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[40px] h-[60px] w-[250px] max-[768px]:text-[24px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
+          onClick={() => router.push("/chat")}
+        />
+        <Button onClick={() => router.push("/dashboard")} label={<FaUser size={50} />} />
+      </div>
     </header>
   );
 };

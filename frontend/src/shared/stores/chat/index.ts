@@ -1,6 +1,8 @@
 import { ChatResponse } from "@/shared/types/ChatResponse";
 import { Model } from "@/shared/api/ai/enums";
-import { createPersistedStore } from "@/shared/hooks/createPersistedStore";
+import { createPersistedStore } from "@/shared/helpers/createPersistedStore";
+import columns from "./slices/columns";
+import { ColumnsSlice } from "./slices/columns";
 
 export interface SelectedModel {
   model: Model;
@@ -12,7 +14,7 @@ export interface SelectedModelsCount {
   count: number;
 }
 
-export interface ChatStore {
+export interface ChatStore extends ColumnsSlice {
   // State
   chatUuid: string | undefined;
   isNewChat: boolean;
@@ -20,10 +22,8 @@ export interface ChatStore {
   chatResponses: ChatResponse[];
   currentUuid: string;
   promptWithoutResponse: string;
-  columnsCount: number;
   selectedModels: SelectedModel[];
   selectedModelsCount: SelectedModelsCount[];
-
   // Actions
   addChatResponse: (response: ChatResponse) => void;
   getOneChatResponse: (id: number | undefined) => ChatResponse | undefined;
@@ -32,7 +32,6 @@ export interface ChatStore {
   setPrompt: (prompt: string) => void;
   setChatResponses: (chatResponses: ChatResponse[]) => void;
   setPromptWithoutResponse: (promptWithoutResponse: string) => void;
-  setColumnsCount: (columnsCount: number) => void;
   getCountOfModelsByModel: (model: Model) => number;
   setSelectedModels: (selectedModels: SelectedModel[]) => void;
   setSelectedModelsCount: (selectedModelsCount: SelectedModelsCount[]) => void;
@@ -41,7 +40,7 @@ export interface ChatStore {
 
 export const useChatStore = createPersistedStore<ChatStore>(
   "chatStore",
-  (set, get) => ({
+  (set, get, ...args) => ({
     // State
     chatUuid: undefined,
     isNewChat: true,
@@ -49,17 +48,14 @@ export const useChatStore = createPersistedStore<ChatStore>(
     chatResponses: [],
     currentUuid: "",
     promptWithoutResponse: "",
-    columnsCount: 4,
     selectedModels: [],
     selectedModelsCount: [],
-
     // Actions
     addChatResponse: (response: ChatResponse) => {
       set((state) => ({
         chatResponses: [...state.chatResponses, response],
       }));
     },
-
     getOneChatResponse: (id: number | undefined) => {
       if (!id) return undefined;
       const response = get().chatResponses.find(
@@ -67,11 +63,9 @@ export const useChatStore = createPersistedStore<ChatStore>(
       );
       return response;
     },
-
     getCountOfModelsByModel: (model: Model) => {
       return get().selectedModels.filter((m) => m.model === model).length;
     },
-
     updateChatResponse: (id: number, updatedResponse: ChatResponse) => {
       set((state) => ({
         chatResponses: state.chatResponses.map((response) =>
@@ -79,17 +73,16 @@ export const useChatStore = createPersistedStore<ChatStore>(
         ),
       }));
     },
-
     setChatUuid: (uuid: string) => set({ chatUuid: uuid }),
     setIsNewChat: (isNewChat: boolean) => set({ isNewChat }),
     setPrompt: (prompt: string) => set({ prompt }),
     setChatResponses: (chatResponses: ChatResponse[]) => set({ chatResponses }),
     setPromptWithoutResponse: (promptWithoutResponse: string) =>
       set({ promptWithoutResponse }),
-    setColumnsCount: (columnsCount: number) => set({ columnsCount }),
     setSelectedModels: (selectedModels: SelectedModel[]) =>
       set({ selectedModels }),
     setSelectedModelsCount: (selectedModelsCount: SelectedModelsCount[]) =>
       set({ selectedModelsCount }),
+    ...columns(set, get, ...args),
   })
 );

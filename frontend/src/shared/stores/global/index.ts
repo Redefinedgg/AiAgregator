@@ -1,4 +1,4 @@
-import { createPersistedStore } from "@/shared/hooks/createPersistedStore";
+import { createPersistedStore } from "@/shared/helpers/createPersistedStore";
 export interface GlobalStore {
   // State
   isClient: boolean;

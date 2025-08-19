@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useChatStore } from "@/shared/stores/chat";
 import { ChatResponse as ChatResponseType } from "@/shared/types/ChatResponse";
 import { FC, useEffect, useState } from "react";
-import { logoSizes } from "@/shared/constants/logoSizes";
+import { LOGO_SIZES } from "@/shared/constants/LOGO_SIZES";
 
 interface Props {
   id: number | undefined;
@@ -22,7 +22,8 @@ const ChatResponseTitle: FC<Props> = ({ id }) => {
 
   if (!chatResponse) return null;
   
-  const size = logoSizes[chatResponse.logo] || { w: 64, h: 64 };
+  const size = LOGO_SIZES[chatResponse.logo] || { w: 64, h: 64 };
+  
   return (
     <div className="flex items-center justify-between bg-[#1e1f1e]" style={{ borderRadius: "10px 10px 0px 0px" }}>
       {/* Левая часть: логотип + модель */}

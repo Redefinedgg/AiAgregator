@@ -2,8 +2,8 @@ import "./globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { Nunito } from "next/font/google";
 import { ToastContainer } from "react-toastify";
-import Footer from "@/widgets/Footer";
-import ClientHeader from "@/widgets/Header/ui/ClientHeader";
+import Footer from "@/widgets/Layout/Footer";
+import ClientHeader from "@/widgets/Layout/Header/ui/ClientHeader";
 
 const nunito = Nunito({
   subsets: ["latin"],

@@ -5,7 +5,7 @@ import NewChatTitle from "@/widgets/NewChatTitle";
 import { useChatStore } from "@/shared/stores/chat";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import AIChoiceButtons from "@/widgets/AIChoiceButtons";
+import AIChoiceButtons from "@/widgets/ChatAIChoiceButtons";
 
 const NewChatView = () => {
   const { prompt, setPrompt, setPromptWithoutResponse, selectedModels } =

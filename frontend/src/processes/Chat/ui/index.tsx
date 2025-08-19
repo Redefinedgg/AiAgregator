@@ -2,8 +2,8 @@
 
 import { useChatStore } from "@/shared/stores/chat";
 import { FC, useEffect } from "react";
-import NewChatView from "@/views/NewChat";
-import ChatView from "@/views/Chat";
+import NewChatView from "@/views/Chat/NewChat";
+import ChatView from "@/views/Chat/Chat";
 
 interface Props {
   uuid?: string;

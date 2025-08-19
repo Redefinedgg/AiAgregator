@@ -1,40 +1,22 @@
 "use client";
 
 import Button from "@/shared/ui/Button";
-import { SelectedModel, SelectedModelsCount, useChatStore } from "@/shared/stores/chat";
+import {
+  SelectedModel,
+  SelectedModelsCount,
+  useChatStore,
+} from "@/shared/stores/chat";
 import { Model } from "@/shared/api/ai/enums";
 import { useStoreHydration } from "@/shared/hooks/useHydration"; // Adjust path as needed
 import SetCountOfModels from "@/entities/SetCountOfModels";
 import ShowCountOfModels from "@/entities/ShowCountOfModels";
+import models from "@/shared/constants/MODELS";
+import useHandleModelClick from "@/shared/hooks/useHandleModelClick";
 
-const models: { label: string; value: Model }[] = [
-  { label: "GPT-3.5-turbo", value: Model.gpt_3_5_turbo },
-  { label: "GPT-4o-mini", value: Model.gpt_4o_mini },
-  { label: "Claude-sonnet-4-0", value: Model.claude_sonnet_4_0 },
-  { label: "DeepSeek-chat", value: Model.deepseek_chat },
-];
-
-export default function AIChoiceButtons() {
-  const { selectedModels, setSelectedModels, setSelectedModelsCount } = useChatStore();
+export default function ChatAIChoiceButtons() {
+  const { selectedModels } = useChatStore();
   const isHydrated = useStoreHydration();
-
-// В компоненте AIChoiceButtons
-const handleModelClick = (model: Model) => {
-  let updatedModels: SelectedModel[];
-  if (selectedModels.some((m) => m.model === model)) {
-    updatedModels = selectedModels.filter((m) => m.model !== model);
-  } else {
-    updatedModels = [...selectedModels, { model, number: 1 }];
-  }
-  setSelectedModels(updatedModels);
-
-  const newCounts = models.map((m) => ({
-    model: m.value,
-    count: updatedModels.filter((sm) => sm.model === m.value).length,
-  }));
-  setSelectedModelsCount(newCounts);
-};
-
+  const { handleModelClick } = useHandleModelClick();
 
   return (
     <section

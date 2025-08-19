@@ -1,5 +1,5 @@
-import { createPersistedStore } from "@/shared/hooks/createPersistedStore";
-import { get } from "http";
+import { createPersistedStore } from "@/shared/helpers/createPersistedStore";
+import { RegisterOrLogin } from "@/shared/types/RegisterOrLogin";
 
 export interface AuthStore {
   registerForm: {
@@ -14,6 +14,8 @@ export interface AuthStore {
     password: string;
   };
 
+  isRegisterOrLoginPage: RegisterOrLogin;
+
   setRegisterForm: (form: {
     nickname: string;
     email: string;
@@ -24,6 +26,10 @@ export interface AuthStore {
     email: string;
     password: string;
   }) => void;
+
+  setIsRegisterOrLoginPage: (page: RegisterOrLogin) => void;
+  setLoginPage: () => void;
+  setRegisterPage: () => void;
 
   changeRegisterNickname: (nickname: string) => void;
   changeRegisterEmail: (email: string) => void;
@@ -48,6 +54,7 @@ export const useAuthStore = createPersistedStore<AuthStore>(
       email: "",
       password: "",
     },
+    isRegisterOrLoginPage: "Register",
 
     // Actions
     setRegisterForm: (form: {
@@ -60,6 +67,12 @@ export const useAuthStore = createPersistedStore<AuthStore>(
       email: string;
       password: string;
     }) => set({ loginForm: form }),
+
+    setIsRegisterOrLoginPage: (page: RegisterOrLogin) =>
+      set({ isRegisterOrLoginPage: page }),
+
+    setLoginPage: () => set({ isRegisterOrLoginPage: "Login" }),
+    setRegisterPage: () => set({ isRegisterOrLoginPage: "Register" }),
 
     changeRegisterNickname: (nickname: string) =>
       set({ registerForm: { ...get().registerForm, nickname } }),

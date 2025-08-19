@@ -1,28 +1,14 @@
 "use client";
 
-import { useChatStore } from "@/shared/stores/chat";
-import { FC, useEffect } from "react";
-import NewChatView from "@/views/NewChat";
-import ChatView from "@/views/Chat";
+import { useAuthStore } from "@/shared/stores/auth";
+import { FC } from "react";
+import RegisterView from "@/views/Auth/Register";
+import LoginView from "@/views/Auth/Login";
 
-interface Props {
-  uuid?: string;
-}
+const AuthProcess: FC = () => {
+  const { isRegisterOrLoginPage } = useAuthStore();
 
-const ChatProcess: FC<Props> = ({ uuid }: Props) => {
-  const { isNewChat, setChatUuid, setIsNewChat } = useChatStore();
-
-  useEffect(() => {
-    if (uuid) {
-      setChatUuid(uuid);
-      setIsNewChat(false);
-    } else {
-      setIsNewChat(true);
-      setChatUuid("");
-    }
-  }, []);
-
-  return isNewChat ? <NewChatView /> : <ChatView />
+  return isRegisterOrLoginPage === "Register" ? <RegisterView /> : <LoginView />
 };
 
-export default ChatProcess;
+export default AuthProcess;
