@@ -1,5 +1,5 @@
 "use client";
-import ChatResponse from "@/features/ChatResponse";
+import ChatResponse from "@/features/Chat/ChatResponse";
 import { FC, useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { ChatResponse as ChatResponseType } from "@/shared/types/ChatResponse";

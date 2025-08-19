@@ -1,8 +1,6 @@
 import Button from "../../Button";
 import { FaLongArrowAltUp } from "react-icons/fa";
-import { KeyboardEvent } from "react";
 import clsx from "clsx";
-import { toast } from "react-toastify";
 import { handleSend } from "../helpers/handleSend";
 import { handleKeyDown } from "../helpers/handleKeyDown";
 

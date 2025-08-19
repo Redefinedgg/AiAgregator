@@ -22,7 +22,7 @@ const ChatProcess: FC<Props> = ({ uuid }: Props) => {
     }
   }, []);
 
-  return isNewChat ? <NewChatView /> : <ChatView />
+  return isNewChat ? <NewChatView /> : <ChatView />;
 };
 
 export default ChatProcess;

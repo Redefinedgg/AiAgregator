@@ -1,11 +1,11 @@
 "use client";
 
-import Textarea from "@/shared/ui/Textarea";
-import NewChatTitle from "@/widgets/NewChatTitle";
 import { useChatStore } from "@/shared/stores/chat";
+import Textarea from "@/shared/ui/Textarea";
+import ChatAIChoiceButtons from "@/widgets/Chat/ChatAIChoiceButtons";
+import NewChatTitle from "@/widgets/NewChat/NewChatTitle";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import AIChoiceButtons from "@/widgets/ChatAIChoiceButtons";
 
 const NewChatView = () => {
   const { prompt, setPrompt, setPromptWithoutResponse, selectedModels } =
@@ -31,7 +31,7 @@ const NewChatView = () => {
         onClickSendButton={navigateToChat}
         canSend={prompt.trim().length > 0 && selectedModels.length > 0}
       />
-      <AIChoiceButtons />
+      <ChatAIChoiceButtons />
     </main>
   );
 };

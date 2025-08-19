@@ -9,6 +9,7 @@ import { UsersService } from 'src/modules/users/service/users.service';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { EmailOrNickname } from '../types/auth.type';
 
 @Injectable()
 export class AuthService {
@@ -31,8 +32,10 @@ export class AuthService {
   
   async login(body: LoginDto): Promise<LoginResponse> {
     try {
-      if (!body.email && !body.nickname) {
-        throw new BadRequestException('Missing email and nickname');
+      const isNicknameOrEmail: EmailOrNickname = body.nicknameOrEmail.includes('@') ? "email" : "nickname";
+
+      if (!body.nicknameOrEmail) {
+        throw new BadRequestException('Missing nickname or email');
       }
 
       if (!body.password) {
@@ -40,7 +43,7 @@ export class AuthService {
       }
 
       const user = await this.prisma.user.findFirst({
-        where: { OR: [{ nickname: body.nickname }, { email: body.email }] },
+        where: { [isNicknameOrEmail]: body.nicknameOrEmail },
       });
 
       if (!user) {

@@ -20,7 +20,7 @@ import {
   TOKEN_PRICES_GPT_4O_MINI,
 } from '../constant/ai.constant';
 import { Model } from '../enum/ai.enum';
-import { TokenPricing, AIResponse } from '../types/ai.types';
+import { TokenPricing, AIResponse } from '../type/ai.type';
 import axios, { AxiosInstance } from 'axios';
 
 @Injectable()

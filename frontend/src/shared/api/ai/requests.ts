@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import axiosInstance from "../client";
 import { Model } from "./enums";
 import { SendPromptDto, SendPromptResponse } from "./types";
@@ -17,7 +18,7 @@ export const sendPrompt = async (
     const end = Date.now();
 
     const durationMs = end - start;
-    const durationStr = (durationMs / 1000).toFixed(1) + 's';
+    const durationStr = (durationMs / 1000).toFixed(1) + "s";
 
     return {
       response: response.data.response,
@@ -25,6 +26,14 @@ export const sendPrompt = async (
       durationMs: durationStr,
     };
   } catch (error: any) {
+    toast.error(
+      error.response.data.message +
+        "(response from " +
+        body.model +
+        " with prompt " +
+        body.prompt +
+        " not received (error))"
+    );
     throw error;
   }
 };

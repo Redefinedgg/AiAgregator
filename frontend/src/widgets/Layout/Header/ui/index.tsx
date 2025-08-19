@@ -4,10 +4,12 @@ import Button from "@/shared/ui/Button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { useAuthStore } from "@/shared/stores/auth";
 
 const Header = () => {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const { isAuth } = useAuthStore();
 
   useEffect(() => {
     setIsClient(true);
@@ -34,14 +36,16 @@ const Header = () => {
       >
         <Link href="/">Ai Aggregator</Link>
       </h1>
-      <div className="flex items-center gap-[10px]">
-        <Button
-          label="Chats"
-          className="ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[40px] h-[60px] w-[250px] max-[768px]:text-[24px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
-          onClick={() => router.push("/chat")}
-        />
-        <Button onClick={() => router.push("/dashboard")} label={<FaUser size={50} />} />
-      </div>
+      <Link href={isAuth ? "/dashboard" : "/auth"}>
+        <div className="flex items-center gap-[10px]">
+          <Button
+            label="Chats"
+            className="ml-[30px] mr-[10px] flex items-center pl-[18px] pr-[18px] pt-[12px] pb-[15px] justify-center text-[40px] h-[60px] w-[250px] max-[768px]:text-[24px] max-[768px]:h-[40px] max-[768px]:w-[100px]"
+            onClick={() => router.push("/chat")}
+          />
+          <Button label={<FaUser size={50} />} />
+        </div>
+      </Link>
     </header>
   );
 };

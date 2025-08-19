@@ -8,8 +8,8 @@ import {
 } from "@/shared/stores/chat";
 import { Model } from "@/shared/api/ai/enums";
 import { useStoreHydration } from "@/shared/hooks/useHydration"; // Adjust path as needed
-import SetCountOfModels from "@/entities/SetCountOfModels";
-import ShowCountOfModels from "@/entities/ShowCountOfModels";
+import SetCountOfModels from "@/entities/NewChat/CountOfModels/SetCountOfModels";
+import ShowCountOfModels from "@/entities/NewChat/CountOfModels/ShowCountOfModels";
 import models from "@/shared/constants/MODELS";
 import useHandleModelClick from "@/shared/hooks/useHandleModelClick";
 

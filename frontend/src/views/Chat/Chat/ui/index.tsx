@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
-import ChatResponses from "@/widgets/ChatResponses";
-import ChatWithoutResponses from "@/widgets/ChatWithoutResponses";
+import ChatResponses from "@/widgets/Chat/ChatResponses";
+import ChatWithoutResponses from "@/widgets/Chat/ChatWithoutResponses";
 import { useChatStore } from "@/shared/stores/chat";
 import { useResponsePlaceholders } from "@/shared/hooks/useResponsePlaceholders";
 import { useModelResponses } from "@/shared/hooks/useModelResponses";

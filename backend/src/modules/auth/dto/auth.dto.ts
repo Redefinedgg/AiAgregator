@@ -1,7 +1,11 @@
-import { IsString, IsEmail, IsOptional, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MinLength, Matches } from 'class-validator';
 
 export class RegisterDto {
   @IsString()
+  @MinLength(3)
+  @Matches(/^[^@]+$/, {
+    message: 'Nickname must not contain "@"',
+  })
   nickname: string;
 
   @IsEmail()
@@ -13,16 +17,10 @@ export class RegisterDto {
 }
 
 export class LoginDto {
-  @IsString()
-  @IsEmail()
   @IsOptional()
-  email?: string;
+  @IsString()
+  nicknameOrEmail: string;
 
   @IsString()
-  @IsOptional()
-  nickname?: string;
-
-  @IsString()
-  @MinLength(6)
   password: string;
 }

@@ -1,0 +1,1 @@
+export type EmailOrNickname = "email" | "nickname";
