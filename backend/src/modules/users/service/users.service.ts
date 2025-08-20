@@ -62,4 +62,21 @@ export class UsersService {
       throw error;
     }
   }
+
+  async getUserByUuid(uuid: string): Promise<GetUserByIdResponse> {
+    try {
+      console.log(uuid)
+      const user = await this.prisma.user.findUnique({ where: { uuid } });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const { password, ...userWithoutPassword } = user;
+
+      return { user: userWithoutPassword };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Input: FC<Props> = ({ className = "", value, onChange, placeholder }) => {
-  const baseClassName = "outline-none bg-[#070708] text-[#E9E9E9] rounded-[25px] px-[12px] py-[6px]";
+  const baseClassName = "outline-none bg-[#070708] border border-[#Ffffff] text-[#E9E9E9] rounded-[12px] px-[12px] py-[6px]";
   return (
     <input
       className={baseClassName + " " + className}

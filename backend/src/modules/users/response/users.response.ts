@@ -7,3 +7,7 @@ export class GetUserByIdResponse {
 export class CreateUserResponse {
   user: UserWithoutPassword;
 }
+
+export class GetMeResponse {
+  user: UserWithoutPassword;
+}
