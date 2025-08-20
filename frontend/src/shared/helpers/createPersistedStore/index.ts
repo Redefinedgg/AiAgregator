@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
-import { createHydrationSlice } from "../../middleware/hydrationMiddleware";
-import { HydrationSlice } from "../../middleware/hydrationMiddleware";
+import { createHydrationSlice } from "../../middlewares/hydrationMiddleware";
+import { HydrationSlice } from "../../middlewares/hydrationMiddleware";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 

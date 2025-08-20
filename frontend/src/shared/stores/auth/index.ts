@@ -1,8 +1,9 @@
 import { createPersistedStore } from "@/shared/helpers/createPersistedStore";
 import { RegisterOrLogin } from "@/shared/types/RegisterOrLogin";
 import { ProfileSlice, profile } from "./slices/profile";
+import { DashboardSlice, dashboard } from "./slices/dashboard";
 
-export interface AuthStore extends ProfileSlice {
+export interface AuthStore extends ProfileSlice, DashboardSlice {
   registerForm: {
     nickname: string;
     email: string;
@@ -54,5 +55,6 @@ export const useAuthStore = createPersistedStore<AuthStore>(
       set({ isRegisterOrLoginPage: page }),
 
     ...profile(set, get, ...args),
+    ...dashboard(set, get, ...args),
   })
 );

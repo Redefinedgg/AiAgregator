@@ -11,14 +11,14 @@ import { JwtStrategy } from './strategy/jwt.strategy';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET, // лучше через ConfigModule
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '30d' },
     }),
     PrismaModule,
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy], // ⬅️ добавляем стратегию
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
