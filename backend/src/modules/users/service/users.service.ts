@@ -1,11 +1,17 @@
-import { ConflictException, InternalServerErrorException, NotFoundException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/users.dto';
+import {
+  ConflictException,
+  InternalServerErrorException,
+  NotFoundException,
+  Injectable,
+  BadRequestException,
+} from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto } from '../dto/users.dto';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  GetUserByIdResponse,
   CreateUserResponse,
+  GetUserResponse,
 } from '../response/users.response';
 
 @Injectable()
@@ -47,7 +53,7 @@ export class UsersService {
     }
   }
 
-  async getUserById(id: number): Promise<GetUserByIdResponse> {
+  async getUserById(id: number): Promise<GetUserResponse> {
     try {
       const user = await this.prisma.user.findUnique({ where: { id } });
 
@@ -63,10 +69,48 @@ export class UsersService {
     }
   }
 
-  async getUserByUuid(uuid: string): Promise<GetUserByIdResponse> {
+  async getUserByUuid(uuid: string): Promise<GetUserResponse> {
     try {
-      console.log(uuid)
+      console.log(uuid);
       const user = await this.prisma.user.findUnique({ where: { uuid } });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const { password, ...userWithoutPassword } = user;
+
+      return { user: userWithoutPassword };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserByUuid(
+    uuid: string,
+    body: UpdateUserDto,
+  ): Promise<GetUserResponse> {
+    try {
+      if (body.password) {
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+        body.password = hashedPassword;
+      }
+
+      if (body.email) {
+        if (!body.email.includes('@')) {
+          throw new BadRequestException('Email is not valid');
+        } else if (body.email.includes('@')) {
+          const user = await this.prisma.user.findUnique({ where: { email: body.email } });
+          if (user) {
+            throw new ConflictException('Email already exists');
+          }
+        }
+      }
+
+      const user = await this.prisma.user.update({
+        where: { uuid },
+        data: body,
+      });
 
       if (!user) {
         throw new NotFoundException('User not found');

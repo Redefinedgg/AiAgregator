@@ -14,6 +14,7 @@ const AuthButtons = () => {
         label={isRegisterOrLoginPage}
         className="w-[600px] h-[60px] text-[24px]"
         onClick={handleAuth}
+        onKeyDown={(e) => e.key === "Enter" && handleAuth()}
       />
       {isRegisterOrLoginPage === "Login" && <ForgottenPassword />}
       <AuthSwitchButton />

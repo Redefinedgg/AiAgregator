@@ -18,3 +18,10 @@ export interface LoginResponse {
   user: any;
   token: string;
 }
+
+export interface UpdateUserDto {
+  nickname?: string;
+  email?: string;
+  balance?: number;
+  password?: string;
+}

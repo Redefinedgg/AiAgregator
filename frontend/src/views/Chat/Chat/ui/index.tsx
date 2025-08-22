@@ -5,6 +5,7 @@ import { useChatStore } from "@/shared/stores/chat";
 import { useResponsePlaceholders } from "@/shared/hooks/useResponsePlaceholders";
 import { useModelResponses } from "@/shared/hooks/useModelResponses";
 import { toast } from "react-toastify";
+import { useAuthStore } from "@/shared/stores/auth";
 
 const ChatView: FC = () => {
   const {
@@ -19,6 +20,8 @@ const ChatView: FC = () => {
   const { fetchModelResponses } = useModelResponses();
 
   const sendingRef = useRef(false);
+
+  const { user, setUser } = useAuthStore();
 
   useEffect(() => {
     if (promptWithoutResponse && !sendingRef.current) {
@@ -70,6 +73,8 @@ const ChatView: FC = () => {
     setPromptWithoutResponse,
     createResponsePlaceholders,
     fetchModelResponses,
+    user,
+    setUser,
   ]);
 
   return (

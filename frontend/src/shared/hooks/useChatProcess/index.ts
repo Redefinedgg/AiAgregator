@@ -1,14 +1,23 @@
 import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { useGetMe } from "@/shared/hooks/useGetMe";
+import { useAuthStore } from "@/shared/stores/auth";
 
 export const useChatProcess = (uuid?: string) => {
   const { setChatUuid, setIsNewChat } = useChatStore();
   const { me } = useGetMe();
+  const { setUser } = useAuthStore();
 
   useEffect(() => {
-    me();
+    const fetchMe = async () => {
+      const response = await me();
+      console.log(response.data);
+      setUser(response.data);
+    };
+    fetchMe();
+  }, []);
 
+  useEffect(() => {
     if (uuid) {
       setChatUuid(uuid);
       setIsNewChat(false);
@@ -16,5 +25,5 @@ export const useChatProcess = (uuid?: string) => {
       setIsNewChat(true);
       setChatUuid("");
     }
-  }, [uuid, me, setChatUuid, setIsNewChat]);
+  }, [uuid, setChatUuid, setIsNewChat]);
 };

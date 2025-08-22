@@ -13,7 +13,7 @@ export const AuthInputs = () => {
   } = useAuthStore();
 
   return (
-    <>
+    <div className="flex flex-col gap-[24px]">
       {Object.keys(
         isRegisterOrLoginPage === "Register" ? registerForm : loginForm
       ).map((item: string) => (
@@ -33,7 +33,7 @@ export const AuthInputs = () => {
           placeholder={addSpacesToCamelCase(item)}
         />
       ))}
-    </>
+    </div>
   );
 };
 

@@ -14,7 +14,7 @@ model User {
   email    String @unique
   password String
 
-  role String @default("USER")
+  role String @default("USER")  
 
   avatar    String
   balance   Float     @default(1)

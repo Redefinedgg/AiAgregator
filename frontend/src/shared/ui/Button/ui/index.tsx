@@ -8,6 +8,7 @@ type ButtonProps = {
   disabled?: boolean;
   defaultBorder?: boolean;
   selected?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 };
 
 export default function Button({
@@ -17,6 +18,7 @@ export default function Button({
   disabled = false,
   defaultBorder = true,
   selected = false,
+  onKeyDown,
 }: ButtonProps) {
   return (
     <button
@@ -52,6 +54,7 @@ export default function Button({
         // Custom className override
         className
       )}
+      onKeyDown={onKeyDown}
     >
       {label}
     </button>

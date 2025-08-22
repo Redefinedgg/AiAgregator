@@ -8,7 +8,7 @@ export const useGetMe = () => {
     try {
       const response = await meApi();
 
-      return response.data;
+      return response;
     } catch (error: any) {
       if (error.status === 401) {
         logout();

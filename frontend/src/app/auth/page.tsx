@@ -1,10 +1,9 @@
 "use client";
 
-import { FC } from "react";
-import AuthProcess from "@/processes/Auth"
+import AuthView from "@/views/Auth/AuthView";
 
-const Auth: FC = () => {
-    return <AuthProcess />
-}
+const Auth = () => {
+  return <AuthView />;
+};
 
-export default Auth
+export default Auth;

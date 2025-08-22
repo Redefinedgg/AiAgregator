@@ -45,7 +45,7 @@ export class AiService {
     if (!openaiApiKey) {
       this.logger.warn('OPENAI_API_KEY is not configured');
     }
-    
+
     if (!anthropicApiKey) {
       this.logger.warn('ANTHROPIC_API_KEY is not configured');
     }
@@ -66,9 +66,9 @@ export class AiService {
       baseURL: 'https://api.deepseek.com/v1',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${deepseekApiKey}`,
+        Authorization: `Bearer ${deepseekApiKey}`,
       },
-    })
+    });
   }
 
   async sendPrompts(body: SendPromptsDto): Promise<SendPromptsResponse> {
@@ -130,7 +130,10 @@ export class AiService {
     }
   }
 
-  private async getAIResponse(prompt: string, model: Model): Promise<AIResponse> {
+  private async getAIResponse(
+    prompt: string,
+    model: Model,
+  ): Promise<AIResponse> {
     if (this.isOpenAIModel(model)) {
       return this.processOpenAIRequest(prompt, model);
     } else if (this.isAnthropicModel(model)) {
@@ -157,15 +160,16 @@ export class AiService {
       const promptTokens = response.data.usage?.prompt_tokens || 0;
       const completionTokens = response.data.usage?.completion_tokens || 0;
 
-      if (!text) throw new InternalServerErrorException('Empty response from DeepSeek');
+      if (!text)
+        throw new InternalServerErrorException('Empty response from DeepSeek');
 
-      const { spent, spentWithMarkup } = this.calculateCost(
+      const { spent } = this.calculateCost(
         Model.deepseek_chat,
         promptTokens,
         completionTokens,
       );
 
-      return { text, promptTokens, completionTokens, spent, spentWithMarkup };
+      return { text, promptTokens, completionTokens, spent };
     } catch (error) {
       this.logger.error(`DeepSeek API error: ${error.message}`);
       throw new InternalServerErrorException('DeepSeek request failed');
@@ -203,7 +207,7 @@ export class AiService {
         throw new InternalServerErrorException('Empty response from OpenAI');
       }
 
-      const { spent, spentWithMarkup } = this.calculateCost(
+      const { spent } = this.calculateCost(
         model,
         promptTokens,
         completionTokens,
@@ -214,7 +218,6 @@ export class AiService {
         promptTokens,
         completionTokens,
         spent,
-        spentWithMarkup,
       };
     } catch (error: any) {
       this.logger.error(`OpenAI API error: ${error.message}`);
@@ -246,7 +249,7 @@ export class AiService {
         throw new InternalServerErrorException('Empty response from Anthropic');
       }
 
-      const { spent, spentWithMarkup } = this.calculateCost(
+      const { spent } = this.calculateCost(
         model,
         promptTokens,
         completionTokens,
@@ -257,7 +260,6 @@ export class AiService {
         promptTokens,
         completionTokens,
         spent,
-        spentWithMarkup,
       };
     } catch (error: any) {
       this.logger.error(`Anthropic API error: ${error.message}`);
@@ -271,7 +273,7 @@ export class AiService {
     model: string,
     promptTokens: number,
     completionTokens: number,
-  ): { spent: number; spentWithMarkup: number } {
+  ): { spent: number } {
     let pricing: TokenPricing;
 
     if (this.isOpenAIModel(model)) {
@@ -283,9 +285,7 @@ export class AiService {
     const spent =
       promptTokens * pricing.prompt + completionTokens * pricing.completion;
 
-    const spentWithMarkup = spent + (spent * pricing.markup) / 100;
-
-    return { spent, spentWithMarkup };
+    return { spent };
   }
 
   // Метод для получения статистики использования (может быть полезен)

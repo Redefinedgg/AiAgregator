@@ -4,7 +4,7 @@ import ProfileButton from "@/entities/Layout/Header/HeaderRightBlock/ProfileButt
 
 export const HeaderRightBlock = () => {
   return (
-    <div className="flex items-center gap-[10px]">
+    <div className="flex items-center ml-[-30px] gap-[10px]">
       <ChatButton />
       <ProfileButton />
     </div>

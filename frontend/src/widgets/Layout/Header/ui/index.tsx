@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import IsNotClient from "./IsNotClient";
 import HeaderLeftBlock from "@/features/Layout/Header/HeaderLeftBlock";
 import HeaderRightBlock from "@/features/Layout/Header/HeaderRightBlock";
+import { useAuthStore } from "@/shared/stores/auth";
 
 const Header = () => {
   const [isClient, setIsClient] = useState(false);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     setIsClient(true);
@@ -20,6 +22,11 @@ const Header = () => {
       suppressHydrationWarning={true}
     >
       <HeaderLeftBlock />
+      {user && (
+        <p className="text-[40px] max-[1000px]:text-[24px] max-[768px]:text-[20px]">
+          Your balance: {user?.balance.toFixed(6)}
+        </p>
+      )}
       <HeaderRightBlock />
     </header>
   );
