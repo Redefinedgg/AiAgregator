@@ -30,7 +30,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   async myUser(@Request() req: UserRequest): Promise<GetMeResponse> {
     try {
-      return this.usersService.getUserByUuid(req.user.uuid);
+      return this.usersService.getMe(req.user.uuid);
     } catch (error) {
       throw error;
     }

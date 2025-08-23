@@ -1,4 +1,5 @@
 import { UserWithoutPassword } from "src/common/types/UserWithoutPassword";
+import { User } from "@prisma/client";
 
 export class GetUserResponse {
   user: UserWithoutPassword;
@@ -9,5 +10,5 @@ export class CreateUserResponse {
 }
 
 export class GetMeResponse {
-  user: UserWithoutPassword;
+  user: User;
 }

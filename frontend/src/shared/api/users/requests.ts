@@ -4,7 +4,12 @@ import { UpdateUserDto } from "./types";
 
 export const me = async () => {
   try {
-    const response = await axiosInstance.get("/users/me");
+    const response = await axiosInstance.get("/users/me", {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
 
     return response;
   } catch (error: any) {
