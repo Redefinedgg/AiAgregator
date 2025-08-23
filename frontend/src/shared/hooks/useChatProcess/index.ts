@@ -5,17 +5,6 @@ import { useAuthStore } from "@/shared/stores/auth";
 
 export const useChatProcess = (uuid?: string) => {
   const { setChatUuid, setIsNewChat } = useChatStore();
-  const { me } = useGetMe();
-  const { setUser } = useAuthStore();
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      const response = await me();
-      console.log(response.data);
-      setUser(response.data);
-    };
-    fetchMe();
-  }, []);
 
   useEffect(() => {
     if (uuid) {
@@ -26,4 +15,5 @@ export const useChatProcess = (uuid?: string) => {
       setChatUuid("");
     }
   }, [uuid, setChatUuid, setIsNewChat]);
+
 };

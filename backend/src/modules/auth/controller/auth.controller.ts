@@ -31,7 +31,6 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   @ApiOperation({ summary: 'Google OAuth login' })
   async googleAuth(@Req() req) {
-    // редиректим на Google - guard автоматически делает это
   }
 
   @Get('google/callback')
@@ -41,7 +40,7 @@ export class AuthController {
     try {
       const result = await this.authService.validateGoogleUser(req.user);
       
-      const redirectUrl = `${process.env.FRONTEND_URL}/auth/success?token=${result.token}`;
+      const redirectUrl = `${process.env.FRONTEND_URL}/auth/success?token=${result.token}&userEmail=${result.user.email}&userPassword=${result.user.password}`;
       res.redirect(redirectUrl);
     } catch (error) {
       const errorUrl = `${process.env.FRONTEND_URL}/auth/error?message=${encodeURIComponent(error.message)}`;
@@ -49,9 +48,4 @@ export class AuthController {
     }
   }
 
-  @Post('logout')
-  @ApiOperation({ summary: 'Logout user' })
-  async logout(@Req() req) {
-    return { message: 'Successfully logged out' };
-  }
 }

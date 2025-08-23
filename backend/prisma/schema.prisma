@@ -8,18 +8,29 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
+  uuid     String @unique
+  username String @unique
+  email    String @unique
+  password String
+
+  role String @default("USER")  
+
+  avatar    String?
   balance   Float     @default(1)
-  createdAt DateTime  @default(now())
-  email     String    @unique
-  nickname  String    @unique
-  password  String
-  updatedAt DateTime  @updatedAt
-  uuid      String    @unique
-  avatar    String
-  role      String    @default("USER")
   chats     Chat[]
   messages  Message[]
+
+  provider String  @default("local")
+  providerId String @default("local")
+
+  isBlocked Boolean @default(false)
+  isEmailVerified Boolean @default(false)
+
+  lastLoginAt DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Chat {
@@ -52,5 +63,6 @@ enum Role {
   PREMIUM
   PREMIUM_PLUS
   PREMIUM_PLUS_PLUS
+  
   ADMIN
 }
