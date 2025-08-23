@@ -24,7 +24,10 @@ const Header = () => {
       <HeaderLeftBlock />
       {user && (
         <p className="text-[40px] max-[1000px]:text-[24px] max-[768px]:text-[20px]">
-          Your balance: {user?.balance.toFixed(6)}
+          Your balance:{" "}
+          {user.balance !== null && user.balance !== undefined
+            ? user.balance.toFixed(6)
+            : "0"}
         </p>
       )}
       <HeaderRightBlock />

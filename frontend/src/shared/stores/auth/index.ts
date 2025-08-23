@@ -5,24 +5,24 @@ import { DashboardSlice, dashboard } from "./slices/dashboard";
 
 export interface AuthStore extends ProfileSlice, DashboardSlice {
   registerForm: {
-    nickname: string;
+    username: string;
     email: string;
     password: string;
   };
 
   loginForm: {
-    nicknameOrEmail: string;
+    usernameOrEmail: string;
     password: string;
   };
 
   isRegisterOrLoginPage: RegisterOrLogin;
 
   setRegisterForm: (form: {
-    nickname: string;
+    username: string;
     email: string;
     password: string;
   }) => void;
-  setLoginForm: (form: { nicknameOrEmail: string; password: string }) => void;
+  setLoginForm: (form: { usernameOrEmail: string; password: string }) => void;
 
   setIsRegisterOrLoginPage: (page: RegisterOrLogin) => void;
 }
@@ -32,23 +32,23 @@ export const useAuthStore = createPersistedStore<AuthStore>(
   (set, get, ...args) => ({
     // State
     registerForm: {
-      nickname: "",
+      username: "",
       email: "",
       password: "",
     },
     loginForm: {
-      nicknameOrEmail: "",
+      usernameOrEmail: "",
       password: "",
     },
     isRegisterOrLoginPage: "Register",
 
     // Actions
     setRegisterForm: (form: {
-      nickname: string;
+      username: string;
       email: string;
       password: string;
     }) => set({ registerForm: form }),
-    setLoginForm: (form: { nicknameOrEmail: string; password: string }) =>
+    setLoginForm: (form: { usernameOrEmail: string; password: string }) =>
       set({ loginForm: form }),
 
     setIsRegisterOrLoginPage: (page: RegisterOrLogin) =>

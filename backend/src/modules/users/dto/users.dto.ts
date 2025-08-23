@@ -3,7 +3,7 @@ import { IsString, IsEmail, IsNumber } from "class-validator";
 export class CreateUserDto {
 
   @IsString()
-    nickname: string;
+    username: string;
 
     @IsEmail()
     email: string;
@@ -14,7 +14,7 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
     @IsString()
-    nickname?: string;
+    username?: string;
 
     @IsEmail()
     email?: string;

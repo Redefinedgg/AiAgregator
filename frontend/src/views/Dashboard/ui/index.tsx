@@ -10,7 +10,7 @@ export const DashboardView = () => {
 
   return (
     <div className="flex flex-col gap-[24px] text-[40px] justify-center items-center mt-[80px]">
-      Welcome, {user?.nickname}!
+      Welcome, {user?.username}!
       <br />
       Your balance is {user?.balance} tokens
     </div>

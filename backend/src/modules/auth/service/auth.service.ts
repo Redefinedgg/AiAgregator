@@ -10,6 +10,7 @@ import { PrismaService } from 'src/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EmailOrNickname } from '../types/auth.type';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -32,10 +33,10 @@ export class AuthService {
   
   async login(body: LoginDto): Promise<LoginResponse> {
     try {
-      const isNicknameOrEmail: EmailOrNickname = body.nicknameOrEmail.includes('@') ? "email" : "nickname";
+      const isNicknameOrEmail: EmailOrNickname = body.usernameOrEmail.includes('@') ? "email" : "username";
 
-      if (!body.nicknameOrEmail) {
-        throw new BadRequestException('Missing nickname or email');
+      if (!body.usernameOrEmail) {
+        throw new BadRequestException('Missing username or email');
       }
 
       if (!body.password) {
@@ -43,7 +44,7 @@ export class AuthService {
       }
 
       const user = await this.prisma.user.findFirst({
-        where: { [isNicknameOrEmail]: body.nicknameOrEmail },
+        where: { [isNicknameOrEmail]: body.usernameOrEmail },
       });
 
       if (!user) {
@@ -69,5 +70,32 @@ export class AuthService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async validateGoogleUser(googleUser: any) {
+    // проверяем, есть ли юзер в БД
+    let user = await this.prisma.user.findUnique({
+      where: { email: googleUser.email },
+    });
+
+    if (!user) {
+      // если нет — создаём
+      user = await this.prisma.user.create({
+        data: {
+          uuid: uuidv4(), 
+          email: googleUser.email,
+          username: googleUser.name,
+          avatar: googleUser.picture,
+          provider: 'google',
+          providerId: googleUser.providerId,
+          password: 'test1488',
+        },
+      });
+    }
+
+    const payload = { uuid: user.uuid };
+    const token = this.jwtService.sign(payload);
+
+    return { user, token };
   }
 }

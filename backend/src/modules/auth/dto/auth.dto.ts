@@ -6,7 +6,7 @@ export class RegisterDto {
   @Matches(/^[^@]+$/, {
     message: 'Nickname must not contain "@"',
   })
-  nickname: string;
+  username: string;
 
   @IsEmail()
   email: string;
@@ -19,7 +19,7 @@ export class RegisterDto {
 export class LoginDto {
   @IsOptional()
   @IsString()
-  nicknameOrEmail: string;
+  usernameOrEmail: string;
 
   @IsString()
   password: string;

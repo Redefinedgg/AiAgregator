@@ -10,16 +10,25 @@ datasource db {
 model User {
   id       Int    @id @default(autoincrement())
   uuid     String @unique
-  nickname String @unique
+  username String @unique
   email    String @unique
   password String
 
   role String @default("USER")  
 
-  avatar    String
+  avatar    String?
   balance   Float     @default(1)
   chats     Chat[]
   messages  Message[]
+
+  provider String  @default("local")
+  providerId String @default("local")
+
+  isBlocked Boolean @default(false)
+  isEmailVerified Boolean @default(false)
+
+  lastLoginAt DateTime?
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }

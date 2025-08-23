@@ -1,1 +1,1 @@
-export type EmailOrNickname = "email" | "nickname";
+export type EmailOrNickname = "email" | "username";

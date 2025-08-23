@@ -1,5 +1,5 @@
 export interface RegisterDto {
-  nickname: string;
+  username: string;
   email: string;
   password: string;
 }
@@ -10,7 +10,7 @@ export interface RegisterResponse {
 }
 
 export interface LoginDto {
-  nicknameOrEmail: string;
+  usernameOrEmail: string;
   password: string;
 }
 
@@ -20,7 +20,7 @@ export interface LoginResponse {
 }
 
 export interface UpdateUserDto {
-  nickname?: string;
+  username?: string;
   email?: string;
   balance?: number;
   password?: string;

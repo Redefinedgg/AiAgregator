@@ -22,7 +22,7 @@ export class UsersService {
     try {
       const user = await this.prisma.user.findFirst({
         where: {
-          OR: [{ nickname: body.nickname }, { email: body.email }],
+          OR: [{ username: body.username }, { email: body.email }],
         },
       });
 
@@ -35,9 +35,10 @@ export class UsersService {
       const newUser = await this.prisma.user.create({
         data: {
           uuid: uuidv4(),
-          nickname: body.nickname,
+          username: body.username,
           email: body.email,
           password: hashedPassword,
+          avatar: body.avatar,
         },
       });
 

@@ -2,10 +2,10 @@
   Warnings:
 
   - A unique constraint covering the columns `[uuid]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[nickname]` on the table `User` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
   - A unique constraint covering the columns `[email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
   - Added the required column `email` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `nickname` to the `User` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `username` to the `User` table without a default value. This is not possible if the table is not empty.
   - Added the required column `password` to the `User` table without a default value. This is not possible if the table is not empty.
   - Added the required column `updatedAt` to the `User` table without a default value. This is not possible if the table is not empty.
   - Added the required column `uuid` to the `User` table without a default value. This is not possible if the table is not empty.
@@ -15,7 +15,7 @@
 ALTER TABLE "public"."User" ADD COLUMN     "balance" DOUBLE PRECISION NOT NULL DEFAULT 1,
 ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 ADD COLUMN     "email" TEXT NOT NULL,
-ADD COLUMN     "nickname" TEXT NOT NULL,
+ADD COLUMN     "username" TEXT NOT NULL,
 ADD COLUMN     "password" TEXT NOT NULL,
 ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL,
 ADD COLUMN     "uuid" TEXT NOT NULL;
@@ -57,7 +57,7 @@ CREATE UNIQUE INDEX "Message_uuid_key" ON "public"."Message"("uuid");
 CREATE UNIQUE INDEX "User_uuid_key" ON "public"."User"("uuid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_nickname_key" ON "public"."User"("nickname");
+CREATE UNIQUE INDEX "User_username_key" ON "public"."User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");

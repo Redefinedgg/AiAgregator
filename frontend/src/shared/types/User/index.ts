@@ -1,7 +1,7 @@
 export interface User {
     id: string;
     uuid: string;
-    nickname: string;
+    username: string;
     email: string;
     balance: number;
     updatedAt: Date;
