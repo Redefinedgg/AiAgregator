@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CreateUserResponse,
+  GetMeResponse,
   GetUserResponse,
 } from '../response/users.response';
 
@@ -38,7 +39,6 @@ export class UsersService {
           username: body.username,
           email: body.email,
           password: hashedPassword,
-          avatar: body.avatar,
         },
       });
 
@@ -65,6 +65,20 @@ export class UsersService {
       const { password, ...userWithoutPassword } = user;
 
       return { user: userWithoutPassword };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getMe(uuid: string): Promise<GetMeResponse> {
+    try {
+      const user = await this.prisma.user.findUnique({ where: { uuid } });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      return { user };
     } catch (error) {
       throw error;
     }
@@ -101,7 +115,9 @@ export class UsersService {
         if (!body.email.includes('@')) {
           throw new BadRequestException('Email is not valid');
         } else if (body.email.includes('@')) {
-          const user = await this.prisma.user.findUnique({ where: { email: body.email } });
+          const user = await this.prisma.user.findUnique({
+            where: { email: body.email },
+          });
           if (user) {
             throw new ConflictException('Email already exists');
           }

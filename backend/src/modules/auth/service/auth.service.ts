@@ -62,7 +62,6 @@ export class AuthService {
 
       const { password, ...userWithoutPassword } = user;
 
-      // ⬇️ Добавляем генерацию токена
       const payload = { uuid: user.uuid };
       const token = this.jwtService.sign(payload);
 
@@ -73,13 +72,12 @@ export class AuthService {
   }
 
   async validateGoogleUser(googleUser: any) {
-    // проверяем, есть ли юзер в БД
+    try {
     let user = await this.prisma.user.findUnique({
       where: { email: googleUser.email },
     });
 
     if (!user) {
-      // если нет — создаём
       user = await this.prisma.user.create({
         data: {
           uuid: uuidv4(), 
@@ -97,5 +95,8 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
 
     return { user, token };
+    } catch (error) {
+      throw error;
+    }
   }
 }

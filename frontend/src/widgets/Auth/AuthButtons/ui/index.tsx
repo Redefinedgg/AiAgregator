@@ -2,7 +2,8 @@ import ForgottenPassword from "@/features/Auth/ForgottenPassword";
 import Button from "@/shared/ui/Button";
 import { useAuthStore } from "@/shared/stores/auth";
 import useHandleAuth from "@/shared/hooks/useHandleAuth";
-import AuthSwitchButton from "@/features/Auth/AuthSwitchButton";
+import AuthSwitch from "@/features/Auth/AuthSwitch";
+import { AuthGoogle } from "@/widgets/Auth/AuthGoogle";
 
 const AuthButtons = () => {
   const { isRegisterOrLoginPage } = useAuthStore();
@@ -17,7 +18,8 @@ const AuthButtons = () => {
         onKeyDown={(e) => e.key === "Enter" && handleAuth()}
       />
       {isRegisterOrLoginPage === "Login" && <ForgottenPassword />}
-      <AuthSwitchButton />
+      <AuthSwitch />
+      <AuthGoogle />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import Button from "@/shared/ui/Button";
 import { useAuthStore } from "@/shared/stores/auth";
 
-const AuthSwitchButton = () => {
+const AuthSwitch = () => {
   const { isRegisterOrLoginPage, setIsRegisterOrLoginPage } = useAuthStore();
 
   return (
@@ -21,4 +21,4 @@ const AuthSwitchButton = () => {
   );
 };
 
-export default AuthSwitchButton;
+export default AuthSwitch;
