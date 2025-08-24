@@ -22,7 +22,7 @@ export interface ChatsSlice {
   currentChatUuid: string | null;
   chats: Chat[];
   // Actions
-  setChatUuid: (uuid: string) => void;
+  setCurrentChatUuid: (uuid: string | null) => void;
   setChats: (chats: Chat[]) => void;
 }
 
@@ -32,7 +32,7 @@ export const chatsSlice: StateCreator<ChatStore, [], [], ChatsSlice> = (set, get
   chats: [],
 
   // Actions
-  setChatUuid: (uuid: string) => set({ currentChatUuid: uuid }),
+  setCurrentChatUuid: (uuid: string | null) => set({ currentChatUuid: uuid }),
   setChats: (chats: Chat[]) => set({ chats }),
 });
 
