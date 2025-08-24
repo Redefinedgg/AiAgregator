@@ -7,11 +7,11 @@ import {
   useChatStore,
 } from "@/shared/stores/chat";
 import { Model } from "@/shared/api/ai/enums";
-import { useStoreHydration } from "@/shared/hooks/useHydration"; // Adjust path as needed
+import { useStoreHydration } from "@/shared/hooks/shared/useHydration"; // Adjust path as needed
 import SetCountOfModels from "@/entities/NewChat/CountOfModels/SetCountOfModels";
 import ShowCountOfModels from "@/entities/NewChat/CountOfModels/ShowCountOfModels";
 import models from "@/shared/constants/MODELS";
-import useHandleModelClick from "@/shared/hooks/useHandleModelClick";
+import useHandleModelClick from "@/shared/hooks/chats/useHandleModelClick";
 
 export default function ChatAIChoiceButtons() {
   const { selectedModels } = useChatStore();

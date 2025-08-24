@@ -14,55 +14,64 @@ model User {
   email    String @unique
   password String
 
-  role String @default("USER")  
+  role String @default("USER")
 
-  avatar    String?
-  balance   Float     @default(1)
-  chats     Chat[]
-  messages  Message[]
+  avatar   String?
+  balance  Float     @default(1)
+  chats    Chat[]
+  messages Message[]
 
-  provider String  @default("local")
+  provider   String @default("local")
   providerId String @default("local")
 
-  isBlocked Boolean @default(false)
+  isBlocked       Boolean @default(false)
   isEmailVerified Boolean @default(false)
 
   lastLoginAt DateTime?
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Chat {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique
-  userId    Int
-  spent     Float     @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User      @relation(fields: [userId], references: [id])
-  messages  Message[]
+  id       Int    @id @default(autoincrement())
+  uuid     String @unique
+  authorId Int
+
+  name  String?
+  spent Float   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   User      @relation(fields: [authorId], references: [id])
+  messages Message[]
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique
-  chatId    Int
-  model     String
-  authorId  Int
-  response  String
-  spent     Float
+  id       Int    @id @default(autoincrement())
+  uuid     String @unique
+  chatId   Int
+  authorId Int
+
+  model          String
+  response       String
+  spent          Float
+  timeOfResponse String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
-  chat      Chat     @relation(fields: [chatId], references: [id])
+
+  author User @relation(fields: [authorId], references: [id])
+  chat   Chat @relation(fields: [chatId], references: [id])
 }
 
 enum Role {
   USER
+
   PREMIUM
   PREMIUM_PLUS
   PREMIUM_PLUS_PLUS
-  
+
   ADMIN
 }

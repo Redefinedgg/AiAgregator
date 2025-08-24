@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
-import { useGetMe } from "@/shared/hooks/useGetMe";
+import { useGetMe } from "@/shared/hooks/auth/useGetMe";
 import { useAuthStore } from "@/shared/stores/auth";
 
 export const useChatProcess = (uuid?: string) => {
@@ -15,5 +15,7 @@ export const useChatProcess = (uuid?: string) => {
       setChatUuid("");
     }
   }, [uuid, setChatUuid, setIsNewChat]);
+
+  
 
 };

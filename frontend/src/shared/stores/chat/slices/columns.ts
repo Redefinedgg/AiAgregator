@@ -6,9 +6,9 @@ export interface ColumnsSlice {
   setColumnsCount: (columnsCount: number) => void;
 }
 
-export const columns: StateCreator<ChatStore, [], [], ColumnsSlice> = (set) => ({
+export const columnsSlice: StateCreator<ChatStore, [], [], ColumnsSlice> = (set) => ({
   columnsCount: 4,
   setColumnsCount: (columnsCount: number) => set({ columnsCount }),
 });
 
-export default columns;
+export default columnsSlice;

@@ -5,7 +5,7 @@ import { Model } from "@/shared/api/ai/enums";
 import Button from "@/shared/ui/Button";
 import { FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa";
 import { useChatStore } from "@/shared/stores/chat";
-import useHandleCountChange from "@/shared/hooks/useHandleCountChange";
+import useHandleCountChange from "@/shared/hooks/chats/useHandleCountChange";
 
 interface Props {
   model: Model;

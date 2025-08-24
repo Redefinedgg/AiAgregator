@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/shared/stores/auth";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useGetMe } from "@/shared/hooks/useGetMe";
+import { useGetMe } from "@/shared/hooks/auth/useGetMe";
 
 export const SuccessView = () => {
 

@@ -1,7 +1,7 @@
 import ForgottenPassword from "@/features/Auth/ForgottenPassword";
 import Button from "@/shared/ui/Button";
 import { useAuthStore } from "@/shared/stores/auth";
-import useHandleAuth from "@/shared/hooks/useHandleAuth";
+import useHandleAuth from "@/shared/hooks/auth/useHandleAuth";
 import AuthSwitch from "@/features/Auth/AuthSwitch";
 import { AuthGoogle } from "@/widgets/Auth/AuthGoogle";
 

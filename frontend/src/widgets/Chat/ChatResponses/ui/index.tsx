@@ -4,7 +4,7 @@ import { FC, useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { ChatResponse as ChatResponseType } from "@/shared/types/ChatResponse";
 import getColumnsCount from "@/shared/helpers/getColumnCount";
-import useDistributeResponses from "@/shared/hooks/useDistributeResponses";
+import useDistributeResponses from "@/shared/hooks/chats/useDistributeResponses";
 import getColumnWidth from "@/shared/helpers/getColumnWidth";
 
 const ChatResponses: FC = () => {
