@@ -30,3 +30,4 @@ export const TOKEN_PRICES_DEEPSEEK_CHAT = {
   contextLength: 64_000,        // 64K контекст
   maxOutput: 8_000,            // 8K токенов (макс. вывод)
 };
+
