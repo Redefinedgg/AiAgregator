@@ -23,8 +23,6 @@ const ChatResponseTitle: FC<Props> = ({ id }) => {
   if (!chatResponse) return null;
   
   const size = LOGO_SIZES[chatResponse.logo] || { w: 64, h: 64 };
-
-  console.log(chatResponse)
   
   return (
     <div className="flex items-center justify-between bg-[#1e1f1e]" style={{ borderRadius: "10px 10px 0px 0px" }}>
