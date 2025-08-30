@@ -1,4 +1,4 @@
-export type Logo = "GPT" | "Claude" | "DeepSeek";
+export type Logo = "GPT" | "Claude" | "DeepSeek" | "qwen" | "llama" | "google";
 
 export interface ChatResponse {
     id: number;

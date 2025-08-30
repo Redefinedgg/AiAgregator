@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   Logger,
   BadRequestException,
+  Header,
 } from '@nestjs/common';
 import { OpenAI } from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
@@ -138,16 +139,56 @@ export class AiService {
       return this.processOpenAIRequest(prompt, model);
     } else if (this.isAnthropicModel(model)) {
       return this.processAnthropicRequest(prompt, model);
-    } else if (model === Model.deepseek_chat) {
-      return this.processDeepSeekRequest(prompt);
+    } else if (this.isDeepSeekModel(model)) {
+      return this.processDeepSeekRequest(prompt, model);
+    } else if (this.isQwenModel(model)) {
+      return this.processQwenRequest(prompt, model); 
+    } else if (this.isLlamaModel(model)) {
+      return this.processLlamaRequest(prompt, model); 
+    } else if (this.isGeminiModel(model)) {
+      return this.processGeminiRequest(prompt, model); 
     } else {
       throw new BadRequestException(`Unsupported model: ${model}`);
     }
   }
 
-  private async processDeepSeekRequest(prompt: string): Promise<AIResponse> {
+
+  private async processGeminiRequest(prompt: string, model:string): Promise<AIResponse> {
+    const isfree = ['gemini_2_5_flash'].includes(model)
     try {
-      const response = await this.deepseek.post('/chat/completions', {
+    
+      const response = await this.g4fRequest(model, prompt, SYSTEM_PROMPT)
+
+      const text = response;
+      const promptTokens = 0;
+      const completionTokens = 0;
+
+      if (!text)
+        throw new InternalServerErrorException('Empty response from Gemini');
+
+      const { spent } = this.calculateCost(
+        Model.gemini_2_5_flash,
+        promptTokens,
+        completionTokens,
+        isfree
+      );
+
+      return { text, promptTokens, completionTokens, spent };
+    } catch(error) {
+      this.logger.error(`Gemini error: ${error.message}`);
+      throw new InternalServerErrorException('Gemini request failed');
+    }
+  }
+
+  private isGeminiModel(model: string): boolean {
+    return model.startsWith('gemini');
+  }
+
+
+  private async processDeepSeekRequest(prompt: string, model:string): Promise<AIResponse> {
+    let isfree = ['deepseek-reasoning'].includes(model)
+    try {
+      const response = isfree ? await this.g4fRequest(model, prompt, SYSTEM_PROMPT): await this.deepseek.post('/chat/completions', {
         model: Model.deepseek_chat,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
@@ -155,70 +196,166 @@ export class AiService {
         ],
         max_tokens: TOKEN_PRICES_DEEPSEEK_CHAT.maxOutput,
       });
-
-      const text = response.data.choices[0]?.message?.content || '';
-      const promptTokens = response.data.usage?.prompt_tokens || 0;
-      const completionTokens = response.data.usage?.completion_tokens || 0;
+      
+    
+      const text = isfree ? response : response.data.choices[0]?.message?.content;
+      const promptTokens = isfree ? 0 : response.data.usage?.prompt_tokens;
+      const completionTokens = isfree ? 0 : response.data.usage?.completion_tokens;
 
       if (!text)
         throw new InternalServerErrorException('Empty response from DeepSeek');
 
+    
       const { spent } = this.calculateCost(
         Model.deepseek_chat,
         promptTokens,
         completionTokens,
+        isfree
       );
+    
+      
 
       return { text, promptTokens, completionTokens, spent };
+
     } catch (error) {
       this.logger.error(`DeepSeek API error: ${error.message}`);
       throw new InternalServerErrorException('DeepSeek request failed');
     }
   }
+  
+  private async processQwenRequest(prompt:string, model:string): Promise<AIResponse> {
+    let isfree = ['qwen-coder'].includes(model)
+    try {
+      const response = isfree ? await this.g4fRequest(model, prompt, SYSTEM_PROMPT) : "Заглушка";
+
+      const text = isfree ? response : response.data.choices[0]?.message?.content;
+      const promptTokens = isfree ? 0 : response.data.usage?.prompt_tokens;
+      const completionTokens = isfree ? 0 : response.data.usage?.completion_tokens;
+      if (!text)
+        throw new InternalServerErrorException('Empty response from DeepSeek');
+
+      const { spent } = this.calculateCost(
+        "qwen",
+        promptTokens,
+        completionTokens,
+        isfree
+      );
+
+      return { text, promptTokens, completionTokens, spent };
+    } catch (error) {
+      this.logger.error(`QWEN API error: ${error.message}`);
+      throw new InternalServerErrorException('QWEN request failed');
+    }
+  }
+
+  private async processLlamaRequest(prompt:string, model:string): Promise<AIResponse> {
+    let isfree = ['llamascout'].includes(model)
+    try {
+      const response = isfree ? await this.g4fRequest(model, prompt, SYSTEM_PROMPT) : "Заглушка";
+
+      const text = isfree ? response : response.data.choices[0]?.message?.content;
+      const promptTokens = isfree ? 0 : response.data.usage?.prompt_tokens;
+      const completionTokens = isfree ? 0 : response.data.usage?.completion_tokens;
+      if (!text)
+        throw new InternalServerErrorException('Empty response from DeepSeek');
+
+      const { spent } = this.calculateCost(
+        "llama",
+        promptTokens,
+        completionTokens,
+        isfree
+      );
+
+      return { text, promptTokens, completionTokens, spent };
+    } catch (error) {
+      this.logger.error(`Llama API error: ${error.message}`);
+      throw new InternalServerErrorException('Llama request failed');
+    }
+  }
 
   private isOpenAIModel(model: string): boolean {
-    return model.startsWith('gpt');
+    return model.startsWith('gpt') || model.startsWith('openai');
   }
 
   private isAnthropicModel(model: string): boolean {
     return model.startsWith('claude');
   }
 
+  private isDeepSeekModel(model: string): boolean {
+    return model.startsWith('deepseek');
+  }
+  private isQwenModel(model: string): boolean {
+    return model.startsWith('qwen');
+  }
+  private isLlamaModel(model:string):boolean {
+    return model.startsWith('llama')
+  }
+
+  private async g4fRequest(model:string, prompt:string, system_prompt: string) {
+    if (model == "gemini_2_5_flash")
+      model = "gemini"
+    try {
+      let config = {
+        headers: {
+          Authorization: "Bearer Ke6niUXgcrOYrZBi"
+        }
+      }
+
+      const response = await axios.get(`https://text.pollinations.ai/${prompt}?model=${model}&system=${system_prompt}`, config)
+      const text = response.data
+
+      return text
+    } catch(error) {
+      this.logger.error(error.message)
+      throw new InternalServerErrorException(
+        `G4F request failed: ${error.message}`,
+      );
+    }
+    
+  }
+
   private async processOpenAIRequest(
     prompt: string,
     model: string,
   ): Promise<AIResponse> {
+    let isfree = ['gpt-5-nano', 'openai-large'].includes(model);
     try {
-      const response = await this.openai.chat.completions.create({
+
+      const response = isfree ? await this.g4fRequest(model, prompt, SYSTEM_PROMPT) : await this.openai.chat.completions.create({
         model,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: prompt },
         ],
         temperature: 0.1,
-        max_tokens: 4096, // Добавляем лимит токенов
+        max_tokens: 4096, 
       });
 
-      const text = response.choices[0]?.message?.content ?? '';
-      const promptTokens = response.usage?.prompt_tokens ?? 0;
-      const completionTokens = response.usage?.completion_tokens ?? 0;
+
+      const text = isfree ? response : response.choices[0]?.message?.content; 
+      const promptTokens = isfree ? 0 : response.usage?.prompt_tokens;
+      const completionTokens = isfree? 0 : response.usage?.completion_tokens;
+
 
       if (!text) {
         throw new InternalServerErrorException('Empty response from OpenAI');
       }
 
+      
       const { spent } = this.calculateCost(
         model,
         promptTokens,
         completionTokens,
+        isfree
       );
 
       return {
         text,
         promptTokens,
         completionTokens,
-        spent,
+        spent
       };
+
     } catch (error: any) {
       this.logger.error(`OpenAI API error: ${error.message}`);
       throw new InternalServerErrorException(
@@ -231,6 +368,7 @@ export class AiService {
     prompt: string,
     model: string,
   ): Promise<AIResponse> {
+    const isfree = [''].includes(model)  
     try {
       const response = await this.anthropic.messages.create({
         model,
@@ -249,10 +387,11 @@ export class AiService {
         throw new InternalServerErrorException('Empty response from Anthropic');
       }
 
-      const { spent } = this.calculateCost(
+      const { spent } =  this.calculateCost(
         model,
         promptTokens,
         completionTokens,
+        isfree
       );
 
       return {
@@ -273,19 +412,18 @@ export class AiService {
     model: string,
     promptTokens: number,
     completionTokens: number,
+    isfree: boolean
   ): { spent: number } {
     let pricing: TokenPricing;
-
-    if (this.isOpenAIModel(model)) {
-      pricing = this.modelPricing[model] || TOKEN_PRICES_GPT_4O_MINI;
-    } else {
-      pricing = TOKEN_PRICES_CLAUDE_SONNET_4_0;
-    }
-
-    const spent =
+    if (isfree) {
+      return {spent:0.0001};
+    } else{
+      pricing = this.modelPricing[model];
+      const spent = 
       promptTokens * pricing.prompt + completionTokens * pricing.completion;
-
-    return { spent };
+      return { spent };
+    }
+    
   }
 
   // Метод для получения статистики использования (может быть полезен)
