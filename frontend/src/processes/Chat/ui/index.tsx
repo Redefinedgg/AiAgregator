@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import NewChatView from "@/views/Chat/NewChat";
 import ChatView from "@/views/Chat/Chat";
 import { useChatStore } from "@/shared/stores/chat";

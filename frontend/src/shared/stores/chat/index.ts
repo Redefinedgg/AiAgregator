@@ -15,7 +15,6 @@ export interface ChatStore extends ColumnsSlice, ChatsSlice {
   isNewChat: boolean;
   prompt: string;
   chatResponses: ChatResponse[];
-  currentUuid: string;
   promptWithoutResponse: string;
   selectedModels: SelectedModel[];
   selectedModelsCount: SelectedModelsCount[];
@@ -40,7 +39,6 @@ export const useChatStore = createPersistedStore<ChatStore>(
     isNewChat: true,
     prompt: "",
     chatResponses: [],
-    currentUuid: "",
     promptWithoutResponse: "",
     selectedModels: [],
     selectedModelsCount: [],
