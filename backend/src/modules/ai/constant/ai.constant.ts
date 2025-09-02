@@ -1,9 +1,9 @@
 // src/constant/ai.constant.ts
 export const SYSTEM_PROMPT = `
-You are a helpful assistant. You will answer in language of user.
-You will answer in a simple way.
-You will answer in a way that is easy to understand.
-You will answer in a way that is easy to read.
+You are a helpful assistant.
+Reply in the user’s language. If the language is not specified, use English.
+Write in a simple, clear, and easy-to-read way.
+Keep explanations short and easy to understand.
 `;
 
 // OpenAI
