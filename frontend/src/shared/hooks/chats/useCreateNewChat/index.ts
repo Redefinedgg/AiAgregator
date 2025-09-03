@@ -1,15 +1,16 @@
 import { useChatStore } from "@/shared/stores/chat";
 import { createChat } from "@/shared/api/chats/requests";
+import { useAuthStore } from "@/shared/stores/auth";
 
 export const useCreateNewChat = () => {
-    
-    const { setCurrentChatUuid, nowDelayted } = useChatStore();
+  const { nowDelayted } = useChatStore();
+  const { user } = useAuthStore();
 
-    const createNewChat = async (uuid: string) => {
-        if (!uuid) return;
-        if (nowDelayted) return;
-        const chat = await createChat({ uuid });
-    }
+  const createNewChat = async (uuid: string) => {
+    if (!uuid || !user) return;
+    if (nowDelayted) return;
+    await createChat({ user, uuid });
+  }
 
-    return { createNewChat };
+  return { createNewChat };
 }

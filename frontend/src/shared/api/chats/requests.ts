@@ -4,15 +4,14 @@ import { CreateChatDto } from "./types";
 
 export const createChat = async (body: CreateChatDto) => {
   try {
-    const response = await axiosInstance.post("/chats", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      body: {
-        uuid: body.uuid,
+    const response = await axiosInstance.post("/chats", body,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
       }
-    });
+    );
 
     return response;
   } catch (error: any) {

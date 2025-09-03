@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
 const NewChatView = () => {
-  const { prompt, setPrompt, setPromptWithoutResponse, selectedModels } =
+  const { prompt, setPrompt, setPromptWithoutResponse, selectedModels, setCurrentChatUuid } =
     useChatStore();
   const router = useRouter();
 
@@ -17,6 +17,7 @@ const NewChatView = () => {
     setPrompt("");
     const uuid = uuidv4();
     router.push(`/chat/${uuid}`);
+    setCurrentChatUuid(uuid);
   };
 
   return (

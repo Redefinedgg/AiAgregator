@@ -1,7 +1,10 @@
+import User from "@/shared/types/User";
+
 export interface CreateChatResponse {
-    chat: any;
+  chat: any;
 }
 
 export interface CreateChatDto {
-    uuid: string;
+  user: User;
+  uuid: string;
 }
