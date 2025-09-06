@@ -1,3 +1,5 @@
+import User from "@/shared/types/User";
+
 export interface RegisterDto {
   username: string;
   email: string;
@@ -24,4 +26,8 @@ export interface UpdateUserDto {
   email?: string;
   balance?: number;
   password?: string;
+}
+
+export interface MeResponse {
+  user: any;
 }

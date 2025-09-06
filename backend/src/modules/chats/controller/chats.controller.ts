@@ -4,6 +4,7 @@ import {
   Post,
   Request,
   Body,
+  Get,
 } from '@nestjs/common';
 import { ChatsService } from '../service/chats.service';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
@@ -13,7 +14,7 @@ import { CreateChatDto } from '../dto/chats.dto';
 @Controller('chats')
 @UseGuards(JwtAuthGuard)
 export class ChatsController {
-  constructor(private readonly chatsService: ChatsService) {}
+  constructor(private readonly chatsService: ChatsService) { }
 
   @Post()
   async createChat(@Request() req: UserRequest, @Body() body: CreateChatDto) {
@@ -22,6 +23,16 @@ export class ChatsController {
       return chat;
     } catch (error) {
       throw error;
+    }
+  }
+
+  @Get()
+  async getChats(@Request() req: UserRequest) {
+    try {
+      const chats = await this.chatsService.getChatsByAuthor(req.user.uuid);
+      return chats;
+    } catch (err) {
+      throw err;
     }
   }
 }

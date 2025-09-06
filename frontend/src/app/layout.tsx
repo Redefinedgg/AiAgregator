@@ -6,6 +6,7 @@ import Footer from "@/widgets/Layout/Footer";
 import ClientHeader from "@/widgets/Layout/Header/ui/ClientHeader";
 import { Metadata } from "next";
 import Sidebar from "@/widgets/Layout/Sidebar";
+import InitProvider from "@/shared/providers/InitProvider";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -31,16 +32,18 @@ export default async function RootLayout({ children }: Props) {
         suppressHydrationWarning={true}
       >
 
-        <div className="flex min-h-screen bg-[#070708] text-[#E9E9E9]">
-          <Sidebar />
-          <div className="flex flex-col flex-1 p-[10px]">
-            <ClientHeader />
-            <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
-              {children}
-            </main>
-            <Footer />
+        <InitProvider>
+          <div className="flex min-h-screen bg-[#070708] text-[#E9E9E9]">
+            <Sidebar />
+            <div className="flex flex-col flex-1 p-[10px]">
+              <ClientHeader />
+              <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
+                {children}
+              </main>
+              <Footer />
+            </div>
           </div>
-        </div>
+        </InitProvider>
 
         <ToastContainer theme="dark" />
       </body>

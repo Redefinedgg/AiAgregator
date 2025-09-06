@@ -17,7 +17,7 @@ import {
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async createUser(body: CreateUserDto): Promise<CreateUserResponse> {
     try {
@@ -77,6 +77,8 @@ export class UsersService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
+
+      console.log(user);
 
       return { user };
     } catch (error) {

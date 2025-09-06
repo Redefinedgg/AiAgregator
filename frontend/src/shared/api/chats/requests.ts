@@ -1,6 +1,7 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
 import { CreateChatDto } from "./types";
+import { ChatsResponse } from "@/shared/types/ChatsResponse";
 
 export const createChat = async (body: CreateChatDto) => {
   try {
@@ -19,3 +20,19 @@ export const createChat = async (body: CreateChatDto) => {
     throw error;
   }
 };
+
+export const getChats = async (): Promise<ChatsResponse> => {
+  try {
+    const response = await axiosInstance.get("/chats", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    })
+
+    return response.data;
+  } catch (err: any) {
+    toast.error(err.response?.data?.message + " (Failed to get all chats");
+    throw err;
+  }
+}

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 type Props = {
   uuid: string;
-  name: string;
+  name: string | null;
 }
 
 export default function ChatItem({ uuid, name }: Props) {
