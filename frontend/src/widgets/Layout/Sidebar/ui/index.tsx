@@ -21,8 +21,10 @@ export default function Sidebar() {
       />
 
       {isOpen && (
-        <div className="flex flex-col gap-[10px] mt-[65px]">
-          <NewChatButton />
+        <div className="flex flex-col gap-[10px] mt-[65px] ">
+          <div className="flex items-center justify-center">
+            <NewChatButton />
+          </div>
 
           <ChatList />
         </div>
