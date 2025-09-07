@@ -14,30 +14,29 @@ export const useChatSender = () => {
     isSendingPrompts,
     setIsSendingPrompts,
   } = useChatStore();
-  
+
   const { createResponsePlaceholders } = useResponsePlaceholders();
   const { fetchModelResponses } = useModelResponses();
   const { validateModels } = useValidateModels();
 
   const sendPrompts = useCallback(async (prompt: string) => {
     if (isSendingPrompts) {
-      console.log("Already sending a prompt");
       return;
     }
-    
+
     setIsSendingPrompts(true);
-    
+
     try {
       setChatResponses([]);
       const validModels = validateModels();
       if (!validModels) {
         return;
       }
-      
+
       // Create response placeholders
       const placeholders = createResponsePlaceholders(validModels);
       setChatResponses(placeholders);
-      
+
       // Fetch model responses
       await fetchModelResponses({
         prompt,

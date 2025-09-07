@@ -78,8 +78,6 @@ export class UsersService {
         throw new NotFoundException('User not found');
       }
 
-      console.log(user);
-
       return { user };
     } catch (error) {
       throw error;
@@ -88,7 +86,6 @@ export class UsersService {
 
   async getUserByUuid(uuid: string): Promise<GetUserResponse> {
     try {
-      console.log(uuid);
       const user = await this.prisma.user.findUnique({ where: { uuid } });
 
       if (!user) {
