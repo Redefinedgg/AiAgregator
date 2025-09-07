@@ -16,7 +16,7 @@ export const createChat = async (body: CreateChatDto) => {
 
     return response;
   } catch (error: any) {
-    toast.error(error.response?.data?.message + " (Failed to create new chat)");
+    toast.error(error.response?.data?.message + " (Failed with create new chat)");
     throw error;
   }
 };
@@ -32,7 +32,7 @@ export const getChats = async (): Promise<ChatsResponse> => {
 
     return response.data;
   } catch (err: any) {
-    toast.error(err.response?.data?.message + " (Failed to get all chats");
+    toast.error(err.response?.data?.message + " (Failed with get all chats)");
     throw err;
   }
 }

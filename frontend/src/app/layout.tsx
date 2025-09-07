@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: Props) {
       >
 
         <InitProvider>
-          <div className="flex min-h-screen bg-[#070708] text-[#E9E9E9]">
+          <div className="flex min-h-screen max-w-[100vw] bg-[#070708] text-[#E9E9E9]">
             <Sidebar />
             <div className="flex flex-col flex-1 p-[10px]">
               <ClientHeader />
