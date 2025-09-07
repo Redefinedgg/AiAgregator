@@ -2,8 +2,6 @@
 
 import Button from "@/shared/ui/Button";
 import {
-  SelectedModel,
-  SelectedModelsCount,
   useChatStore,
 } from "@/shared/stores/chat";
 import { Model } from "@/shared/api/ai/enums";
@@ -21,8 +19,7 @@ export default function ChatAIChoiceButtons() {
   return (
     <section
       className="
-        flex flex-wrap justify-center gap-[24px] mt-[24px] mb-[24px]
-        max-[1100px]:w-[500px] max-[1100px]:mx-auto
+        flex flex-wrap justify-center gap-[24px] mt-[24px] mb-[24px] max-w-[92vw]
       "
     >
       {models.map((model) => (

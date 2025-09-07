@@ -17,7 +17,7 @@ import {
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async createUser(body: CreateUserDto): Promise<CreateUserResponse> {
     try {
@@ -86,7 +86,6 @@ export class UsersService {
 
   async getUserByUuid(uuid: string): Promise<GetUserResponse> {
     try {
-      console.log(uuid);
       const user = await this.prisma.user.findUnique({ where: { uuid } });
 
       if (!user) {

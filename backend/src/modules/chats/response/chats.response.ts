@@ -1,5 +1,9 @@
 import { Chat } from "@prisma/client";
 
 export interface CreateChatResponse {
-    chat: Chat;
+  chat: Chat;
+}
+
+export interface GetChatsByAuthorResponse {
+  chats: Chat[];
 }

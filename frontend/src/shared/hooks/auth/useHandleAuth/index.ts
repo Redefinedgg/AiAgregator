@@ -13,6 +13,7 @@ export const useHandleAuth = () => {
         isRegisterOrLoginPage === "Register"
           ? await register(registerForm)
           : await login(loginForm);
+      if (response.user?.avatar === null) response.user.avatar = "/avatar/withoutAvatar.jpg";
       setUser(response.user);
       setIsAuth(true);
       router.push("/dashboard");

@@ -1,8 +1,8 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
-import { UpdateUserDto } from "./types";
+import { MeResponse, UpdateUserDto } from "./types";
 
-export const me = async () => {
+export const me = async (): Promise<MeResponse> => {
   try {
     const response = await axiosInstance.get("/users/me", {
       headers: {
@@ -11,7 +11,7 @@ export const me = async () => {
       },
     });
 
-    return response;
+    return response.data;
   } catch (error: any) {
     toast.error(error.response?.data?.message + " (Failed to get my profile)");
     throw error;

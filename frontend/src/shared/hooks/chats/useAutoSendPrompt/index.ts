@@ -1,21 +1,63 @@
+// hooks/useAutoSendPrompt.ts
 import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { useChatSender } from "@/shared/hooks/chats/useChatSender";
 import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
 
 export const useAutoSendPrompt = () => {
-  const { promptWithoutResponse } = useChatStore();
+  const {
+    promptWithoutResponse,
+    currentChatUuid,
+    isProcessingPrompt,
+    lastProcessedPrompt,
+    setIsProcessingPrompt,
+    setLastProcessedPrompt,
+  } = useChatStore();
+
   const { sendPrompts, hasPromptToSend, clearPrompt } = useChatSender();
   const { createNewChat } = useCreateNewChat();
 
   useEffect(() => {
-    if (hasPromptToSend) {
+    const shouldProcess = (
+      hasPromptToSend &&
+      !isProcessingPrompt &&
+      promptWithoutResponse !== lastProcessedPrompt &&
+      promptWithoutResponse.trim() !== ""
+    );
+
+    if (shouldProcess) {
       const handleSendPrompts = async () => {
-        await sendPrompts(promptWithoutResponse);
-        await createNewChat();
-        clearPrompt();
+        if (!currentChatUuid) {
+          return;
+        }
+
+        setIsProcessingPrompt(true);
+        setLastProcessedPrompt(promptWithoutResponse);
+
+        try {
+          await sendPrompts(promptWithoutResponse);
+          await createNewChat(currentChatUuid);
+          clearPrompt();
+        } catch (error) {
+          console.error("Error in auto send prompt:", error);
+          setLastProcessedPrompt("");
+        } finally {
+          setIsProcessingPrompt(false);
+        }
       };
+
       handleSendPrompts();
     }
-  }, [hasPromptToSend, promptWithoutResponse, sendPrompts, clearPrompt]);
+  }, [
+    hasPromptToSend,
+    promptWithoutResponse,
+    isProcessingPrompt,
+    lastProcessedPrompt,
+    currentChatUuid,
+    sendPrompts,
+    clearPrompt,
+    createNewChat,
+    setIsProcessingPrompt,
+    setLastProcessedPrompt,
+  ]);
 };

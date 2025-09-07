@@ -4,6 +4,9 @@ import { Nunito } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import Footer from "@/widgets/Layout/Footer";
 import ClientHeader from "@/widgets/Layout/Header/ui/ClientHeader";
+import { Metadata } from "next";
+import Sidebar from "@/widgets/Layout/Sidebar";
+import InitProvider from "@/shared/providers/InitProvider";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -16,7 +19,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "AI Aggregator",
   description: "Dev version",
 };
@@ -24,21 +27,24 @@ export const metadata = {
 export default async function RootLayout({ children }: Props) {
   return (
     <html suppressHydrationWarning={true} lang="en">
-      <head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-      </head>
-      <body 
-        className={`min-h-screen flex flex-col ${nunito.className}`} 
+      <body
+        className={`min-h-screen flex flex-col ${nunito.className}`}
         suppressHydrationWarning={true}
       >
-        <main className="flex flex-col flex-1 bg-[#070708] text-[#E9E9E9] p-[10px]">
-          <ClientHeader />
-          <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
-            {children}
-          </main>
-          <Footer />
-        </main>
+
+        <InitProvider>
+          <div className="flex min-h-screen bg-[#070708] text-[#E9E9E9]">
+            <Sidebar />
+            <div className="flex flex-col flex-1 p-[10px]">
+              <ClientHeader />
+              <main className="flex flex-col bg-[#11141C] rounded-[12px] text-[#E9E9E9] flex-1 mt-[10px]">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </div>
+        </InitProvider>
+
         <ToastContainer theme="dark" />
       </body>
     </html>
