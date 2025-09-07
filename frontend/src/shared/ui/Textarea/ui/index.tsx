@@ -11,6 +11,7 @@ type TextareaProps = {
   sendButton?: boolean;
   onClickSendButton?: () => void;
   placeholder?: string;
+  style?: React.CSSProperties;
   defaultBorder?: boolean;
   canSend?: boolean;
 };
@@ -19,6 +20,7 @@ export default function Textarea({
   className,
   value,
   onChange,
+  style,
   sendButton = false,
   onClickSendButton,
   placeholder,
@@ -39,6 +41,7 @@ export default function Textarea({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => handleKeyDown(e, canSend, onClickSendButton)}
         value={value}
+        style={style}
       />
       {sendButton && (
         <Button

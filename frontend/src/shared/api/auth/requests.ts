@@ -20,7 +20,7 @@ export const register = async (
 
     return { user, token };
   } catch (error: any) {
-    toast.error(error.response?.data?.message + " (Failed to register)");
+    toast.error(error.response?.data?.message + " (Failed with register)");
     throw error;
   }
 };
@@ -43,7 +43,7 @@ export const login = async (
 
     return { user, token };
   } catch (error: any) {
-    toast.error(error.response?.data?.message + " (Failed to login)");
+    toast.error(error.response?.data?.message + " (Failed with login)");
     throw error;
   }
 };

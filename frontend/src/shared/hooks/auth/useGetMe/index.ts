@@ -9,7 +9,7 @@ export const useGetMe = () => {
     try {
       const response = await meApi();
 
-      setUser(response.data.user);
+      setUser(response.user);
       setIsAuth(true);
 
       return response;

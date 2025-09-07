@@ -6,11 +6,19 @@ import Button from "@/shared/ui/Button";
 import ChatList from "./ChatList";
 
 export default function Sidebar() {
-  const { isOpen, setIsOpen } = useSidebarStore();
+  const { isOpen, setIsOpen, widthOfSidebar } = useSidebarStore();
 
   return (
-    <div className={`h-screen transition-all duration-300 pl-[10px] pr-[10px] py-[20px] ${isOpen ? "w-[150px]" : "w-[60px]"}`}>
-      <Button label={isOpen ? "←" : "→"} onClick={() => setIsOpen(!isOpen)} className="text-[18px]" />
+    <div
+      className={`h-screen transition-all duration-300 pl-[10px] pr-[10px] py-[20px] ${
+        isOpen ? `min-w-[${widthOfSidebar}px]` : `w-[${widthOfSidebar}px]`
+      }`}
+    >
+      <Button
+        label={isOpen ? "←" : "→"}
+        onClick={() => setIsOpen(!isOpen)}
+        className="text-[18px] pb-[11px]"
+      />
 
       {isOpen && (
         <div className="flex flex-col gap-[10px] mt-[65px]">

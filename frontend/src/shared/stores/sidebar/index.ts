@@ -1,13 +1,10 @@
 "use client";
 
 import { create } from "zustand";
+import { SidebarSlice, sidebarSlice } from "./slices/sidebar";
 
-interface SidebarStore {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
+interface SidebarStore extends SidebarSlice {}
 
-export const useSidebarStore = create<SidebarStore>((set) => ({
-  isOpen: false,
-  setIsOpen: (isOpen: boolean) => (set({ isOpen: isOpen })),
+export const useSidebarStore = create<SidebarStore>((set, get, ...args) => ({
+  ...sidebarSlice(set, get, ...args),
 }));

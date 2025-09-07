@@ -10,17 +10,20 @@ import SetCountOfModels from "@/entities/NewChat/CountOfModels/SetCountOfModels"
 import ShowCountOfModels from "@/entities/NewChat/CountOfModels/ShowCountOfModels";
 import models from "@/shared/constants/MODELS";
 import useHandleModelClick from "@/shared/hooks/chats/useHandleModelClick";
+import { useSidebarStore } from "@/shared/stores/sidebar";
 
 export default function ChatAIChoiceButtons() {
   const { selectedModels } = useChatStore();
   const isHydrated = useStoreHydration();
   const { handleModelClick } = useHandleModelClick();
+  const {widthOfSidebar} = useSidebarStore();
 
   return (
     <section
       className="
-        flex flex-wrap justify-center gap-[24px] mt-[24px] mb-[24px] max-w-[92vw]
+        flex flex-wrap justify-center gap-[24px] mt-[24px] mb-[24px]
       "
+      style={{ maxWidth: `calc(92vw - ${widthOfSidebar}px)` }}
     >
       {models.map((model) => (
         <div key={model.value} className="flex items-center gap-[6px] relative">
