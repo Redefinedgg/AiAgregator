@@ -15,10 +15,4 @@ export class AiController {
   async sendPrompt(@Body() body: SendPromptDto): Promise<SendPromptResponse> {
     return this.aiService.sendPrompt(body);
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('send-prompts')
-  async sendPrompts(@Body() body: SendPromptsDto): Promise<SendPromptsResponse> {
-    return this.aiService.sendPrompts(body);
-  } 
 }
