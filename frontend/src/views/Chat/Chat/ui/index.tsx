@@ -11,7 +11,7 @@ const ChatView: FC = () => {
   useAutoSendPrompt();
 
   return (
-    <section className="w-full">
+    <section className="w-full p-[12px]">
       {chatResponses.length > 0 ? (
         <ChatResponses />
       ) : (

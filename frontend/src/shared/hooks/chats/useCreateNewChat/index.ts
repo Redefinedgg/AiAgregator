@@ -12,6 +12,8 @@ export const useCreateNewChat = () => {
     hasActiveCreateChatRequest,
     addActiveCreateChatRequest,
     removeActiveCreateChatRequest,
+    setChats,
+    chats,
   } = useChatStore();
 
   const { user } = useAuthStore();
@@ -42,7 +44,9 @@ export const useCreateNewChat = () => {
     addActiveCreateChatRequest(uuid);
 
     try {
-      await createChat({ user, uuid });
+      const newChat = await createChat({ user, uuid });
+      console.log(newChat)
+      setChats([...chats, newChat.data.chat])
       setAlreadyUsedUuids([...alreadyUsedUuids, uuid]);
       setNowDelayted(true);
 
