@@ -7,7 +7,7 @@ import { useAutoSendPrompt } from "@/shared/hooks/chats/useAutoSendPrompt";
 
 const ChatView: FC = () => {
   const { chatResponses } = useChatStore();
-  
+
   useAutoSendPrompt();
 
   return (

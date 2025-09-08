@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 import axiosInstance from "../client";
-import { Model } from "./enums";
 import { SendPromptDto, SendPromptResponse } from "./types";
 
 export const sendPrompt = async (
@@ -28,11 +27,11 @@ export const sendPrompt = async (
   } catch (error: any) {
     toast.error(
       error.response.data.message +
-        "(response from " +
-        body.model +
-        " with prompt " +
-        body.prompt +
-        " not received (error))"
+      "(response from " +
+      body.model +
+      " with prompt " +
+      body.prompt +
+      " not received (error))"
     );
     throw error;
   }

@@ -1,5 +1,5 @@
 import { Message } from "@prisma/client";
 
-export interface CreateMessageResponse {
-    message: Message;
+export interface CreateMessagesResponse {
+  messages: Message[];
 }
