@@ -25,7 +25,7 @@ export const chatsSlice: StateCreator<ChatStore, [], [], ChatsSlice> = (set, get
 
   // Actions
   setCurrentChatUuid: (uuid: string | null) => set({ currentChatUuid: uuid }),
-  setChats: (chats: Chat[]) => set({ chats }),
+  setChats: (chats: Chat[]) => set({ chats: chats }),
   setNowDelayted: (nowDelayted: boolean) => set({ nowDelayted }),
   setAlreadyUsedUuids: (alreadyUsedUuids: string[]) => set({ alreadyUsedUuids }),
   addAlreadyUsedUuid: (uuid: string) => set((state) => ({ alreadyUsedUuids: [...state.alreadyUsedUuids, uuid] })),
