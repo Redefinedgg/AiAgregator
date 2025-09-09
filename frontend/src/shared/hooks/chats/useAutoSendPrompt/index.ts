@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { useChatSender } from "@/shared/hooks/chats/useChatSender";
 import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
+import { useSaveChatResponses } from "../useSaveChatResponses";
 
 export const useAutoSendPrompt = () => {
   const {
@@ -16,6 +17,7 @@ export const useAutoSendPrompt = () => {
 
   const { sendPrompts, hasPromptToSend, clearPrompt } = useChatSender();
   const { createNewChat } = useCreateNewChat();
+  const { saveChatResponses } = useSaveChatResponses();
 
   useEffect(() => {
     const shouldProcess = (
@@ -37,6 +39,7 @@ export const useAutoSendPrompt = () => {
         try {
           await sendPrompts(promptWithoutResponse);
           await createNewChat(currentChatUuid);
+          await saveChatResponses();
           clearPrompt();
         } catch (error) {
           console.error("Error in auto send prompt:", error);
@@ -57,6 +60,7 @@ export const useAutoSendPrompt = () => {
     sendPrompts,
     clearPrompt,
     createNewChat,
+    saveChatResponses,
     setIsProcessingPrompt,
     setLastProcessedPrompt,
   ]);

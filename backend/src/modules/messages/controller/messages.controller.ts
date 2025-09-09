@@ -17,8 +17,6 @@ export class MessagesController {
 
   @Post()
   async createMessages(@Request() req: UserRequest, @Body() body: CreateMessagesDto) {
-    console.log(body)
-    console.log(body.chatUuid)
     try {
       const messages = await this.messagesService.createMessages(req.user.uuid, body);
       return messages;
