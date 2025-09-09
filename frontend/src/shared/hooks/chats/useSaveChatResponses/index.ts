@@ -20,7 +20,6 @@ export const useSaveChatResponses = () => {
         }
       });
 
-      console.log(messagesToSave, currentChatUuid)
 
       await createNewMessages({ messages: messagesToSave, chatUuid: currentChatUuid });
     }

@@ -45,7 +45,6 @@ export const useCreateNewChat = () => {
 
     try {
       const newChat = await createChat({ user, uuid });
-      console.log(newChat)
       setChats([...chats, newChat.data.chat])
       setAlreadyUsedUuids([...alreadyUsedUuids, uuid]);
       setNowDelayted(true);
