@@ -21,34 +21,34 @@ export const useAutoSendPrompt = () => {
   const { saveChatResponses } = useSaveChatResponses();
 
   useEffect(() => {
-    const shouldProcess = (
-      hasPromptToSend &&
-      !isProcessingPrompt &&
-      promptWithoutResponse !== lastProcessedPrompt &&
-      promptWithoutResponse.trim() !== ""
-    );
+    if (
+      !hasPromptToSend ||
+      isProcessingPrompt ||
+      promptWithoutResponse.trim() === "" ||
+      promptWithoutResponse === lastProcessedPrompt
+    ) {
+      return;
+    }
 
-    if (shouldProcess) {
-      const handleSendPrompts = async () => {
-        if (!currentChatUuid) {
-          return;
-        }
+    const handleSendPrompts = async () => {
+      if (!currentChatUuid) {
+        return;
+      }
 
-        setIsProcessingPrompt(true);
-        setLastProcessedPrompt(promptWithoutResponse);
+      setIsProcessingPrompt(true);
+      setLastProcessedPrompt(promptWithoutResponse);
 
-        try {
-          const chat = await createNewChat(currentChatUuid);
-          await sendPrompts(promptWithoutResponse);
-          await saveChatResponses(chat.uuid);
-          clearPrompt();
-        } catch (error) {
-          console.error("Error in auto send prompt:", error);
-          setLastProcessedPrompt("");
-        } finally {
-          setIsProcessingPrompt(false);
-        }
-      };
+      try {
+        const chat = await createNewChat(currentChatUuid);
+        await sendPrompts(promptWithoutResponse);
+        await saveChatResponses(chat.uuid);
+        clearPrompt();
+      } catch (error) {
+        console.error("Error in auto send prompt:", error);
+        setLastProcessedPrompt("");
+      } finally {
+        setIsProcessingPrompt(false);
+      }
 
       handleSendPrompts();
     }
