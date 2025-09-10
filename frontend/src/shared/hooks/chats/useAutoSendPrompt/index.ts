@@ -3,8 +3,10 @@ import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { useChatSender } from "@/shared/hooks/chats/useChatSender";
 import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
+import { useSaveChatResponses } from "../useSaveChatResponses";
 
 export const useAutoSendPrompt = () => {
+  console.log("auto send prompt")
   const {
     promptWithoutResponse,
     currentChatUuid,
@@ -16,35 +18,37 @@ export const useAutoSendPrompt = () => {
 
   const { sendPrompts, hasPromptToSend, clearPrompt } = useChatSender();
   const { createNewChat } = useCreateNewChat();
+  const { saveChatResponses } = useSaveChatResponses();
 
   useEffect(() => {
-    const shouldProcess = (
-      hasPromptToSend &&
-      !isProcessingPrompt &&
-      promptWithoutResponse !== lastProcessedPrompt &&
-      promptWithoutResponse.trim() !== ""
-    );
+    if (
+      !hasPromptToSend ||
+      isProcessingPrompt ||
+      promptWithoutResponse.trim() === "" ||
+      promptWithoutResponse === lastProcessedPrompt
+    ) {
+      return;
+    }
 
-    if (shouldProcess) {
-      const handleSendPrompts = async () => {
-        if (!currentChatUuid) {
-          return;
-        }
+    const handleSendPrompts = async () => {
+      if (!currentChatUuid) {
+        return;
+      }
 
-        setIsProcessingPrompt(true);
-        setLastProcessedPrompt(promptWithoutResponse);
+      setIsProcessingPrompt(true);
+      setLastProcessedPrompt(promptWithoutResponse);
 
-        try {
-          await sendPrompts(promptWithoutResponse);
-          await createNewChat(currentChatUuid);
-          clearPrompt();
-        } catch (error) {
-          console.error("Error in auto send prompt:", error);
-          setLastProcessedPrompt("");
-        } finally {
-          setIsProcessingPrompt(false);
-        }
-      };
+      try {
+        const chat = await createNewChat(currentChatUuid);
+        await sendPrompts(promptWithoutResponse);
+        await saveChatResponses(chat.uuid);
+        clearPrompt();
+      } catch (error) {
+        console.error("Error in auto send prompt:", error);
+        setLastProcessedPrompt("");
+      } finally {
+        setIsProcessingPrompt(false);
+      }
 
       handleSendPrompts();
     }
@@ -57,6 +61,7 @@ export const useAutoSendPrompt = () => {
     sendPrompts,
     clearPrompt,
     createNewChat,
+    saveChatResponses,
     setIsProcessingPrompt,
     setLastProcessedPrompt,
   ]);

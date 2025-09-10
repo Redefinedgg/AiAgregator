@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 
 export const useChatProcess = (uuid?: string) => {
-  const { setCurrentChatUuid, setIsNewChat, currentChatUuid } = useChatStore();
+  const { setCurrentChatUuid, setIsNewChat } = useChatStore();
 
   useEffect(() => {
     if (uuid) {

@@ -3,7 +3,7 @@
 import { sendPrompt } from "@/shared/api/ai/requests";
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
 import { useChatStore } from "@/shared/stores/chat";
-import { SelectedModel } from "@/shared/stores/chat";
+import SelectedModel from "@/shared/types/SelectedModel";
 import { useAuthStore } from "@/shared/stores/auth";
 import { toast } from "react-toastify";
 import User from "@/shared/types/User";
@@ -41,6 +41,7 @@ export const useModelResponses = () => {
             model: selectedModel.model,
             number: selectedModel.number,
             response: "Not enough balance",
+            spent: 0,
             timeOfResponse: "error",
             logo: getLogoFromModel(selectedModel.model),
             isLoading: false,
@@ -58,6 +59,7 @@ export const useModelResponses = () => {
           model: selectedModel.model,
           number: selectedModel.number,
           response: response.response,
+          spent: response.spent,
           timeOfResponse: response.durationMs,
           logo: getLogoFromModel(selectedModel.model),
           isLoading: false,
@@ -78,7 +80,7 @@ export const useModelResponses = () => {
           };
 
           setUser(updaterNewUser);
-          await updateMe({balance: updaterNewUser.balance});
+          await updateMe({ balance: updaterNewUser.balance });
         }
 
         updateChatResponse(placeholderId, responseData);
@@ -90,6 +92,7 @@ export const useModelResponses = () => {
           model: selectedModel.model,
           number: selectedModel.number,
           response: "Error while getting response",
+          spent: 0,
           timeOfResponse: "error",
           logo: getLogoFromModel(selectedModel.model),
           isLoading: false,

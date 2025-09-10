@@ -4,6 +4,7 @@ import { CreateChatDto } from "./types";
 import { ChatsResponse } from "@/shared/types/ChatsResponse";
 
 export const createChat = async (body: CreateChatDto) => {
+  console.log("create new chat response start")
   try {
     const response = await axiosInstance.post("/chats", body,
       {
@@ -14,9 +15,10 @@ export const createChat = async (body: CreateChatDto) => {
       }
     );
 
+    console.log("create new chat response finish")
     return response;
   } catch (error: any) {
-    toast.error(error.response?.data?.message + " (Failed to create new chat)");
+    toast.error(error.response?.data?.message + " (Failed with create new chat)");
     throw error;
   }
 };
@@ -32,7 +34,7 @@ export const getChats = async (): Promise<ChatsResponse> => {
 
     return response.data;
   } catch (err: any) {
-    toast.error(err.response?.data?.message + " (Failed to get all chats");
+    toast.error(err.response?.data?.message + " (Failed with get all chats)");
     throw err;
   }
 }

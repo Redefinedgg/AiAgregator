@@ -1,16 +1,16 @@
 "use client";
-
 import { useChatStore } from "@/shared/stores/chat";
 import Textarea from "@/shared/ui/Textarea";
 import ChatAIChoiceButtons from "@/widgets/Chat/ChatAIChoiceButtons";
 import NewChatTitle from "@/widgets/NewChat/NewChatTitle";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { useSidebarStore } from "@/shared/stores/sidebar";
 
 const NewChatView = () => {
-  const { prompt, setPrompt, setPromptWithoutResponse, selectedModels, setCurrentChatUuid } =
-    useChatStore();
+  const { prompt, setPrompt, setPromptWithoutResponse, selectedModels, setCurrentChatUuid } = useChatStore();
   const router = useRouter();
+  const {widthOfSidebar} = useSidebarStore();
 
   const navigateToChat = async () => {
     setPromptWithoutResponse(prompt);
@@ -21,12 +21,13 @@ const NewChatView = () => {
   };
 
   return (
-    <main className="w-[100%] flex flex-col items-center mt-[calc(50vh-45vh)]">
+    <main className="flex flex-col items-center mt-[calc(50vh-45vh)] w-[100%]">
       <NewChatTitle />
       <Textarea
         sendButton={true}
         placeholder="Write your prompt..."
-        className="w-[92vw] h-[50vh] mt-[20px] text-[30px]"
+        className="h-[50vh] mt-[20px] text-[30px]"
+        style={{ width: `calc(92vw - ${widthOfSidebar}px)` }}
         value={prompt}
         onChange={(value) => setPrompt(value)}
         onClickSendButton={navigateToChat}

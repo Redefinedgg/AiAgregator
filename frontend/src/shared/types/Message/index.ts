@@ -21,22 +21,22 @@ import Chat from "../Chat";
 
 
 export interface Message {
-    id: number;
-    uuid: string;
-    chatId: number;
-    authorId: number;
+  id: number;
+  uuid: string;
+  chatId: number;
+  authorId: number;
 
-    model: string;
-    response: string;
-    spent: number;
-    timeOfResponse: string;
+  model: string;
+  response: string;
+  spent: number;
+  timeOfResponse: string;
 
-    createdAt: Date;
-    updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 
-    author: User;
-    chat: Chat;
+  author: User;
+  chat: Chat;
 }
 
 export default Message;
-  
+

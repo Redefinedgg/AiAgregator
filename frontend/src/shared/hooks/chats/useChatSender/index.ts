@@ -20,6 +20,7 @@ export const useChatSender = () => {
   const { validateModels } = useValidateModels();
 
   const sendPrompts = useCallback(async (prompt: string) => {
+    console.log("send prompts start")
     if (isSendingPrompts) {
       return;
     }
@@ -43,6 +44,7 @@ export const useChatSender = () => {
         models: validModels,
         placeholders,
       });
+      console.log('set prompts finish')
     } catch (error) {
       console.error("Error sending prompts:", error);
       toast.error("Failed to send prompts");

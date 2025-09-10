@@ -14,7 +14,7 @@ export class AiService {
   private readonly logger = new Logger(AiService.name);
   constructor(
     private readonly aiHelper: AIHelper,
-  ) {}
+  ) { }
 
   async sendPrompt(body: SendPromptDto): Promise<SendPromptResponse> {
     const { prompt, model } = body;

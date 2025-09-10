@@ -12,6 +12,8 @@ export const useCreateNewChat = () => {
     hasActiveCreateChatRequest,
     addActiveCreateChatRequest,
     removeActiveCreateChatRequest,
+    setChats,
+    chats,
   } = useChatStore();
 
   const { user } = useAuthStore();
@@ -38,11 +40,14 @@ export const useCreateNewChat = () => {
       return;
     }
 
+    console.log("create new chat start");
+
     // Добавляем UUID в список активных запросов
     addActiveCreateChatRequest(uuid);
 
     try {
-      await createChat({ user, uuid });
+      const newChat = await createChat({ user, uuid });
+      setChats([...chats, newChat.data.chat])
       setAlreadyUsedUuids([...alreadyUsedUuids, uuid]);
       setNowDelayted(true);
 
@@ -50,6 +55,9 @@ export const useCreateNewChat = () => {
         setNowDelayted(false);
       }, 2000);
 
+      console.log("create new chat finish")
+
+      return newChat.data;
     } catch (error) {
       console.error("Failed to create chat:", error);
     } finally {

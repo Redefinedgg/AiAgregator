@@ -3,22 +3,23 @@ import {
   UseGuards,
   Post,
   Request,
+  Body,
 } from '@nestjs/common';
 import { MessagesService } from '../service/messages.service';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { UserRequest } from 'src/common/types/extendedExpressRequest';
-import { CreateMessageDto } from '../dto/messages.dto';
+import { CreateMessagesDto } from '../dto/messages.dto';
 
 @Controller('messages')
 @UseGuards(JwtAuthGuard)
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(private readonly messagesService: MessagesService) { }
 
   @Post()
-  async createMessage(@Request() req: UserRequest, body: CreateMessageDto) {
+  async createMessages(@Request() req: UserRequest, @Body() body: CreateMessagesDto) {
     try {
-      const message = await this.messagesService.createMessage(req.user.uuid, body);
-      return message;
+      const messages = await this.messagesService.createMessages(req.user.uuid, body);
+      return messages;
     } catch (error) {
       throw error;
     }
