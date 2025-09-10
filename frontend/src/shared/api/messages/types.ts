@@ -1,3 +1,5 @@
+import Message from "@/shared/types/Message";
+
 export interface CreateMessageDto {
   model: string;
   response: string;
@@ -8,4 +10,8 @@ export interface CreateMessageDto {
 export interface CreateMessagesDto {
   messages: CreateMessageDto[];
   chatUuid: string;
+}
+
+export interface CreateMessagesResponse {
+  messages: Message[];
 }

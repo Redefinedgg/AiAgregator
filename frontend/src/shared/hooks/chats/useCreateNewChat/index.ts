@@ -40,6 +40,8 @@ export const useCreateNewChat = () => {
       return;
     }
 
+    console.log("create new chat start");
+
     // Добавляем UUID в список активных запросов
     addActiveCreateChatRequest(uuid);
 
@@ -53,6 +55,9 @@ export const useCreateNewChat = () => {
         setNowDelayted(false);
       }, 2000);
 
+      console.log("create new chat finish")
+
+      return newChat.data;
     } catch (error) {
       console.error("Failed to create chat:", error);
     } finally {

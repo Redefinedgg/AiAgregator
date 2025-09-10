@@ -1,16 +1,15 @@
 import { createNewMessages } from "@/shared/api/messages/requests";
 import { CreateMessageDto } from "@/shared/api/messages/types";
 import { useChatStore } from "@/shared/stores/chat"
+import { usePushChatMessages } from "../usePushChatMessages";
 
 export const useSaveChatResponses = () => {
   try {
-    const { chatResponses, currentChatUuid } = useChatStore();
+    const { chatResponses } = useChatStore();
+    const { pushChatMessages } = usePushChatMessages();
 
-    if (!currentChatUuid) {
-      throw new Error("Current chat uuid is null");
-    }
-
-    const saveChatResponses = async () => {
+    const saveChatResponses = async (chatUuid: string) => {
+      console.log("save chat responses start")
       const messagesToSave: CreateMessageDto[] = chatResponses.map((message) => {
         return {
           model: message.model,
@@ -21,7 +20,11 @@ export const useSaveChatResponses = () => {
       });
 
 
-      await createNewMessages({ messages: messagesToSave, chatUuid: currentChatUuid });
+      const { messages } = await createNewMessages({ messages: messagesToSave, chatUuid: chatUuid });
+
+      pushChatMessages(chatUuid, messages);
+
+      console.log("save chat responses finish")
     }
 
     return { saveChatResponses }

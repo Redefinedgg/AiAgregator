@@ -6,6 +6,7 @@ import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
 import { useSaveChatResponses } from "../useSaveChatResponses";
 
 export const useAutoSendPrompt = () => {
+  console.log("auto send prompt")
   const {
     promptWithoutResponse,
     currentChatUuid,
@@ -37,9 +38,9 @@ export const useAutoSendPrompt = () => {
         setLastProcessedPrompt(promptWithoutResponse);
 
         try {
+          const chat = await createNewChat(currentChatUuid);
           await sendPrompts(promptWithoutResponse);
-          await createNewChat(currentChatUuid);
-          await saveChatResponses();
+          await saveChatResponses(chat.uuid);
           clearPrompt();
         } catch (error) {
           console.error("Error in auto send prompt:", error);

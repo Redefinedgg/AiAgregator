@@ -1,9 +1,10 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
-import { CreateMessagesDto } from "../messages/types";
+import { CreateMessagesDto, CreateMessagesResponse } from "../messages/types";
 
-export const createNewMessages = async (body: CreateMessagesDto) => {
+export const createNewMessages = async (body: CreateMessagesDto): Promise<CreateMessagesResponse> => {
   try {
+    console.log("create new messages start")
     const response = await axiosInstance.post("/messages", body, {
       headers: {
         "Content-Type": "application/json",
@@ -11,7 +12,8 @@ export const createNewMessages = async (body: CreateMessagesDto) => {
       },
     });
 
-    return response;
+    console.log("create new messages finish")
+    return response.data;
   } catch (error: any) {
     toast.error(
       error.response?.data?.message + " (Failed to create new message)"

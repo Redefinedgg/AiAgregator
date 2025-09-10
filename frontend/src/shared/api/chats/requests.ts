@@ -4,6 +4,7 @@ import { CreateChatDto } from "./types";
 import { ChatsResponse } from "@/shared/types/ChatsResponse";
 
 export const createChat = async (body: CreateChatDto) => {
+  console.log("create new chat response start")
   try {
     const response = await axiosInstance.post("/chats", body,
       {
@@ -14,6 +15,7 @@ export const createChat = async (body: CreateChatDto) => {
       }
     );
 
+    console.log("create new chat response finish")
     return response;
   } catch (error: any) {
     toast.error(error.response?.data?.message + " (Failed with create new chat)");
