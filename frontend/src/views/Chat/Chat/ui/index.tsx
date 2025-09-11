@@ -4,19 +4,19 @@ import ChatResponses from "@/widgets/Chat/ChatResponses";
 import ChatWithoutResponses from "@/widgets/Chat/ChatWithoutResponses";
 import { useChatStore } from "@/shared/stores/chat";
 import { useAutoSendPrompt } from "@/shared/hooks/chats/useAutoSendPrompt";
+import { useCheckAlreadyExistingChat } from "@/shared/hooks/chats/useCheckAlreadyExistingChat";
+import { useEffect } from "react";
 
 const ChatView: FC = () => {
-  const { chatResponses } = useChatStore();
+  const { chatResponses, alreadyExistingUuids, setAlreadyExistingUuids } =
+    useChatStore();
 
+  useCheckAlreadyExistingChat();
   useAutoSendPrompt();
 
   return (
     <section className="w-full p-[12px]">
-      {chatResponses.length > 0 ? (
-        <ChatResponses />
-      ) : (
-        <ChatWithoutResponses />
-      )}
+      {chatResponses.length > 0 ? <ChatResponses /> : <ChatWithoutResponses />}
     </section>
   );
 };

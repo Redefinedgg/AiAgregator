@@ -5,7 +5,6 @@ import { useChatStore } from "@/shared/stores/chat";
 import { useResponsePlaceholders } from "@/shared/hooks/chats/useResponsePlaceholders";
 import { useModelResponses } from "@/shared/hooks/chats/useModelResponses";
 import { useValidateModels } from "@/shared/hooks/ai/useValidateModels";
-import { useSaveChatResponses } from "../useSaveChatResponses";
 
 export const useChatSender = () => {
   const {
@@ -18,7 +17,6 @@ export const useChatSender = () => {
 
   const { createResponsePlaceholders } = useResponsePlaceholders();
   const { fetchModelResponses } = useModelResponses();
-  const { saveChatResponses } = useSaveChatResponses();
   const { validateModels } = useValidateModels();
 
   const sendPrompts = useCallback(async (prompt: string) => {
@@ -46,8 +44,6 @@ export const useChatSender = () => {
         placeholders,
       });
 
-      // Save responses to messages
-      await saveChatResponses();
     } catch (error) {
       console.error("Error sending prompts:", error);
       toast.error("Failed to send prompts");

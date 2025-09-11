@@ -11,6 +11,7 @@ export const useFetchChatsData = () => {
         const data = await getChats();
         setChats(data.chats);
       } catch (err) {
+        
         console.error("failed to get user's data");
       }
     }

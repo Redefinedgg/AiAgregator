@@ -45,6 +45,7 @@ model Message {
   chatId         Int
   authorId       Int
   model          String
+  number         Int
   response       String
   spent          Float
   timeOfResponse String

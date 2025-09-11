@@ -18,6 +18,7 @@ export class MessagesService {
           chatId: chatId,
           model: body.model,
           response: body.response,
+          number: body.number,
           spent: body.spent,
           timeOfResponse: body.timeOfResponse,
         },

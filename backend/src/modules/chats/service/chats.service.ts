@@ -1,11 +1,22 @@
-import { Injectable, NotFoundException, ConflictException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
-import { CreateChatResponse, GetChatsByAuthorResponse } from '../response/chats.response';
+import {
+  CreateChatResponse,
+  GetChatByUuidResponse,
+  GetChatMessagesByChatUuidResponse,
+  GetChatsByAuthorResponse,
+} from '../response/chats.response';
 import { CreateChatDto } from '../dto/chats.dto';
 
 @Injectable()
 export class ChatsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async createChat(
     userUuid: string,
@@ -15,11 +26,9 @@ export class ChatsService {
       const user = await this.prisma.user.findUnique({
         where: { uuid: userUuid },
       });
-
       if (!user) {
         throw new NotFoundException('User not found');
       }
-
       if (body.uuid) {
         const existingChat = await this.prisma.chat.findUnique({
           where: { uuid: body.uuid },
@@ -28,7 +37,6 @@ export class ChatsService {
           throw new ConflictException('Chat already exists');
         }
       }
-
       const chat = await this.prisma.chat.create({
         data: {
           name: 'New Chat',
@@ -36,7 +44,6 @@ export class ChatsService {
           uuid: body.uuid,
         },
       });
-
       return { chat };
     } catch (error) {
       // если ошибка уже nestjs-овская — пробрасываем её
@@ -46,7 +53,6 @@ export class ChatsService {
       ) {
         throw error;
       }
-
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
         error.message || 'Unexpected error occurred',
@@ -56,28 +62,122 @@ export class ChatsService {
 
   async getChatsByAuthor(uuid: string): Promise<GetChatsByAuthorResponse> {
     try {
+      if (!uuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
       const user = await this.prisma.user.findUnique({
         where: { uuid },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      const chats = await this.prisma.chat.findMany({
+        where: { authorId: user.id },
+      });
+      return { chats };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof ConflictException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
+
+  async getChatByUuid(
+    userUuid: string,
+    uuid: string,
+  ): Promise<GetChatByUuidResponse> {
+    try {
+      if (!userUuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { uuid: userUuid },
       });
 
       if (!user) {
         throw new NotFoundException('User not found');
       }
 
-      const chats = await this.prisma.chat.findMany({
-        where: { authorId: user.id },
-      })
+      if (!uuid) {
+        throw new UnauthorizedException('Chat UUID is required');
+      }
 
-      return { chats };
+      const chat = await this.prisma.chat.findUnique({
+        where: { uuid, authorId: user.id },
+      });
+
+      if (!chat) {
+        throw new NotFoundException('Chat not found');
+      }
+
+      return { chat };
     } catch (err) {
       // если ошибка уже nestjs-овская — пробрасываем её
       if (
         err instanceof NotFoundException ||
-        err instanceof ConflictException
+        err instanceof UnauthorizedException
       ) {
         throw err;
       }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
 
+  async getChatMessagesByChatUuid(
+    userUuid: string,
+    uuid: string,
+  ): Promise<GetChatMessagesByChatUuidResponse> {
+    try {
+      if (!userUuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { uuid: userUuid },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (!uuid) {
+        throw new UnauthorizedException('Chat UUID is required');
+      }
+
+      const chat = await this.prisma.chat.findUnique({
+        where: { uuid, authorId: user.id },
+      });
+
+      if (!chat) {
+        throw new NotFoundException('Chat not found');
+      }
+
+      const messages = await this.prisma.message.findMany({
+        where: { chatId: chat.id },
+      });
+
+      return { messages };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
         err.message || 'Unexpected error occurred',

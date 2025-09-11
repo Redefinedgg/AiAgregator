@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useChatStore } from "@/shared/stores/chat";
 import { useChatSender } from "@/shared/hooks/chats/useChatSender";
 import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
+import { useCreateMessagesInChat } from "@/shared/hooks/chats/useCreateMessagesInChat";
+import { toast } from "react-toastify";
 
 export const useAutoSendPrompt = () => {
   const {
@@ -12,17 +14,20 @@ export const useAutoSendPrompt = () => {
     lastProcessedPrompt,
     setIsProcessingPrompt,
     setLastProcessedPrompt,
+    alreadyExistingUuids,
   } = useChatStore();
 
   const { sendPrompts, hasPromptToSend, clearPrompt } = useChatSender();
   const { createNewChat } = useCreateNewChat();
+  const { createMessagesInChat } = useCreateMessagesInChat();
 
   useEffect(() => {
     const shouldProcess = (
       hasPromptToSend &&
       !isProcessingPrompt &&
       promptWithoutResponse !== lastProcessedPrompt &&
-      promptWithoutResponse.trim() !== ""
+      promptWithoutResponse.trim() !== "" &&
+      !alreadyExistingUuids.includes(currentChatUuid!)
     );
 
     if (shouldProcess) {
@@ -37,6 +42,7 @@ export const useAutoSendPrompt = () => {
         try {
           await sendPrompts(promptWithoutResponse);
           await createNewChat(currentChatUuid);
+          await createMessagesInChat();
           clearPrompt();
         } catch (error) {
           console.error("Error in auto send prompt:", error);

@@ -10,6 +10,7 @@ import { ChatsService } from '../service/chats.service';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { UserRequest } from 'src/common/types/extendedExpressRequest';
 import { CreateChatDto } from '../dto/chats.dto';
+import { Param } from '@nestjs/common';
 
 @Controller('chats')
 @UseGuards(JwtAuthGuard)
@@ -31,6 +32,26 @@ export class ChatsController {
     try {
       const chats = await this.chatsService.getChatsByAuthor(req.user.uuid);
       return chats;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @Get(':uuid')
+  async getChatByUuid(@Request() req: UserRequest, @Param('uuid') uuid: string) {
+    try {
+      const chat = await this.chatsService.getChatByUuid(req.user.uuid, uuid);
+      return chat;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @Get(':uuid/messages')
+  async getChatMessagesByChatUuid(@Request() req: UserRequest, @Param('uuid') uuid: string) {
+    try {
+      const messages = await this.chatsService.getChatMessagesByChatUuid(req.user.uuid, uuid);
+      return messages;
     } catch (err) {
       throw err;
     }
