@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  Logger,
 } from '@nestjs/common';
 import { RegisterDto, LoginDto } from '../dto/auth.dto';
 import { RegisterResponse, LoginResponse } from '../response/auth.response';
@@ -10,17 +11,18 @@ import { PrismaService } from 'src/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EmailOrNickname } from '../types/auth.type';
-import { v4 as uuidv4 } from 'uuid';
 import { GoogleAuthService } from './googleAuth.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly usersService: UsersService,
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly googleAuthService: GoogleAuthService,
-  ) {}
+  ) { }
 
   async register(body: RegisterDto): Promise<RegisterResponse> {
     try {
@@ -28,7 +30,8 @@ export class AuthService {
       const payload = { uuid: user.user.uuid };
       const token = this.jwtService.sign(payload);
       return { user: user.user, token };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Register failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -72,7 +75,8 @@ export class AuthService {
       const token = this.jwtService.sign(payload);
 
       return { user: userWithoutPassword, token };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Login failed: ${error.message}`, error.stack);
       throw error;
     }
   }
