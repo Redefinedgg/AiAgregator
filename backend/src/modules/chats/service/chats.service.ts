@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException, ConflictException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import { CreateChatResponse, GetChatsByAuthorResponse } from '../response/chats.response';
 import { CreateChatDto } from '../dto/chats.dto';
 
 @Injectable()
 export class ChatsService {
+  private readonly logger = new Logger(ChatsService.name);
+
   constructor(private readonly prisma: PrismaService) { }
 
   async createChat(
@@ -38,7 +40,7 @@ export class ChatsService {
       });
 
       return { chat };
-    } catch (error) {
+    } catch (error: any) {
       // если ошибка уже nestjs-овская — пробрасываем её
       if (
         error instanceof NotFoundException ||
@@ -46,6 +48,8 @@ export class ChatsService {
       ) {
         throw error;
       }
+
+      this.logger.error(`Create chat failed: ${error.message}`, error.stack);
 
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
@@ -69,18 +73,20 @@ export class ChatsService {
       })
 
       return { chats };
-    } catch (err) {
+    } catch (error: any) {
       // если ошибка уже nestjs-овская — пробрасываем её
       if (
-        err instanceof NotFoundException ||
-        err instanceof ConflictException
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
       ) {
-        throw err;
+        throw error;
       }
+
+      this.logger.error(`Get chat by author failed: ${error.message}`, error.stack);
 
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
-        err.message || 'Unexpected error occurred',
+        error.message || 'Unexpected error occurred',
       );
     }
   }

@@ -4,6 +4,7 @@ import {
   NotFoundException,
   Injectable,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dto/users.dto';
 import { PrismaService } from 'src/prisma/service/prisma.service';
@@ -17,6 +18,8 @@ import {
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(private readonly prisma: PrismaService) { }
 
   async createUser(body: CreateUserDto): Promise<CreateUserResponse> {
@@ -49,7 +52,8 @@ export class UsersService {
       const { password, ...userWithoutPassword } = newUser;
 
       return { user: userWithoutPassword };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Create user failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -65,7 +69,8 @@ export class UsersService {
       const { password, ...userWithoutPassword } = user;
 
       return { user: userWithoutPassword };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Get user by id failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -79,7 +84,8 @@ export class UsersService {
       }
 
       return { user };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Get me failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -95,7 +101,8 @@ export class UsersService {
       const { password, ...userWithoutPassword } = user;
 
       return { user: userWithoutPassword };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Get user by uuid failed: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -135,7 +142,8 @@ export class UsersService {
       const { password, ...userWithoutPassword } = user;
 
       return { user: userWithoutPassword };
-    } catch (error) {
+    } catch (error: any) {
+      this.logger.error(`Update user by uuid failed: ${error.message}`, error.stack);
       throw error;
     }
   }

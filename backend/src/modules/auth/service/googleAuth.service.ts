@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class GoogleAuthService {
+  private readonly logger = new Logger(GoogleAuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async validateGoogleUser(googleUser: any) {
     try {
@@ -35,6 +37,7 @@ export class GoogleAuthService {
 
       return { user, token };
     } catch (error) {
+      this.logger.error(`Login via google failed: ${error.message}`, error.stack);
       throw error;
     }
   }
