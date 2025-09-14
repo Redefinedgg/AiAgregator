@@ -11,6 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "dev": "nest start --watch",
+    "dev:docker": "pnpm prisma generate && pnpm prisma db push && nest start --watch",
     "d": "nest start --watch",
     "dev:full": "concurrently \"npm run dev\" \"npm run studio\"",
     "df": "concurrently \"npm run dev\" \"npm run studio\"",
