@@ -7,5 +7,5 @@ export interface CreateMessageDto {
 
 export interface CreateMessagesDto {
   messages: CreateMessageDto[];
-  chatUuid: string;
+  chatUuid: string | null;
 }

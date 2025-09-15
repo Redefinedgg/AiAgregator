@@ -13,6 +13,7 @@ export const useChatSender = () => {
     setChatResponses,
     isSendingPrompts,
     setIsSendingPrompts,
+    chatResponses,
   } = useChatStore();
 
   const { createResponsePlaceholders } = useResponsePlaceholders();
@@ -43,6 +44,8 @@ export const useChatSender = () => {
         models: validModels,
         placeholders,
       });
+
+      console.log(1,chatResponses)
 
     } catch (error) {
       console.error("Error sending prompts:", error);

@@ -12,12 +12,8 @@ export const useCheckAlreadyExistingChat = () => {
   const { getMessagesByUuid } = useGetMessagesByUuid();
 
   const getChatByUuid = useCallback(async (uuid: string) => {
-    try {
-      const chat = await getChatByUuidRequest(uuid);
-      return chat;
-    } catch (err) {
-      console.error("failed to get chat by UUID");
-    }
+    const chat = await getChatByUuidRequest(uuid);
+    return chat;
   }, []);
 
   useEffect(() => {

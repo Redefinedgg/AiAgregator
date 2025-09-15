@@ -4,7 +4,6 @@ import { useChatStore } from "@/shared/stores/chat";
 import { useChatSender } from "@/shared/hooks/chats/useChatSender";
 import { useCreateNewChat } from "@/shared/hooks/chats/useCreateNewChat";
 import { useCreateMessagesInChat } from "@/shared/hooks/chats/useCreateMessagesInChat";
-import { toast } from "react-toastify";
 
 export const useAutoSendPrompt = () => {
   const {

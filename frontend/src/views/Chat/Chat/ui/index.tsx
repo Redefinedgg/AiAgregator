@@ -8,8 +8,7 @@ import { useCheckAlreadyExistingChat } from "@/shared/hooks/chats/useCheckAlread
 import { useEffect } from "react";
 
 const ChatView: FC = () => {
-  const { chatResponses, alreadyExistingUuids, setAlreadyExistingUuids } =
-    useChatStore();
+  const { chatResponses } = useChatStore();
 
   useCheckAlreadyExistingChat();
   useAutoSendPrompt();

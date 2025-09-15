@@ -8,7 +8,7 @@ export const useCreateMessagesInChat = () => {
     try {
       const response = await createNewMessages({
         messages: chatResponses,
-        chatUuid: currentChatUuid!,
+        chatUuid: currentChatUuid,
       });
       return response;
     } catch (err) {
