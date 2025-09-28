@@ -17,7 +17,7 @@ export class MessagesService {
           uuid: uuidv4(),
           chatId: chatId,
           model: body.model,
-          response: body.response,
+          response: body.response.toString(),
           number: body.number,
           spent: body.spent,
           timeOfResponse: body.timeOfResponse,

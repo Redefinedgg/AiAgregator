@@ -26,9 +26,11 @@ export class ChatsService {
       const user = await this.prisma.user.findUnique({
         where: { uuid: userUuid },
       });
+
       if (!user) {
         throw new NotFoundException('User not found');
       }
+      
       if (body.uuid) {
         const existingChat = await this.prisma.chat.findUnique({
           where: { uuid: body.uuid },

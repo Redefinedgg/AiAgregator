@@ -20,9 +20,8 @@ export const sendPrompt = async (
     const durationStr = (durationMs / 1000).toFixed(1) + "s";
 
     return {
-      response: response.data.response,
-      spent: response.data.spent,
       durationMs: durationStr,
+      ...response.data
     };
   } catch (error: any) {
     toast.error(
