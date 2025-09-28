@@ -1,6 +1,6 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
-import { CreateChatDto } from "./types";
+import { CreateChatDto, GetChatByUuidResponse, GetChatMessagesByChatUuidResponse } from "./types";
 import { ChatsResponse } from "@/shared/types/ChatsResponse";
 
 export const createChat = async (body: CreateChatDto) => {
@@ -37,7 +37,7 @@ export const getChats = async (): Promise<ChatsResponse> => {
   }
 };
 
-export const getChatByUuid = async (uuid: string) => {
+export const getChatByUuid = async (uuid: string): Promise<GetChatByUuidResponse | null> => {
   try {
     const response = await axiosInstance.get(`/chats/${uuid}`, {
       headers: {
@@ -55,7 +55,7 @@ export const getChatByUuid = async (uuid: string) => {
   }
 };
 
-export const getChatMessagesByChatUuid = async (uuid: string) => {
+export const getChatMessagesByChatUuid = async (uuid: string): Promise<GetChatMessagesByChatUuidResponse | null> => {
   try {
     const response = await axiosInstance.get(`/chats/${uuid}/messages`, {
       headers: {
@@ -70,7 +70,7 @@ export const getChatMessagesByChatUuid = async (uuid: string) => {
     }
     toast.error(
       err.response?.data?.message +
-        " (Failed to get chat messages by chat UUID)"
+      " (Failed to get chat messages by chat UUID)"
     );
     throw err;
   }
