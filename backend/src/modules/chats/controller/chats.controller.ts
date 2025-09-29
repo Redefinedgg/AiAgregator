@@ -5,11 +5,12 @@ import {
   Request,
   Body,
   Get,
+  Patch,
 } from '@nestjs/common';
 import { ChatsService } from '../service/chats.service';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { UserRequest } from 'src/common/types/extendedExpressRequest';
-import { CreateChatDto } from '../dto/chats.dto';
+import { CreateChatDto, UpdateChatDto } from '../dto/chats.dto';
 import { Param } from '@nestjs/common';
 
 @Controller('chats')
@@ -52,6 +53,15 @@ export class ChatsController {
     try {
       const messages = await this.chatsService.getChatMessagesByChatUuid(req.user.uuid, uuid);
       return messages;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @Patch(":uuid")
+  async updateChat(@Param("uuid") uuid: string, @Body() body: UpdateChatDto) {
+    try {
+      await this.chatsService.updateChat(uuid, body);
     } catch (err) {
       throw err;
     }

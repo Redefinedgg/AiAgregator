@@ -16,6 +16,7 @@ export interface ChatsSlice {
   setNowDelayted: (nowDelayted: boolean) => void;
   setAlreadyUsedUuids: (alreadyUsedUuids: string[]) => void;
   setAlreadyExistingUuids: (alreadyExistingUuids: string[]) => void;
+  updateChatName: (uuid: string, name: string) => void;
 }
 
 export const chatsSlice: StateCreator<ChatStore, [], [], ChatsSlice> = (
@@ -40,6 +41,11 @@ export const chatsSlice: StateCreator<ChatStore, [], [], ChatsSlice> = (
     set({ alreadyExistingUuids }),
   addAlreadyUsedUuid: (uuid: string) =>
     set((state) => ({ alreadyUsedUuids: [...state.alreadyUsedUuids, uuid] })),
+  updateChatName: (uuid: string, name: string) => set((state) => ({
+    chats: state.chats.map((chat) =>
+      chat.uuid === uuid ? { ...chat, name } : chat
+    )
+  })),
 });
 
 export default chatsSlice;

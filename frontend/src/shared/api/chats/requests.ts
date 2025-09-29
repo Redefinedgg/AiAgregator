@@ -1,6 +1,6 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
-import { CreateChatDto, GetChatByUuidResponse, GetChatMessagesByChatUuidResponse } from "./types";
+import { CreateChatDto, GetChatByUuidResponse, GetChatMessagesByChatUuidResponse, UpdateChatDto } from "./types";
 import { ChatsResponse } from "@/shared/types/ChatsResponse";
 
 export const createChat = async (body: CreateChatDto) => {
@@ -75,3 +75,12 @@ export const getChatMessagesByChatUuid = async (uuid: string): Promise<GetChatMe
     throw err;
   }
 };
+
+export const updateChat = async (uuid: string, dto: UpdateChatDto) => {
+  try {
+    await axiosInstance.patch(`/chats/${uuid}`, dto);
+  } catch (err: any) {
+    toast.error(err.response.data.message + " (Fauled to update chat)");
+    throw err;
+  }
+}

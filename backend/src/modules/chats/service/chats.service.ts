@@ -12,11 +12,11 @@ import {
   GetChatMessagesByChatUuidResponse,
   GetChatsByAuthorResponse,
 } from '../response/chats.response';
-import { CreateChatDto } from '../dto/chats.dto';
+import { CreateChatDto, UpdateChatDto } from '../dto/chats.dto';
 
 @Injectable()
 export class ChatsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async createChat(
     userUuid: string,
@@ -30,7 +30,7 @@ export class ChatsService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      
+
       if (body.uuid) {
         const existingChat = await this.prisma.chat.findUnique({
           where: { uuid: body.uuid },
@@ -101,7 +101,6 @@ export class ChatsService {
       if (!userUuid) {
         throw new UnauthorizedException('User not authorized');
       }
-
       const user = await this.prisma.user.findUnique({
         where: { uuid: userUuid },
       });
@@ -172,6 +171,27 @@ export class ChatsService {
       });
 
       return { messages };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
+
+  async updateChat(uuid: string, dto: UpdateChatDto) {
+    try {
+      await this.prisma.chat.update({
+        where: { uuid },
+        data: { ...dto }
+      });
     } catch (err) {
       // если ошибка уже nestjs-овская — пробрасываем её
       if (

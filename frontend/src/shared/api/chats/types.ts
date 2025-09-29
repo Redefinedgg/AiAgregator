@@ -18,3 +18,7 @@ export interface GetChatByUuidResponse {
 export interface GetChatMessagesByChatUuidResponse {
   messages: Message[];
 }
+
+export interface UpdateChatDto {
+  name?: string;
+}
