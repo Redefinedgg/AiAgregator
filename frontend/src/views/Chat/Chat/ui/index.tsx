@@ -10,6 +10,7 @@ import { createNewMessages } from "@/shared/api/messages/requests";
 import { createChat, getChatByUuid, getChatMessagesByChatUuid } from "@/shared/api/chats/requests";
 import { useAuthStore } from "@/shared/stores/auth";
 import { CreateMessageDto } from "@/shared/api/messages/types";
+import ChatTitle from "@/features/Chat/ChatTitle";
 
 const makeId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -170,9 +171,12 @@ const ChatView: FC = () => {
   }, [promptWithoutResponse, currentChatUuid, user, setChatResponses, validateModels]);
 
   return (
-    <section className="w-full p-[12px]">
-      {chatResponses.length > 0 ? <ChatResponses /> : <ChatWithoutResponses />}
-    </section>
+    <>
+      <ChatTitle />
+      <section className="w-full p-[12px]">
+        {chatResponses.length > 0 ? <ChatResponses /> : <ChatWithoutResponses />}
+      </section>
+    </>
   );
 };
 

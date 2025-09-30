@@ -4,7 +4,7 @@ export const useFindChatByUuid = (uuid: string) => {
   const { chats } = useChatStore();
 
   const findChatByUuid = () => {
-    return chats.filter(chat => chat.uuid === uuid)[0];
+    return chats.find(chat => chat.uuid === uuid);
   }
 
   return { findChatByUuid }

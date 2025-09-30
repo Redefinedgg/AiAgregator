@@ -2,11 +2,11 @@ import { StateCreator } from "zustand";
 import { ChatStore } from "..";
 
 export interface ChatItemsSlice {
-  editingUuid: string | null;
-  tempName: string;
-  startEditing: (uuid: string, currentName: string) => void;
-  changeTempName: (value: string) => void;
-  stopEditing: () => void;
+  editingItem: string | null;
+  tempItemName: string;
+  startEditingItem: (uuid: string, currentName: string) => void;
+  changeTempItemName: (value: string) => void;
+  stopEditingItem: () => void;
 }
 
 export const chatItemsSlice: StateCreator<ChatStore, [], [], ChatItemsSlice> = (
@@ -14,12 +14,12 @@ export const chatItemsSlice: StateCreator<ChatStore, [], [], ChatItemsSlice> = (
   get,
   ...args
 ) => ({
-  editingUuid: null,
-  tempName: "",
+  editingItem: null,
+  tempItemName: "",
 
-  startEditing: (uuid: string, currentName: string) => set({ editingUuid: uuid, tempName: currentName }),
-  changeTempName: (value: string) => set({ tempName: value }),
-  stopEditing: () => set({ editingUuid: null, tempName: "" }),
+  startEditingItem: (uuid: string, currentName: string) => set({ editingItem: uuid, tempItemName: currentName }),
+  changeTempItemName: (value: string) => set({ tempItemName: value }),
+  stopEditingItem: () => set({ editingItem: null, tempItemName: "" }),
 });
 
 export default chatItemsSlice;
