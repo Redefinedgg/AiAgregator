@@ -1,9 +1,9 @@
 import { updateChat } from "@/shared/api/chats/requests";
 import { useChatStore } from "@/shared/stores/chat"
 
-export const useHandleUpdateChatName = (uuid: string, isHeader?: boolean) => {
+export const useHandleUpdateChatName = (chatUuid?: string, isHeader?: boolean) => {
   const { updateChatName } = useChatStore();
-  let stopEditing: any, tempName: any;
+  let stopEditing: any, tempName: string, uuid: string | null;
 
   if (isHeader) {
     const { stopEditingHeader, tempHeaderName } = useChatStore();
@@ -15,7 +15,16 @@ export const useHandleUpdateChatName = (uuid: string, isHeader?: boolean) => {
     tempName = tempItemName;
   }
 
+  if (chatUuid) {
+    uuid = chatUuid
+  } else {
+    const { currentChatUuid } = useChatStore();
+    uuid = currentChatUuid;
+  }
+
   const handleUpdateChatName = async () => {
+    if (!uuid) return;
+
     updateChatName(uuid, tempName);
 
     stopEditing();

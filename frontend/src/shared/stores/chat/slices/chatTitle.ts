@@ -4,7 +4,7 @@ import { ChatStore } from "..";
 export interface ChatTitleSlice {
   editingHeader: string | null;
   tempHeaderName: string;
-  startEditingHeader: (uuid: string, currentName: string) => void;
+  startEditingHeader: (currentName: string) => void;
   changeTempHeaderName: (value: string) => void;
   stopEditingHeader: () => void;
 }
@@ -17,7 +17,7 @@ export const chatTitleSlice: StateCreator<ChatStore, [], [], ChatTitleSlice> = (
   editingHeader: null,
   tempHeaderName: "",
 
-  startEditingHeader: (uuid: string, currentName: string) => set({ editingHeader: uuid, tempHeaderName: currentName }),
+  startEditingHeader: (currentName: string) => set({ editingHeader: get().currentChatUuid, tempHeaderName: currentName }),
   changeTempHeaderName: (value: string) => set({ tempHeaderName: value }),
   stopEditingHeader: () => set({ editingHeader: null, tempHeaderName: "" }),
 });
