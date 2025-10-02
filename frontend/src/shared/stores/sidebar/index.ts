@@ -1,10 +1,9 @@
 "use client";
 
-import { create } from "zustand";
 import { SidebarSlice, sidebarSlice } from "./slices/sidebar";
 import { createPersistedStore } from "@/shared/helpers/createPersistedStore";
 
-interface SidebarStore extends SidebarSlice {}
+interface SidebarStore extends SidebarSlice { }
 
 export const useSidebarStore = createPersistedStore<SidebarStore>(
   "sidebarStore",

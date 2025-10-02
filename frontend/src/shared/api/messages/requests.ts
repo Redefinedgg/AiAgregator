@@ -1,15 +1,14 @@
 import axiosInstance from "../client";
 import { toast } from "react-toastify";
-import { CreateMessageDto } from "../messages/types";
+import { CreateMessagesDto } from "../messages/types";
 
-export const createNewMessage = async (body: CreateMessageDto) => {
+export const createNewMessages = async (body: CreateMessagesDto) => {
   try {
-    const response = await axiosInstance.post("/messages", {
+    const response = await axiosInstance.post("/messages", body, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
-      body,
     });
 
     return response;

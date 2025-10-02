@@ -8,9 +8,15 @@ import { v4 as uuidv4 } from "uuid";
 import { useSidebarStore } from "@/shared/stores/sidebar";
 
 const NewChatView = () => {
-  const { prompt, setPrompt, setPromptWithoutResponse, selectedModels, setCurrentChatUuid } = useChatStore();
+  const {
+    prompt,
+    setPrompt,
+    setPromptWithoutResponse,
+    selectedModels,
+    setCurrentChatUuid,
+  } = useChatStore();
   const router = useRouter();
-  const {widthOfSidebar} = useSidebarStore();
+  const { widthOfSidebar } = useSidebarStore();
 
   const navigateToChat = async () => {
     setPromptWithoutResponse(prompt);

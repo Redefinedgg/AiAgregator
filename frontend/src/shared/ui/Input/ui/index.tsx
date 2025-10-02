@@ -1,20 +1,21 @@
-import { FC } from "react";
+import { FC, InputHTMLAttributes } from "react";
 
-interface Props {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
 }
 
-export const Input: FC<Props> = ({ className = "", value, onChange, placeholder }) => {
+export const Input: FC<Props> = ({ className = "", value, onChange, placeholder, onBlur, onKeyDown, ...rest }) => {
   const baseClassName = "outline-none bg-[#070708] border border-[#Ffffff] text-[#E9E9E9] rounded-[12px] px-[12px] py-[6px]";
   return (
     <input
       className={baseClassName + " " + className}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}
+      onBlur={onBlur}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
+      {...rest}
     />
   );
 };

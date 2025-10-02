@@ -1,9 +1,11 @@
-import { Model } from "../ai/enums";
-
 export interface CreateMessageDto {
-    chatId: number;
-    model: Model;
-    response: string;
-    spent: number;
-    timeOfResponse: string;
+  model: string;
+  response: string;
+  spent: number;
+  timeOfResponse: string;
+}
+
+export interface CreateMessagesDto {
+  messages: CreateMessageDto[];
+  chatUuid: string | null;
 }

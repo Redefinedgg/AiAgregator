@@ -1,5 +1,5 @@
 // slices/processing.ts
-import { StateCreator } from 'zustand';
+import { StateCreator } from "zustand";
 
 export interface ProcessingSlice {
   // State для замены useRef
@@ -7,7 +7,7 @@ export interface ProcessingSlice {
   lastProcessedPrompt: string;
   activeCreateChatRequests: string[];
   isSendingPrompts: boolean;
-  
+
   // Actions
   setIsProcessingPrompt: (processing: boolean) => void;
   setLastProcessedPrompt: (prompt: string) => void;
@@ -26,39 +26,40 @@ const processingSlice: StateCreator<
 > = (set, get) => ({
   // State
   isProcessingPrompt: false,
-  lastProcessedPrompt: '',
+  lastProcessedPrompt: "",
   activeCreateChatRequests: [],
   isSendingPrompts: false,
-  
+
   // Actions
-  setIsProcessingPrompt: (processing: boolean) => 
+  setIsProcessingPrompt: (processing: boolean) =>
     set({ isProcessingPrompt: processing }),
-    
-  setLastProcessedPrompt: (prompt: string) => 
+
+  setLastProcessedPrompt: (prompt: string) =>
     set({ lastProcessedPrompt: prompt }),
-    
-  addActiveCreateChatRequest: (uuid: string) => 
+
+  addActiveCreateChatRequest: (uuid: string) =>
     set((state) => ({
-      activeCreateChatRequests: state.activeCreateChatRequests.includes(uuid) 
-        ? state.activeCreateChatRequests 
-        : [...state.activeCreateChatRequests, uuid]
+      activeCreateChatRequests: state.activeCreateChatRequests.includes(uuid)
+        ? state.activeCreateChatRequests
+        : [...state.activeCreateChatRequests, uuid],
     })),
-    
-  removeActiveCreateChatRequest: (uuid: string) => 
+
+  removeActiveCreateChatRequest: (uuid: string) =>
     set((state) => ({
-      activeCreateChatRequests: state.activeCreateChatRequests.filter(id => id !== uuid)
+      activeCreateChatRequests: state.activeCreateChatRequests.filter(
+        (id) => id !== uuid
+      ),
     })),
-    
-  hasActiveCreateChatRequest: (uuid: string) => 
+
+  hasActiveCreateChatRequest: (uuid: string) =>
     get().activeCreateChatRequests.includes(uuid),
-    
-  setIsSendingPrompts: (sending: boolean) => 
-    set({ isSendingPrompts: sending }),
-    
-  resetProcessingStates: () => 
+
+  setIsSendingPrompts: (sending: boolean) => set({ isSendingPrompts: sending }),
+
+  resetProcessingStates: () =>
     set({
       isProcessingPrompt: false,
-      lastProcessedPrompt: '',
+      lastProcessedPrompt: "",
       activeCreateChatRequests: [],
       isSendingPrompts: false,
     }),

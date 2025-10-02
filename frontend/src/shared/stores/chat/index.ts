@@ -9,8 +9,10 @@ import SelectedModelsCount from "@/shared/types/SelectedModelsCount";
 import { ChatsSlice } from "./slices/chats";
 import chatsSlice from "./slices/chats";
 import processingSlice, { ProcessingSlice } from "./slices/processing";
+import { ChatItemsSlice, chatItemsSlice } from "./slices/chatItems";
+import chatTitleSlice, { ChatTitleSlice } from "./slices/chatTitle";
 
-export interface ChatStore extends ColumnsSlice, ChatsSlice, ProcessingSlice {
+export interface ChatStore extends ColumnsSlice, ChatsSlice, ProcessingSlice, ChatItemsSlice, ChatTitleSlice {
   // State
   isNewChat: boolean;
   prompt: string;
@@ -18,18 +20,17 @@ export interface ChatStore extends ColumnsSlice, ChatsSlice, ProcessingSlice {
   promptWithoutResponse: string;
   selectedModels: SelectedModel[];
   selectedModelsCount: SelectedModelsCount[];
-  
+
   // Actions
   addChatResponse: (response: ChatResponse) => void;
   getOneChatResponse: (id: number | undefined) => ChatResponse | undefined;
   setIsNewChat: (isNewChat: boolean) => void;
   setPrompt: (prompt: string) => void;
-  setChatResponses: (chatResponses: ChatResponse[]) => void;
+  setChatResponses: (updater: ChatResponse[] | ((prev: ChatResponse[]) => ChatResponse[])) => void;
   setPromptWithoutResponse: (promptWithoutResponse: string) => void;
   getCountOfModelsByModel: (model: Model) => number;
   setSelectedModels: (selectedModels: SelectedModel[]) => void;
   setSelectedModelsCount: (selectedModelsCount: SelectedModelsCount[]) => void;
-  updateChatResponse: (id: number, updatedResponse: ChatResponse) => void;
 }
 
 export const useChatStore = createPersistedStore<ChatStore>(
@@ -42,14 +43,14 @@ export const useChatStore = createPersistedStore<ChatStore>(
     promptWithoutResponse: "",
     selectedModels: [],
     selectedModelsCount: [],
-    
+
     // Actions
     addChatResponse: (response: ChatResponse) => {
       set((state) => ({
         chatResponses: [...state.chatResponses, response],
       }));
     },
-    
+
     getOneChatResponse: (id: number | undefined) => {
       if (!id) return undefined;
       const response = get().chatResponses.find(
@@ -57,32 +58,30 @@ export const useChatStore = createPersistedStore<ChatStore>(
       );
       return response;
     },
-    
+
     getCountOfModelsByModel: (model: Model) => {
       return get().selectedModels.filter((m) => m.model === model).length;
     },
-    
-    updateChatResponse: (id: number, updatedResponse: ChatResponse) => {
-      set((state) => ({
-        chatResponses: state.chatResponses.map((response) =>
-          response.id === id ? updatedResponse : response
-        ),
-      }));
-    },
-    
+
     setIsNewChat: (isNewChat: boolean) => set({ isNewChat }),
     setPrompt: (prompt: string) => set({ prompt }),
-    setChatResponses: (chatResponses: ChatResponse[]) => set({ chatResponses }),
+    setChatResponses: (updater: ChatResponse[] | ((prev: ChatResponse[]) => ChatResponse[])) =>
+      set((state) => ({
+        chatResponses:
+          typeof updater === "function" ? updater(state.chatResponses) : updater,
+      })),
     setPromptWithoutResponse: (promptWithoutResponse: string) =>
       set({ promptWithoutResponse }),
     setSelectedModels: (selectedModels: SelectedModel[]) =>
       set({ selectedModels }),
     setSelectedModelsCount: (selectedModelsCount: SelectedModelsCount[]) =>
       set({ selectedModelsCount }),
-    
+
     // Подключаем слайсы
     ...columnsSlice(set, get, ...args),
     ...chatsSlice(set, get, ...args),
     ...processingSlice(set, get, ...args),
+    ...chatItemsSlice(set, get, ...args),
+    ...chatTitleSlice(set, get, ...args)
   })
 );

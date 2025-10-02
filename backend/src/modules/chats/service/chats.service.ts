@@ -1,11 +1,21 @@
-import { Injectable, NotFoundException, ConflictException, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
-import { CreateChatResponse, GetChatsByAuthorResponse } from '../response/chats.response';
-import { CreateChatDto } from '../dto/chats.dto';
+import {
+  CreateChatResponse,
+  GetChatByUuidResponse,
+  GetChatMessagesByChatUuidResponse,
+  GetChatsByAuthorResponse,
+} from '../response/chats.response';
+import { CreateChatDto, UpdateChatDto } from '../dto/chats.dto';
 
 @Injectable()
 export class ChatsService {
-  private readonly logger = new Logger(ChatsService.name);
 
   constructor(private readonly prisma: PrismaService) { }
 
@@ -30,7 +40,6 @@ export class ChatsService {
           throw new ConflictException('Chat already exists');
         }
       }
-
       const chat = await this.prisma.chat.create({
         data: {
           name: 'New Chat',
@@ -38,7 +47,6 @@ export class ChatsService {
           uuid: body.uuid,
         },
       });
-
       return { chat };
     } catch (error: any) {
       // если ошибка уже nestjs-овская — пробрасываем её
@@ -48,9 +56,6 @@ export class ChatsService {
       ) {
         throw error;
       }
-
-      this.logger.error(`Create chat failed: ${error.message}`, error.stack);
-
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
         error.message || 'Unexpected error occurred',
@@ -60,33 +65,146 @@ export class ChatsService {
 
   async getChatsByAuthor(uuid: string): Promise<GetChatsByAuthorResponse> {
     try {
+      if (!uuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
       const user = await this.prisma.user.findUnique({
         where: { uuid },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      const chats = await this.prisma.chat.findMany({
+        where: { authorId: user.id },
+        orderBy: { createdAt: 'desc' },
+      });
+      return { chats };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof ConflictException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
+
+  async getChatByUuid(
+    userUuid: string,
+    uuid: string,
+  ): Promise<GetChatByUuidResponse> {
+    try {
+      if (!userUuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
+      const user = await this.prisma.user.findUnique({
+        where: { uuid: userUuid },
       });
 
       if (!user) {
         throw new NotFoundException('User not found');
       }
 
-      const chats = await this.prisma.chat.findMany({
-        where: { authorId: user.id },
-      })
-
-      return { chats };
-    } catch (error: any) {
-      // если ошибка уже nestjs-овская — пробрасываем её
-      if (
-        error instanceof NotFoundException ||
-        error instanceof ConflictException
-      ) {
-        throw error;
+      if (!uuid) {
+        throw new UnauthorizedException('Chat UUID is required');
       }
 
-      this.logger.error(`Get chat by author failed: ${error.message}`, error.stack);
+      const chat = await this.prisma.chat.findUnique({
+        where: { uuid, authorId: user.id },
+      });
 
+      if (!chat) {
+        throw new NotFoundException('Chat not found');
+      }
+
+      return { chat };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
       // если что-то другое (например, ошибка Prisma)
       throw new InternalServerErrorException(
-        error.message || 'Unexpected error occurred',
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
+
+  async getChatMessagesByChatUuid(
+    userUuid: string,
+    uuid: string,
+  ): Promise<GetChatMessagesByChatUuidResponse> {
+    try {
+      if (!userUuid) {
+        throw new UnauthorizedException('User not authorized');
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { uuid: userUuid },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (!uuid) {
+        throw new UnauthorizedException('Chat UUID is required');
+      }
+
+      const chat = await this.prisma.chat.findUnique({
+        where: { uuid, authorId: user.id },
+      });
+
+      if (!chat) {
+        throw new NotFoundException('Chat not found');
+      }
+
+      const messages = await this.prisma.message.findMany({
+        where: { chatId: chat.id },
+      });
+
+      return { messages };
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
+      );
+    }
+  }
+
+  async updateChat(uuid: string, dto: UpdateChatDto) {
+    try {
+      await this.prisma.chat.update({
+        where: { uuid },
+        data: { ...dto }
+      });
+    } catch (err) {
+      // если ошибка уже nestjs-овская — пробрасываем её
+      if (
+        err instanceof NotFoundException ||
+        err instanceof UnauthorizedException
+      ) {
+        throw err;
+      }
+      // если что-то другое (например, ошибка Prisma)
+      throw new InternalServerErrorException(
+        err.message || 'Unexpected error occurred',
       );
     }
   }

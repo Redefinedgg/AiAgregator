@@ -45,7 +45,7 @@ export default async function RootLayout({ children }: Props) {
           </div>
         </InitProvider>
 
-        <ToastContainer theme="dark" />
+        <ToastContainer theme="dark" autoClose={5000000} />
       </body>
     </html>
   );
