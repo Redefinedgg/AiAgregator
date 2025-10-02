@@ -2,6 +2,8 @@ import axiosInstance from "../client";
 import { toast } from "react-toastify";
 import { CreateChatDto, GetChatByUuidResponse, GetChatMessagesByChatUuidResponse, UpdateChatDto } from "./types";
 import { ChatsResponse } from "@/shared/types/ChatsResponse";
+import { UnauthorizedError } from "@/shared/types/UnauthorizedError";
+import { checkUnauthorizedError } from "@/shared/helpers/checkUnauthorizedError";
 
 export const createChat = async (body: CreateChatDto) => {
   try {
@@ -12,7 +14,7 @@ export const createChat = async (body: CreateChatDto) => {
       },
     });
 
-    return response;
+    return response.data;
   } catch (error: any) {
     toast.error(
       error.response?.data?.message + " (Failed with create new chat)"
@@ -21,7 +23,7 @@ export const createChat = async (body: CreateChatDto) => {
   }
 };
 
-export const getChats = async (): Promise<ChatsResponse> => {
+export const getChats = async (): Promise<ChatsResponse | UnauthorizedError> => {
   try {
     const response = await axiosInstance.get("/chats", {
       headers: {
@@ -32,6 +34,7 @@ export const getChats = async (): Promise<ChatsResponse> => {
 
     return response.data;
   } catch (err: any) {
+    checkUnauthorizedError(err);
     toast.error(err.response?.data?.message + " (Failed with get all chats)");
     throw err;
   }
@@ -80,7 +83,7 @@ export const updateChat = async (uuid: string, dto: UpdateChatDto) => {
   try {
     await axiosInstance.patch(`/chats/${uuid}`, dto);
   } catch (err: any) {
-    toast.error(err.response.data.message + " (Fauled to update chat)");
+    toast.error(err.response.data.message + " (Failed to update chat)");
     throw err;
   }
 }

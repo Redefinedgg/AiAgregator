@@ -12,13 +12,8 @@ import { useAuthStore } from "@/shared/stores/auth";
 import { CreateMessageDto } from "@/shared/api/messages/types";
 import ChatTitle from "@/features/Chat/ChatTitle";
 
-const makeId = () => {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-};
-
 const ChatView: FC = () => {
-  const { chatResponses, setChatResponses, promptWithoutResponse, currentChatUuid } =
+  const { chatResponses, setChatResponses, promptWithoutResponse, currentChatUuid, chats, setChats } =
     useChatStore();
   const { user } = useAuthStore();
   const { validateModels } = useValidateModels();
@@ -49,7 +44,8 @@ const ChatView: FC = () => {
 
       if (!chatExists) {
         try {
-          await createChat({ user, uuid: currentChatUuid });
+          const newChat = await createChat({ user, uuid: currentChatUuid });
+          setChats([newChat.chat, ...chats])
         } catch (err) {
           console.error("createChat error", err);
           return;

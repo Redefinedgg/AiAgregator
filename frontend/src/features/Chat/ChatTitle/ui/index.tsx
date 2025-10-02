@@ -13,11 +13,9 @@ export default function ChatTitle() {
 
   const name = getChatsName();
 
-  const isEditing = editingHeader === currentChatUuid;
-
   return (
     <div className="flex items-center">
-      {isEditing ? (
+      {editingHeader === currentChatUuid ? (
         <Input
           value={tempHeaderName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeTempHeaderName(e.target.value)}

@@ -10,7 +10,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`h-screen transition-all duration-300 pl-[10px] pr-[10px] py-[20px] ${
+      className={`h-screen transition-all duration-300 pl-[10px] pr-[10px] py-[20px] overflow-y-auto ${
         isOpen ? `min-w-[${widthOfSidebar}px]` : `w-[${widthOfSidebar}px]`
       }`}
     >
@@ -21,7 +21,7 @@ export default function Sidebar() {
       />
 
       {isOpen && (
-        <div className="flex flex-col gap-[10px] mt-[65px] ">
+        <div className="flex flex-col gap-[10px] mt-[20px] ">
           <div className="flex items-center justify-center">
             <NewChatButton />
           </div>
