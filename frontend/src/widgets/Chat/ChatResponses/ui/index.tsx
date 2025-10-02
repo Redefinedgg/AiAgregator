@@ -30,7 +30,6 @@ const ChatResponses: FC = () => {
   return (
     <div className="flex gap-[12px] w-[99%] m-[12px]">
       {columns.map((columnResponses, columnIndex) => {
-
         return (
           <div
             key={columnIndex}

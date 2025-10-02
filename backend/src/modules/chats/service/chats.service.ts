@@ -16,6 +16,7 @@ import { CreateChatDto, UpdateChatDto } from '../dto/chats.dto';
 
 @Injectable()
 export class ChatsService {
+
   constructor(private readonly prisma: PrismaService) { }
 
   async createChat(
@@ -47,7 +48,7 @@ export class ChatsService {
         },
       });
       return { chat };
-    } catch (error) {
+    } catch (error: any) {
       // если ошибка уже nestjs-овская — пробрасываем её
       if (
         error instanceof NotFoundException ||

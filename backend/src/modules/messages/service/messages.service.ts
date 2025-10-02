@@ -25,7 +25,7 @@ export class MessagesService {
       });
 
       return { message };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
