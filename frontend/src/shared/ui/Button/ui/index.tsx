@@ -9,6 +9,7 @@ type ButtonProps = {
   defaultBorder?: boolean;
   selected?: boolean;
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  title?: string;
 };
 
 export default function Button({
@@ -19,11 +20,13 @@ export default function Button({
   defaultBorder = true,
   selected = false,
   onKeyDown,
+  title,
 }: ButtonProps) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
+      title={title}
       className={clsx(
         // Base styles - always applied
         "outline-none rounded-[12px] px-[12px] py-[6px] transition-all duration-90",

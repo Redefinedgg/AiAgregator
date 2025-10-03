@@ -28,16 +28,17 @@ model User {
 }
 
 model Chat {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique
-  authorId  Int
-  name      String?
-  spent     Float     @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  author    User      @relation(fields: [authorId], references: [id])
-  messages  Message[] 
-
+  id             Int       @id @default(autoincrement())
+  uuid           String    @unique
+  authorId       Int
+  name           String?
+  spent          Float     @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  author         User      @relation(fields: [authorId], references: [id])
+  messages       Message[]
+  smartMerges    Int       @default(0)
+  levelOfContext Int       @default(0)
 }
 
 model Message {
@@ -50,6 +51,8 @@ model Message {
   response       String
   spent          Float
   timeOfResponse String
+  isSmartMerge   Boolean  @default(false)
+  levelOfContext Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   author         User     @relation(fields: [authorId], references: [id])

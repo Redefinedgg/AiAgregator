@@ -1,3 +1,4 @@
+import Message from "@/shared/types/Message";
 import { Model } from "./enums";
 
 export interface SendPromptDto {
@@ -22,3 +23,15 @@ export interface SendPromptsResponse {
   durationMs: string;
 }
   
+export interface SmartMergeDto {
+  prompt: string;
+  model?: Model;
+  messages: string[];
+  chatUuid: string;
+}
+
+export interface SmartMergeResponse {
+  response: string;
+  durationMs: string;
+}
+

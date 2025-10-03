@@ -12,6 +12,7 @@ const NewChatView = () => {
     prompt,
     setPrompt,
     setPromptWithoutResponse,
+    setOldPrompt,
     selectedModels,
     setCurrentChatUuid,
   } = useChatStore();
@@ -35,7 +36,7 @@ const NewChatView = () => {
         className="h-[50vh] mt-[20px] text-[30px]"
         style={{ width: `calc(92vw - ${widthOfSidebar}px)` }}
         value={prompt}
-        onChange={(value) => setPrompt(value)}
+        onChange={(value) => {setPrompt(value); setOldPrompt(value)}}
         onClickSendButton={navigateToChat}
         canSend={prompt.trim().length > 0 && selectedModels.length > 0}
       />

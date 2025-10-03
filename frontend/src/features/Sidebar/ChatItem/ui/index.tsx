@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import EditChatTitleButton from "../../../Chat/EditChatTitleButton";
+import EditChatTitleButton from "../../../../entities/Chat/EditChatTitleButton";
 import { useChatStore } from "@/shared/stores/chat";
 import { useHandleUpdateChatName } from "@/shared/hooks/chats/useHandleUpdateChatName";
 import Input from "@/shared/ui/Input";

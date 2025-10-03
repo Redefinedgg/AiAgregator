@@ -7,14 +7,25 @@ import { toast } from "react-toastify";
 import { sendPrompt } from "@/shared/api/ai/requests";
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
 import { createNewMessages } from "@/shared/api/messages/requests";
-import { createChat, getChatByUuid, getChatMessagesByChatUuid } from "@/shared/api/chats/requests";
+import {
+  createChat,
+  getChatByUuid,
+  getChatMessagesByChatUuid,
+} from "@/shared/api/chats/requests";
 import { useAuthStore } from "@/shared/stores/auth";
 import { CreateMessageDto } from "@/shared/api/messages/types";
 import ChatTitle from "@/features/Chat/ChatTitle";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatView: FC = () => {
-  const { chatResponses, setChatResponses, promptWithoutResponse, currentChatUuid, chats, setChats } =
-    useChatStore();
+  const {
+    chatResponses,
+    setChatResponses,
+    promptWithoutResponse,
+    currentChatUuid,
+    chats,
+    setChats,
+  } = useChatStore();
   const { user } = useAuthStore();
   const { validateModels } = useValidateModels();
   const runIdRef = useRef(0);
@@ -45,7 +56,7 @@ const ChatView: FC = () => {
       if (!chatExists) {
         try {
           const newChat = await createChat({ user, uuid: currentChatUuid });
-          setChats([newChat.chat, ...chats])
+          setChats([newChat.chat, ...chats]);
         } catch (err) {
           console.error("createChat error", err);
           return;
@@ -61,10 +72,13 @@ const ChatView: FC = () => {
               timeOfResponse: m.timeOfResponse,
               logo: getLogoFromModel(m.model),
               response: m.response,
-              spent: m.spent
+              spent: m.spent,
+              uuid: m.uuid,
             }));
-            setChatResponses(mappedMessages);
-            return; // если чат существует и есть сообщения — не продолжаем отправку старого промпта
+            if (mappedMessages.length > 0) {
+              setChatResponses(mappedMessages);
+            }
+            return;
           }
         } catch (err) {
           console.error("getChatMessagesByChatUuid error", err);
@@ -90,6 +104,7 @@ const ChatView: FC = () => {
         logo: getLogoFromModel(model.model),
         response: "Wait for response...",
         spent: 0,
+        uuid: uuidv4(),
       }));
 
       setChatResponses(responsesPlaceholder);
@@ -125,7 +140,10 @@ const ChatView: FC = () => {
               spent: response?.spent ?? 0,
             };
 
-            updateSingleResponse(responsesPlaceholder[index].id, updatedResponse);
+            updateSingleResponse(
+              responsesPlaceholder[index].id,
+              updatedResponse
+            );
             return updatedResponse;
           } catch (error) {
             if (runIdRef.current !== runId || isUnmounted) return null;
@@ -145,10 +163,15 @@ const ChatView: FC = () => {
       );
 
       try {
-        const allResponses: CreateMessageDto[] = (await Promise.all(promises)).filter(Boolean) as CreateMessageDto[];
+        const allResponses: CreateMessageDto[] = (
+          await Promise.all(promises)
+        ).filter(Boolean) as CreateMessageDto[];
         if (runIdRef.current === runId && !isUnmounted && currentChatUuid) {
           try {
-            await createNewMessages({ messages: allResponses, chatUuid: currentChatUuid });
+            await createNewMessages({
+              messages: allResponses,
+              chatUuid: currentChatUuid,
+            });
           } catch (err) {
             console.error("createNewMessages error", err);
           }
@@ -164,13 +187,23 @@ const ChatView: FC = () => {
       isUnmounted = true;
       runIdRef.current += 1;
     };
-  }, [promptWithoutResponse, currentChatUuid, user, setChatResponses, validateModels]);
+  }, [
+    promptWithoutResponse,
+    currentChatUuid,
+    user,
+    setChatResponses,
+    validateModels,
+  ]);
 
   return (
     <>
       <ChatTitle />
       <section className="w-full p-[12px]">
-        {chatResponses.length > 0 ? <ChatResponses /> : <ChatWithoutResponses />}
+        {chatResponses.length > 0 ? (
+          <ChatResponses />
+        ) : (
+          <ChatWithoutResponses />
+        )}
       </section>
     </>
   );
