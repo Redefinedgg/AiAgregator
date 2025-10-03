@@ -11,7 +11,7 @@ import { Model } from "@/shared/api/ai/enums";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { Logo } from "@/shared/types/ChatResponse";
-import { createNewMessages } from "@/shared/api/messages/requests";
+import { createSmartMergeMessage } from "@/shared/api/messages/requests";
 
 export default function ChatTitle() {
   const {
@@ -32,6 +32,11 @@ export default function ChatTitle() {
 
   const handleSmartMerge = async () => {
     try {
+      if (!currentChatUuid) {
+        toast.error("No chat UUID");
+        return;
+      }
+
       const chat = chats.find((chat) => chat.uuid === currentChatUuid);
 
       if (!chat || chat.smartMerges > 0) {
@@ -58,13 +63,13 @@ export default function ChatTitle() {
         response: response.response,
         spent: 0,
         timeOfResponse: response.durationMs,
-        logo: Logo.smart_merge,
+        logo: Logo.SMART_MERGE,
       };
 
       setChatResponses([smartMergeResponse, ...newChatResponses]);
 
-      await createNewMessages({
-        messages: [smartMergeResponse],
+      await createSmartMergeMessage({
+        message: smartMergeResponse,
         chatUuid: currentChatUuid,
       });
     } catch (error) {

@@ -19,7 +19,7 @@ export class MessagesHelper {
           number: body.number,
           spent: body.spent,
           timeOfResponse: body.timeOfResponse,
-          isSmartMerge: body.isSmartMerge || false,
+          isSmartMerge: body.isSmartMerge,
         },
       });
 

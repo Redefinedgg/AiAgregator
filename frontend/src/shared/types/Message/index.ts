@@ -1,5 +1,6 @@
 import User from "../User";
 import Chat from "../Chat";
+import { Model } from "@/shared/api/ai/enums";
 
 export interface Message {
   id: number;
@@ -7,11 +8,12 @@ export interface Message {
   chatId: number;
   authorId: number;
 
-  model: string;
+  model: Model;
   response: string;
   spent: number;
   timeOfResponse: string;
   number: number;
+  isSmartMerge: boolean;
 
   createdAt: Date;
   updatedAt: Date;

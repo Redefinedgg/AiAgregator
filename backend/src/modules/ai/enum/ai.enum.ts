@@ -9,6 +9,6 @@ export enum Model {
   qwen_coder = "qwen-coder",
   llamascout = "llamascout",
   gemini_2_5_flash = "gemini_2_5_flash",
-  
+
   smart_merge = "smart-merge"
 }

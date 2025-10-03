@@ -74,9 +74,16 @@ const ChatView: FC = () => {
               response: m.response,
               spent: m.spent,
               uuid: m.uuid,
+              isSmartMerge: m.isSmartMerge,
             }));
-            if (mappedMessages.length > 0) {
-              setChatResponses(mappedMessages);
+
+            const orderedMessages = [
+              ...mappedMessages.filter((m) => m.isSmartMerge),
+              ...mappedMessages.filter((m) => !m.isSmartMerge),
+            ];
+
+            if (orderedMessages.length > 0) {
+              setChatResponses(orderedMessages);
             }
             return;
           }

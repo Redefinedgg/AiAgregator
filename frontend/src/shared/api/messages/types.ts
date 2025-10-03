@@ -9,3 +9,8 @@ export interface CreateMessagesDto {
   messages: CreateMessageDto[];
   chatUuid: string | null;
 }
+
+export interface CreateSmartMergeMessageDto {
+  message: CreateMessageDto;
+  chatUuid: string;
+}

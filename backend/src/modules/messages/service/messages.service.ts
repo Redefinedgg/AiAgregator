@@ -55,6 +55,10 @@ export class MessagesService {
         chatUuid: body.chatUuid,
       });
 
+      if (chat.smartMerges >= 1) {
+        throw new Error('Chat already smart merged');
+      }
+
       const { message } = await this.messagesHelper.createMessage(
         user.id,
         chat.id,
@@ -63,6 +67,17 @@ export class MessagesService {
           isSmartMerge: true,
         },
       );
+
+      const updatedChat = await this.prisma.chat.update({
+        where: {
+          id: chat.id,
+        },
+        data: {
+          smartMerges: {
+            increment: 1,
+          },
+        },
+      });
 
       return { message };
     } catch (err) {

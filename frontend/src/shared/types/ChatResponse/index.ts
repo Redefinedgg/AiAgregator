@@ -6,7 +6,7 @@ export enum Logo {
   LLAMA = "llama",
   GOOGLE = "google",
 
-  smart_merge = "smart_merge"
+  SMART_MERGE = "smart-merge"
 }
 
 export interface ChatResponse {
