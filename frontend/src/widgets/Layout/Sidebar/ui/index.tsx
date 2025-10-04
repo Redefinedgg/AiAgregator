@@ -11,7 +11,7 @@ export default function Sidebar() {
   return (
     <div
       className={`h-screen transition-all duration-300 pl-[10px] pr-[10px] py-[20px] overflow-y-auto ${
-        isOpen ? `min-w-[${widthOfSidebar}px]` : `w-[${widthOfSidebar}px]`
+        isOpen ? `min-w-[${widthOfSidebar}px] max-w-[250px]` : `w-[${widthOfSidebar}px]`
       }`}
     >
       <Button
