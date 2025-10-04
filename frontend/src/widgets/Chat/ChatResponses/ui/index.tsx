@@ -28,7 +28,7 @@ const ChatResponses: FC = () => {
   const columnWidthClass = getColumnWidth(columnsCount);
 
   return (
-    <div className="flex gap-[12px] w-[99%] m-[12px]">
+    <div className="flex gap-[12px] w-[99%] m-[12px] mt-[-12px]">
       {columns.map((columnResponses, columnIndex) => {
         return (
           <div

@@ -1,7 +1,17 @@
-export type Logo = "GPT" | "Claude" | "DeepSeek" | "qwen" | "llama" | "google";
+export enum Logo {
+  GPT = "GPT",
+  CLAUDE = "Claude",
+  DEEPSEEK = "DeepSeek",
+  QWEN = "qwen",
+  LLAMA = "llama",
+  GOOGLE = "google",
+
+  SMART_MERGE = "smart-merge"
+}
 
 export interface ChatResponse {
   id: number;
+  uuid: string;
   model: string;
   number: number;
   response: string;

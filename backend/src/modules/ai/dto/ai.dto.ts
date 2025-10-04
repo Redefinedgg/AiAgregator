@@ -1,5 +1,6 @@
 import { Model } from "../enum/ai.enum";
-import { IsEnum, IsString } from "class-validator";
+import { IsEnum, IsString, IsArray, IsOptional } from "class-validator";
+import { Message } from "@prisma/client";
 
 export class SendPromptDto {
   @IsString()
@@ -15,4 +16,19 @@ export class SendPromptsDto {
 
   @IsEnum(Model, { each: true })
   models: Model[];
+}
+
+export class SmartMergeDto {
+  @IsString()
+  prompt: string;
+
+  @IsEnum(Model)
+  @IsOptional()
+  model?: Model;
+
+  @IsArray()
+  messages: string[];
+
+  @IsString()
+  chatUuid: string;
 }

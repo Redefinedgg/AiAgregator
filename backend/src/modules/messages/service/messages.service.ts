@@ -1,54 +1,85 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
-import { CreateMessageDto, CreateMessagesDto } from '../dto/messages.dto';
+import {
+  CreateMessagesDto,
+  CreateSmartMergeMessageDto,
+} from '../dto/messages.dto';
 import { CreateMessagesResponse } from '../response/messages.response';
 import { Message } from '@prisma/client';
+import { MessagesHelper } from '../helper/messages.helper';
 
 @Injectable()
 export class MessagesService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly messagesHelper: MessagesHelper,
+  ) {}
 
-  async createMessage(userId: number, chatId: number, body: CreateMessageDto) {
+  async createMessages(
+    userUuid: string,
+    body: CreateMessagesDto,
+  ): Promise<CreateMessagesResponse> {
     try {
-      const message = await this.prisma.message.create({
-        data: {
-          authorId: userId,
-          uuid: uuidv4(),
-          chatId: chatId,
-          model: body.model,
-          response: body.response.toString(),
-          number: body.number,
-          spent: body.spent,
-          timeOfResponse: body.timeOfResponse,
-        },
+      const { user, chat } = await this.messagesHelper.validateUserAndChat({
+        userUuid,
+        chatUuid: body.chatUuid,
       });
-
-      return { message };
-    } catch (error: any) {
-      throw error;
-    }
-  }
-
-  async createMessages(userUuid: string, body: CreateMessagesDto): Promise<CreateMessagesResponse> {
-    try {
-      const user = await this.prisma.user.findUnique({ where: { uuid: userUuid } });
-      if (!user) throw new NotFoundException('User not found');
-
-      const chat = await this.prisma.chat.findUnique({ where: { uuid: body.chatUuid } });
-      if (!chat) throw new NotFoundException("Chat not found");
 
       const newMessages: Message[] = await Promise.all(
         body.messages.map(async (message) => {
           const messageData = {
             ...message,
           };
-          const created = await this.createMessage(user.id, chat.id, messageData);
+          const created = await this.messagesHelper.createMessage(
+            user.id,
+            chat.id,
+            messageData,
+          );
           return created.message;
-        })
+        }),
       );
 
       return { messages: newMessages };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async createSmartMergeMessage(
+    userUuid: string,
+    body: CreateSmartMergeMessageDto,
+  ) {
+    try {
+      const { user, chat } = await this.messagesHelper.validateUserAndChat({
+        userUuid,
+        chatUuid: body.chatUuid,
+      });
+
+      if (chat.smartMerges >= 1) {
+        throw new Error('Chat already smart merged');
+      }
+
+      const { message } = await this.messagesHelper.createMessage(
+        user.id,
+        chat.id,
+        {
+          ...body.message,
+          isSmartMerge: true,
+        },
+      );
+
+      const updatedChat = await this.prisma.chat.update({
+        where: {
+          id: chat.id,
+        },
+        data: {
+          smartMerges: {
+            increment: 1,
+          },
+        },
+      });
+
+      return { message };
     } catch (err) {
       throw err;
     }

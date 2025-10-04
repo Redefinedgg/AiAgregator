@@ -2,6 +2,7 @@
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
 import { SelectedModel } from "@/shared/types/SelectedModel";
 import { ChatResponse } from "@/shared/types/ChatResponse";
+import { v4 as uuidv4 } from "uuid";
 
 export const useResponsePlaceholders = () => {
   const createResponsePlaceholders = (
@@ -16,6 +17,7 @@ export const useResponsePlaceholders = () => {
       timeOfResponse: "загружается...",
       logo: getLogoFromModel(selectedModel.model),
       isLoading: true,
+      uuid: uuidv4(),
     }));
   };
 

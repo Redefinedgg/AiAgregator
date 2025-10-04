@@ -19,6 +19,7 @@ export class ChatsController {
   constructor(private readonly chatsService: ChatsService) { }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createChat(@Request() req: UserRequest, @Body() body: CreateChatDto) {
     try {
       const chat = await this.chatsService.createChat(req.user.uuid, body);
@@ -29,6 +30,7 @@ export class ChatsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getChats(@Request() req: UserRequest) {
     try {
       const chats = await this.chatsService.getChatsByAuthor(req.user.uuid);
@@ -39,6 +41,7 @@ export class ChatsController {
   }
 
   @Get(':uuid')
+  @UseGuards(JwtAuthGuard)
   async getChatByUuid(@Request() req: UserRequest, @Param('uuid') uuid: string) {
     try {
       const chat = await this.chatsService.getChatByUuid(req.user.uuid, uuid);
@@ -49,6 +52,7 @@ export class ChatsController {
   }
 
   @Get(':uuid/messages')
+  @UseGuards(JwtAuthGuard)
   async getChatMessagesByChatUuid(@Request() req: UserRequest, @Param('uuid') uuid: string) {
     try {
       const messages = await this.chatsService.getChatMessagesByChatUuid(req.user.uuid, uuid);
@@ -59,6 +63,7 @@ export class ChatsController {
   }
 
   @Patch(":uuid")
+  @UseGuards(JwtAuthGuard)
   async updateChat(@Param("uuid") uuid: string, @Body() body: UpdateChatDto) {
     try {
       await this.chatsService.updateChat(uuid, body);

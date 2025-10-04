@@ -29,6 +29,8 @@ export interface Chat {
     updatedAt: Date;
     author: User;
     messages: Message[];
+    smartMerges: number;
+    alreadyUsedContext: number;
 }
 
 export default Chat;

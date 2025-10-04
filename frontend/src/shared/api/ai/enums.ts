@@ -8,5 +8,6 @@ export enum Model {
   gpt_4_1 = "openai-large",
   qwen_coder = "qwen-coder",
   llamascout = "llamascout",
-  gemini_2_5_flash = "gemini_2_5_flash"
+  gemini_2_5_flash = "gemini_2_5_flash",
+  smart_merge = "smart-merge"
 }
