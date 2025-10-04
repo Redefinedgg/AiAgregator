@@ -8,5 +8,5 @@ export const LOGO_SIZES: Record<
   qwen: {w:64, h: 64, className: "ml-[0px] mt-[0px]" },
   llama: {w:42, h:42, className: "rounded-full" },
   google: {w: 42, h: 42},
-  smart_merge: {w: 42, h: 42}
+  "smart-merge": {w: 46, h: 46}
 } as const;

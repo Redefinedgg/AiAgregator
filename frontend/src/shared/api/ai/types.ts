@@ -28,6 +28,7 @@ export interface SmartMergeDto {
   model?: Model;
   messages: string[];
   chatUuid: string;
+  number: number;
 }
 
 export interface SmartMergeResponse {

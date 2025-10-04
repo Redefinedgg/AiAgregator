@@ -3,6 +3,7 @@ export interface CreateMessageDto {
   response: string;
   spent: number;
   timeOfResponse: string;
+  number: number;
 }
 
 export interface CreateMessagesDto {

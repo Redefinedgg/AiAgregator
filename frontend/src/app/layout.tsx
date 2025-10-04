@@ -22,6 +22,10 @@ type Props = {
 export const metadata: Metadata = {
   title: "AI Aggregator",
   description: "Dev version",
+  keywords: ["AI Aggregator", "AI", "Aggregator", "Dev version"],
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default async function RootLayout({ children }: Props) {

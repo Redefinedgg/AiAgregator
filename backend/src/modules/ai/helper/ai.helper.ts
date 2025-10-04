@@ -48,7 +48,12 @@ export class AIHelper {
     completionTokens: number,
     isfree: boolean,
   ): { spent: number } {
-    return this.configService.calculateCost(model, promptTokens, completionTokens, isfree);
+    return this.configService.calculateCost(
+      model,
+      promptTokens,
+      completionTokens,
+      isfree,
+    );
   }
 
   async getAIResponse(prompt: string, model: Model): Promise<AIResponse> {
