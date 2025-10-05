@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import {
   CreateMessagesDto,
@@ -13,7 +13,7 @@ export class MessagesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly messagesHelper: MessagesHelper,
-  ) {}
+  ) { }
 
   async createMessages(
     userUuid: string,
@@ -68,7 +68,7 @@ export class MessagesService {
         },
       );
 
-      const updatedChat = await this.prisma.chat.update({
+      await this.prisma.chat.update({
         where: {
           id: chat.id,
         },
