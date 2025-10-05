@@ -1,6 +1,7 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Query } from "@nestjs/common";
 import { StatisticService } from "../service/statistic.service";
 import { TopModelsResponse } from "../response/statistic.response";
+import { Period } from "../enum/statistic.enum";
 
 @Controller("statistic")
 export class StatisticController {
@@ -8,7 +9,9 @@ export class StatisticController {
     private readonly statisticService: StatisticService
   ) { }
 
-  async getTopModels(): Promise<TopModelsResponse> {
-    return await this.statisticService.getTopModels();
+  async getTopModels(
+    @Query("period") period: Period
+  ): Promise<TopModelsResponse> {
+    return await this.statisticService.getTopModels(period);
   }
 }

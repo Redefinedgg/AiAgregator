@@ -1,6 +1,7 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "src/prisma/service/prisma.service";
 import { TopModelsResponse } from "../response/statistic.response";
+import { Period } from "../enum/statistic.enum";
 
 @Injectable()
 export class StatisticService {
@@ -10,10 +11,33 @@ export class StatisticService {
 
   private readonly logger = new Logger(StatisticService.name);
 
-  async getTopModels(): Promise<TopModelsResponse> {
+  async getTopModels(period: Period): Promise<TopModelsResponse> {
     try {
+      let dateFilter: Date | undefined;
+
+      const now = new Date();
+
+      switch (period) {
+        case Period.all:
+          break;
+        case Period.year:
+          dateFilter = new Date(now.getFullYear(), 0, 1);
+          break;
+        case Period.month:
+          dateFilter = new Date(now.getFullYear(), now.getMonth(), 1);
+          break;
+        case Period.day:
+          dateFilter = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          break;
+        default:
+          throw new BadRequestException("Invalid period. Use all, year, month or day.");
+      }
+
+      const where = dateFilter ? { createdAt: { gte: dateFilter } } : undefined;
+
       const top = await this.prisma.message.groupBy({
         by: ["model"],
+        where,
         _count: { model: true },
         orderBy: { _count: { model: "desc" } },
         take: 3
