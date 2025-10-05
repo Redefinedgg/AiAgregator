@@ -18,15 +18,15 @@ export class StatisticService {
       const now = new Date();
 
       switch (period) {
-        case Period.all:
+        case Period.ALL:
           break;
-        case Period.year:
+        case Period.YEAR:
           dateFilter = new Date(now.getFullYear(), 0, 1);
           break;
-        case Period.month:
+        case Period.MONTH:
           dateFilter = new Date(now.getFullYear(), now.getMonth(), 1);
           break;
-        case Period.day:
+        case Period.DAY:
           dateFilter = new Date(now.getFullYear(), now.getMonth(), now.getDate());
           break;
         default:

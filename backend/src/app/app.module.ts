@@ -8,6 +8,7 @@ import { UsersModule } from '../modules/users/users.module';
 import { ChatsModule } from '../modules/chats/chats.module';
 import { MessagesModule } from '../modules/messages/messages.module';
 import { HttpLoggerMiddleware } from 'src/common/middlewares/HttpLogger/httpLogger.middleware';
+import { StatisticModule } from 'src/modules/statistic/statistic.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HttpLoggerMiddleware } from 'src/common/middlewares/HttpLogger/httpLogg
     UsersModule,
     ChatsModule,
     MessagesModule,
+    StatisticModule
   ],
   controllers: [AppController],
   providers: [AppService],
