@@ -36,3 +36,12 @@ export interface SmartMergeResponse {
   durationMs: string;
 }
 
+export interface LuckyPromptDto {
+  prompt?: string;
+  model?: Model;
+}
+
+export interface LuckyPromptResponse {
+  response: string;
+}
+

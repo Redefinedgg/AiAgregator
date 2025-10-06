@@ -10,3 +10,8 @@ export class SendPromptsResponse {
 export class SmartMergeResponse {
   response: string;
 }
+
+export class LuckyPromptResponse {
+  response: string;
+  model: string;
+}

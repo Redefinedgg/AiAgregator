@@ -25,7 +25,10 @@ export class AIHelper {
     private readonly deepSeekService: DeepSeekService,
   ) {}
 
-  validateModel(model: string): void {
+  validateModel(model: any): void {
+    if (typeof model !== 'string') {
+      throw new BadRequestException('Model must be a string');
+    }
     if (!Object.values(Model).includes(model as Model)) {
       throw new BadRequestException(
         `Invalid model: ${model}. Supported models: ${Object.values(Model).join(', ')}`,
@@ -90,5 +93,15 @@ export class AIHelper {
       supportedModels: Object.values(Model),
       pricing: this.configService.modelPricing,
     };
+  }
+
+  async getRandomModel(
+    body: {
+      models?: Model[];
+    } = {},
+  ): Promise<Model> {
+    const models = body.models || Object.values(Model);
+    const randomIndex = Math.floor(Math.random() * models.length);
+    return models[randomIndex];
   }
 }
