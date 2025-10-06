@@ -2,8 +2,8 @@
 
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AiService } from '../service/ai.service';
-import { SendPromptDto, SmartMergeDto } from '../dto/ai.dto';
-import { SendPromptResponse, SmartMergeResponse } from '../response/ai.response';
+import { SendPromptDto, SmartMergeDto, LuckyPromptDto } from '../dto/ai.dto';
+import { SendPromptResponse, SmartMergeResponse, LuckyPromptResponse } from '../response/ai.response';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 
 @Controller('ai')
@@ -20,5 +20,11 @@ export class AiController {
   @Post('smart-merge')
   async smartMerge(@Body() body: SmartMergeDto): Promise<SmartMergeResponse> {
     return this.aiService.smartMerge(body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('lucky-prompt')
+  async luckyPrompt(@Body() body: LuckyPromptDto): Promise<LuckyPromptResponse> {
+    return this.aiService.luckyPrompt(body);
   }
 }

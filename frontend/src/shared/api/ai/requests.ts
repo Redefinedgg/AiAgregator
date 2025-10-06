@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import axiosInstance from "../client";
 import {
+  LuckyPromptDto,
+  LuckyPromptResponse,
   SendPromptDto,
   SendPromptResponse,
   SmartMergeDto,
@@ -76,6 +78,36 @@ export const smartMerge = async (
     toast.error(
       error.response.data.message +
         " (smart merge from " +
+        body.model +
+        " with prompt " +
+        body.prompt +
+        " not received (error))"
+    );
+    throw error;
+  }
+};
+
+export const luckyPrompt = async (
+  body: LuckyPromptDto
+): Promise<LuckyPromptResponse> => {
+  try {
+    const response = await axiosInstance.post(
+      "/ai/lucky-prompt",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return {
+      ...response.data,
+    };
+  } catch (error: any) {
+    toast.error(
+      error.response.data.message +
+        " (lucky prompt from " +
         body.model +
         " with prompt " +
         body.prompt +

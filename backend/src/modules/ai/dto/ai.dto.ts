@@ -32,3 +32,13 @@ export class SmartMergeDto {
   @IsString()
   chatUuid: string;
 }
+
+export class LuckyPromptDto {
+    @IsString()
+    @IsOptional()
+    prompt?: string;
+
+    @IsEnum(Model)
+    @IsOptional()
+    model?: Model;
+}

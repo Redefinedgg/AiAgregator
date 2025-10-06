@@ -11,6 +11,7 @@ import { LlamaService } from './service/ai/llama.service';
 import { GeminiService } from './service/ai/gemini.service';
 import { G4FService } from './service/ai/g4f.service'; // Add this import
 import { AIConfigService } from './config/ai.config';
+import { SmartMergeHelper } from './helper/smart-merge.helper';
 
 @Module({
   imports: [PrismaModule],
@@ -26,6 +27,7 @@ import { AIConfigService } from './config/ai.config';
     GeminiService,
     AIHelper, // Should be after all AI services (depends on them)
     AiService, // Should be last (depends on AIHelper)
+    SmartMergeHelper,
   ],
 })
 export class AiModule {}
