@@ -41,10 +41,16 @@ export class StatisticService {
         orderBy: { _count: { model: "desc" } },
       });
 
-      const models = top.map((item) => ({
-        name: item.model,
-        messages: item._count.model,
-      }));
+      let models: { name: string, messages: number }[] = [];
+
+      top.forEach((model) => {
+        if (!model._count.model) return;
+
+        models.push({
+          name: model.model,
+          messages: model._count.model
+        });
+      });
 
       return { models };
     } catch (err) {
