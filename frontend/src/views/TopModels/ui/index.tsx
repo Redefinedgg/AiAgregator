@@ -1,7 +1,7 @@
+import ModelStats from "@/widgets/ModelStats";
+
 export default function TopModelsView() {
   return (
-    <div>
-
-    </div>
+    <ModelStats />
   )
 }

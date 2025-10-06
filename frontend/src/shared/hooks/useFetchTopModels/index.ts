@@ -2,11 +2,11 @@ import { getTopModels } from "@/shared/api/top-models/requests";
 import { useTopModelsStore } from "@/shared/stores/top-models"
 import { useEffect } from "react"
 
-export const useFetchTopModels = () => {
+export const useFetchTopModels = (period?: string) => {
   const { setModels, setIsLoading } = useTopModelsStore();
 
   useEffect(() => {
-    const fetchTopModels = async (period?: string) => {
+    const fetchTopModels = async () => {
       try {
         setIsLoading(true);
         const data = await getTopModels(period);
