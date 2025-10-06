@@ -14,7 +14,6 @@ export class StatisticService {
   async getTopModels(period: Period): Promise<TopModelsResponse> {
     try {
       let dateFilter: Date | undefined;
-
       const now = new Date();
 
       switch (period) {
@@ -40,16 +39,14 @@ export class StatisticService {
         where,
         _count: { model: true },
         orderBy: { _count: { model: "desc" } },
-        take: 3
       });
 
-      const [first, second, third] = top.map(m => m.model);
+      const models = top.map((item) => ({
+        name: item.model,
+        messages: item._count.model,
+      }));
 
-      return {
-        first: first ?? null,
-        second: second ?? null,
-        third: third ?? null
-      }
+      return { models };
     } catch (err) {
       this.logger.error(`Failed to get top models: ${err.message}`, err.stack);
       throw err;
