@@ -1,9 +1,7 @@
 "use client";
 
 import Button from "@/shared/ui/Button";
-import {
-  useChatStore,
-} from "@/shared/stores/chat";
+import { useChatStore } from "@/shared/stores/chat";
 import { Model } from "@/shared/api/ai/enums";
 import { useStoreHydration } from "@/shared/hooks/shared/useHydration"; // Adjust path as needed
 import SetCountOfModels from "@/entities/NewChat/CountOfModels/SetCountOfModels";
@@ -12,11 +10,11 @@ import models from "@/shared/constants/MODELS";
 import useHandleModelClick from "@/shared/hooks/chats/useHandleModelClick";
 import { useSidebarStore } from "@/shared/stores/sidebar";
 
-export default function ChatAIChoiceButtons() {
+export default function NewChatAIChoiceButtons() {
   const { selectedModels } = useChatStore();
   const isHydrated = useStoreHydration();
   const { handleModelClick } = useHandleModelClick();
-  const {widthOfSidebar} = useSidebarStore();
+  const { widthOfSidebar } = useSidebarStore();
 
   return (
     <section
