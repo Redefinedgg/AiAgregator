@@ -1,23 +1,32 @@
-import Image from "next/image";
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
-import { getRankColor } from "@/shared/helpers/getRankColor";
 import { ModelType } from "@/shared/types/Model";
 
 type Props = {
-  model: ModelType;
-  rank: number;
+  x: string | number | undefined;
+  y: string | number | undefined;
+  width: string | number | undefined;
+  height: string | number | undefined;
+  value: string | number | undefined;
+  data: ModelType[];
 }
 
-export default function ModelsLogo({ model, rank }: Props) {
+export default function ModelsLogo({ x, y, width, height, value, data }: Props) {
+  if (x === undefined || y === undefined || width === undefined || height === undefined) return null;
+
+  const model = data.find(m => m.name === value);
+  if (!model) return null;
+
+  const cx = Number(x) + Number(width) / 2 - 60 / 2;
+  const cy = Number(y) + 5;
+
   return (
-    <div className={`flex flex-col items-center w-20 ml-[20px]`}>
-      <Image
-        src={`/logo/${getLogoFromModel(model.name)}.png`}
-        alt={model.name}
-        width={60}
-        height={60}
-        className={`rounded-full ${getRankColor(rank)}`}
-      />
-    </div>
+    <image
+      href={`/logo/${getLogoFromModel(model.name)}.png`}
+      x={cx}
+      y={cy}
+      width="60"
+      height="60"
+      clipPath="circle(30px at center)"
+    />
   );
 }

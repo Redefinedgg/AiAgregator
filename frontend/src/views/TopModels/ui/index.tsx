@@ -25,7 +25,6 @@ export default function TopModelsView({ period }: Props) {
         <h1>Loading...</h1>
       ) : (
         <>
-          <TopModelsLogos data={sorted} />
           <TopModelsChart data={sorted} />
         </>
       )}
