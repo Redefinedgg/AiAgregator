@@ -1,4 +1,6 @@
-export interface Model {
-  name: string;
+import { Model } from "@/shared/api/ai/enums";
+
+export interface ModelType {
+  name: Model;
   messages: number;
 }

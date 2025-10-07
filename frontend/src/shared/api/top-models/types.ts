@@ -1,5 +1,5 @@
-import { Model } from "@/shared/types/Model";
+import { ModelType } from "@/shared/types/Model";
 
 export interface TopModelsResponse {
-  models: Model[];
+  models: ModelType[];
 }

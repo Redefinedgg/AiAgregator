@@ -6,7 +6,7 @@ export const getRankColor = (rank: number): string => {
     case 2:
       return color("silver");
     case 3:
-      return color("bronze");
+      return color("#CD7F32");
     default:
       return color("black");
   }
