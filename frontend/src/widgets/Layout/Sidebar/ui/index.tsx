@@ -4,9 +4,13 @@ import NewChatButton from "@/features/Sidebar/NewChatButton";
 import { useSidebarStore } from "@/shared/stores/sidebar";
 import Button from "@/shared/ui/Button";
 import ChatList from "./ChatList";
+import { useAuthStore } from "@/shared/stores/auth";
 
 export default function Sidebar() {
   const { isOpen, setIsOpen, widthOfSidebar } = useSidebarStore();
+  const { user } = useAuthStore();
+
+  if (!user) return null;
 
   return (
     <div

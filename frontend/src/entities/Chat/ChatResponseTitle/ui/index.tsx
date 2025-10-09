@@ -1,21 +1,17 @@
 import CopyButton from "@/shared/ui/CopyButton";
 import Image from "next/image";
 import { useChatStore } from "@/shared/stores/chat";
-import { ChatResponse as ChatResponseType } from "@/shared/types/ChatResponse";
-import { FC, useEffect, useState } from "react";
-import { LOGO_SIZES } from "@/shared/constants/LOGO_SIZES";
+import { FC } from "react";
+import useGetSizeOfLogo from "@/shared/hooks/chats/useGetSizeOfLogo";
 
 interface Props {
   id: number | undefined;
 }
 
 const ChatResponseTitle: FC<Props> = ({ id }) => {
-  const { chatResponses, getOneChatResponse } = useChatStore();
+  const { getOneChatResponse } = useChatStore();
 
-  const size = LOGO_SIZES[getOneChatResponse(id)?.logo || ""] || {
-    w: 64,
-    h: 64,
-  };
+  if (!id) return null;
 
   return (
     <div
@@ -28,9 +24,9 @@ const ChatResponseTitle: FC<Props> = ({ id }) => {
           <Image
             src={`/logo/${getOneChatResponse(id)?.logo || ""}.png`}
             alt={`${getOneChatResponse(id)?.logo || ""} Logo`}
-            className={size.className || ""}
-            width={size.w}
-            height={size.h}
+            className={useGetSizeOfLogo(id).className || ""}
+            width={useGetSizeOfLogo(id).w}
+            height={useGetSizeOfLogo(id).h}
           />
         </div>
         <span className="ml-2">

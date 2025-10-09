@@ -16,6 +16,8 @@ import { useAuthStore } from "@/shared/stores/auth";
 import { CreateMessageDto } from "@/shared/api/messages/types";
 import ChatTitle from "@/features/Chat/ChatTitle";
 import { v4 as uuidv4 } from "uuid";
+import ChatSelectedResponse from "@/widgets/Chat/ChatSelectedResponse";
+import ChatResizableParts from "@/widgets/Chat/ChatResizableParts";
 
 const ChatView: FC = () => {
   const {
@@ -25,6 +27,7 @@ const ChatView: FC = () => {
     currentChatUuid,
     chats,
     setChats,
+    selectedResponse,
   } = useChatStore();
   const { user } = useAuthStore();
   const { validateModels } = useValidateModels();
@@ -205,9 +208,17 @@ const ChatView: FC = () => {
   return (
     <>
       <ChatTitle />
-      <section className="w-full p-[12px]">
+      <section className="w-full p-[12px] h-[100%]">
         {chatResponses.length > 0 ? (
-          <ChatResponses />
+          <div className="flex min-h-full max-w-[calc(100%-16px)] ">
+            {selectedResponse !== null && (
+              <>
+                <ChatSelectedResponse />
+                <ChatResizableParts />
+              </>
+            )}
+            <ChatResponses />
+          </div>
         ) : (
           <ChatWithoutResponses />
         )}

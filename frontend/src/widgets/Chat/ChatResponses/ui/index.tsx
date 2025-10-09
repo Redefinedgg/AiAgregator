@@ -8,27 +8,37 @@ import useDistributeResponses from "@/shared/hooks/chats/useDistributeResponses"
 import getColumnWidth from "@/shared/helpers/getColumnWidth";
 
 const ChatResponses: FC = () => {
-  const { columnsCount, setColumnsCount, chatResponses } = useChatStore();
+  const { columnsCount, setColumnsCount, selectedResponse, widthOfSecondPart } =
+    useChatStore();
   const { distributeResponses } = useDistributeResponses();
 
   useEffect(() => {
     const handleResize = () => {
-      const newColumnsCount = getColumnsCount();
+      const newColumnsCount = getColumnsCount({
+        isWithSelectedResponse: typeof selectedResponse === "number",
+        proccentOfSecondPart: widthOfSecondPart,
+      });
       setColumnsCount(newColumnsCount);
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [setColumnsCount]);
+  }, [setColumnsCount, selectedResponse, widthOfSecondPart, columnsCount]);
 
   const columns = distributeResponses();
-
   const columnWidthClass = getColumnWidth(columnsCount);
 
   return (
-    <div className="flex gap-[12px] w-[99%] m-[12px] mt-[-12px]">
+    <div
+      className="flex gap-[12px] flex-1"
+      style={{
+        width: `${widthOfSecondPart}%`,
+      }}
+    >
       {columns.map((columnResponses, columnIndex) => {
         return (
           <div

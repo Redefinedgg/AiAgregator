@@ -5,7 +5,7 @@ import EditChatTitleButton from "../../../../entities/Chat/EditChatTitleButton";
 import { useGetChatsName } from "@/shared/hooks/chats/useGetChatsName";
 import Button from "@/shared/ui/Button";
 import { useHandleSmartMerge } from "@/shared/hooks/ai/useHandleSmartMerge";
-import ChatTileNameInput from "../../../../entities/ChatTileNameInput";
+import ChatTileNameInput from "../../../../entities/Chat/ChatTileNameInput";
 
 export default function ChatTitle() {
   const { currentChatUuid, editingHeader, startEditingHeader } = useChatStore();
