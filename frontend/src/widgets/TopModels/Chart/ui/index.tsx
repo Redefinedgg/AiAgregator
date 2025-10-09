@@ -4,7 +4,6 @@ import {
   Cell,
   LabelList,
   ResponsiveContainer,
-  XAxis,
   YAxis,
 } from "recharts";
 import { COLORS } from "../constants";
@@ -12,7 +11,8 @@ import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
 import ModelsLogo from "@/features/TopModels/ModelsLogo";
 import { useTopModelsStore } from "@/shared/stores/top-models";
 import { LOGO_SIZES } from "@/shared/constants/LOGO_SIZES";
-import { Model } from "@/shared/api/ai/enums";
+import ModelNameLabel from "@/features/TopModels/ModelNameLabel";
+import ModelMessagesLabel from "@/features/TopModels/ModelMessagesLabel";
 
 export default function TopModelsChart() {
   const { models } = useTopModelsStore();
@@ -26,41 +26,45 @@ export default function TopModelsChart() {
         margin={{ top: 110, right: 20, left: 20, bottom: 40 }}
         className="relative"
       >
-        <XAxis
-          dataKey="name"
-          stroke="#ffffff"
-          tick={{ fill: "#ffffff" }}
-          tickLine={false}
-          axisLine={false}
-        />
-
         <YAxis stroke="#ffffff" tickLine={false} axisLine={false} />
 
         <Bar dataKey="messages" radius={[10, 10, 0, 0]} className="relative">
           <LabelList
             dataKey="name"
-            content={(props) => (
-              <ModelsLogo
-                x={props.x as number}
-                y={props.y as number}
-                width={props.width as number}
-                value={props.value as string}
-                data={sorted}
-                logoSize={
-                  LOGO_SIZES[getLogoFromModel(props.value as Model)].w + 10
-                }
-                rank={props.index as number + 1}
-                className={LOGO_SIZES[getLogoFromModel(props.value as Model)].className}
-              />
-            )}
-          />
+            content={(props) => {
+              const { x, y, width, index } = props;
+              const model = sorted[index as number];
+              const logo = getLogoFromModel(model.name);
+              const logoSize = LOGO_SIZES[logo].w + 10;
 
-          <LabelList
-            dataKey="messages"
-            position="insideTop"
-            fill="#fff"
-            style={{ fontSize: 18, fontWeight: 600 }}
-            offset={70}
+              if (x === undefined || y === undefined || width === undefined) return null;
+
+              const cx = x as number + Number(width) / 2;
+              const topY = y as number - logoSize - 20;
+
+              return (
+                <>
+                  <ModelsLogo
+                    x={cx - logoSize / 2}
+                    y={topY}
+                    logo={logo}
+                    logoSize={logoSize}
+                    rank={index as number + 1}
+                    className={LOGO_SIZES[logo].className}
+                  />
+                  <ModelNameLabel
+                    x={cx}
+                    y={topY + logoSize - 12}
+                    name={model.name}
+                  />
+                  <ModelMessagesLabel
+                    x={cx}
+                    y={topY + logoSize + 10}
+                    messages={model.messages}
+                  />
+                </>
+              );
+            }}
           />
 
           {sorted.map((_, index) => (

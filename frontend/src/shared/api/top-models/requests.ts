@@ -1,8 +1,9 @@
 import axiosInstance from "../client";
+import { Period } from "./enums";
 import { TopModelsResponse } from "./types";
 import { toast } from "react-toastify";
 
-export const getTopModels = async (period?: string): Promise<TopModelsResponse> => {
+export const getTopModels = async (period: Period | string): Promise<TopModelsResponse> => {
   try {
     const response = await axiosInstance.get(`/statistic/top-models${period ? `?period=${period}` : ""}`);
     console.log(response.data);

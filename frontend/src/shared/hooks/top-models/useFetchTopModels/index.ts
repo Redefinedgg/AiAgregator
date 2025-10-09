@@ -1,9 +1,13 @@
+import { Period } from "@/shared/api/top-models/enums";
 import { getTopModels } from "@/shared/api/top-models/requests";
 import { useTopModelsStore } from "@/shared/stores/top-models"
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react"
 
-export const useFetchTopModels = (period?: string) => {
+export const useFetchTopModels = () => {
   const { setModels, setIsLoading } = useTopModelsStore();
+  const searchParams = useSearchParams();
+  const period = searchParams.get("period") || Period.ALL;
 
   useEffect(() => {
     const fetchTopModels = async () => {
