@@ -1,7 +1,6 @@
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
+import { getRankColor } from "@/shared/helpers/getRankColor";
 import { ModelType } from "@/shared/types/Model";
-import { LOGO_SIZES } from "@/shared/constants/LOGO_SIZES";
-import { Model } from "@/shared/api/ai/enums";
 
 type Props = {
   x?: number;
@@ -10,18 +9,17 @@ type Props = {
   value?: string | number;
   data: ModelType[];
   logoSize: number;
+  rank: number;
   className?: string;
 };
 
-export default function ModelsLogo({ x, y, width, value, data, logoSize, className }: Props) {
+export default function ModelsLogo({ x, y, width, value, data, logoSize, rank, className }: Props) {
   if (x === undefined || y === undefined || width === undefined) return null;
 
   const model = data.find((m) => m.name === value);
   if (!model) return null;
 
   const logo = getLogoFromModel(model.name);
-  const logoW = LOGO_SIZES[logo].w;
-  const logoH = LOGO_SIZES[logo].h;
 
   // Центрируем по ширине бара
   const cx = x + width / 2 - logoSize / 2;
@@ -29,13 +27,12 @@ export default function ModelsLogo({ x, y, width, value, data, logoSize, classNa
 
   return (
     <image
-      href={`/logo/${logo}.png`}
+      href={`/logo/${logo}.png?v=${Date.now()}`}
       x={cx}
-      y={cy-24}
+      y={cy - 24}
       width={logoSize}
       height={logoSize}
-      clipPath="circle(70px at center)"
-      className={className}
+      className={`${className} ${getRankColor(rank)}`}
     />
   );
 }

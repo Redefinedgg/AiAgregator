@@ -8,7 +8,6 @@ import {
   YAxis,
 } from "recharts";
 import { COLORS } from "../constants";
-import { ModelType } from "@/shared/types/Model";
 import { getLogoFromModel } from "@/shared/helpers/getLogoFromModel";
 import ModelsLogo from "@/features/TopModels/ModelsLogo";
 import { useTopModelsStore } from "@/shared/stores/top-models";
@@ -50,6 +49,7 @@ export default function TopModelsChart() {
                 logoSize={
                   LOGO_SIZES[getLogoFromModel(props.value as Model)].w + 10
                 }
+                rank={props.index as number + 1}
                 className={LOGO_SIZES[getLogoFromModel(props.value as Model)].className}
               />
             )}

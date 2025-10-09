@@ -1,5 +1,5 @@
 export const getRankColor = (rank: number): string => {
-  const color = (color: string) => `drop-shadow-[0_0_15px_${color}]`;
+  const color = (color: string) => `drop-shadow-[0_0_10px_${color}]`;
   switch (rank) {
     case 1:
       return color("gold");
