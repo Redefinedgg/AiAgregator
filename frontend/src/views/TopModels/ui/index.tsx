@@ -1,5 +1,6 @@
 "use client";
 
+import { useChangePeriodOnLoad } from "@/shared/hooks/top-models/useChangePeriodOnLoad";
 import { useFetchTopModels } from "@/shared/hooks/top-models/useFetchTopModels";
 import { useTopModelsStore } from "@/shared/stores/top-models";
 import TopModelsChart from "@/widgets/TopModels/Chart";
@@ -7,6 +8,7 @@ import TopModelsPeriods from "@/widgets/TopModels/Periods";
 import TopModelsTitle from "@/widgets/TopModels/Title";
 
 export default function TopModelsView() {
+  useChangePeriodOnLoad();
   useFetchTopModels();
 
   const { isLoading } = useTopModelsStore();
