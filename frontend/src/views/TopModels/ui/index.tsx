@@ -23,9 +23,7 @@ export default function TopModelsView() {
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (
-        <>
-          <TopModelsChart />
-        </>
+        <TopModelsChart />
       )}
     </div>
   );
