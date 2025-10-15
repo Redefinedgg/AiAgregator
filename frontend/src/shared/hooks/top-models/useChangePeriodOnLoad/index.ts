@@ -12,11 +12,11 @@ export const useChangePeriodOnLoad = () => {
     let periodEnum: Period = Period.ALL;
 
     switch (periodString) {
+      case Period.YEAR:
+        periodEnum = Period.YEAR;
+        break;
       case Period.MONTH:
         periodEnum = Period.MONTH;
-        break;
-      case Period.WEEK:
-        periodEnum = Period.WEEK;
         break;
       case Period.DAY:
         periodEnum = Period.DAY;
@@ -27,5 +27,5 @@ export const useChangePeriodOnLoad = () => {
     }
 
     setSelected(periodEnum);
-  }, []);
+  }, [periodString]);
 }
