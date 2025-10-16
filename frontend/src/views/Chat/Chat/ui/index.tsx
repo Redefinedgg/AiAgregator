@@ -18,6 +18,7 @@ import ChatTitle from "@/features/Chat/ChatTitle";
 import { v4 as uuidv4 } from "uuid";
 import ChatSelectedResponse from "@/widgets/Chat/ChatSelectedResponse";
 import ChatResizableParts from "@/widgets/Chat/ChatResizableParts";
+import { useGenerateChatName } from "@/shared/hooks/chats/useGenerateChatName";
 
 const ChatView: FC = () => {
   const {
@@ -31,6 +32,7 @@ const ChatView: FC = () => {
   } = useChatStore();
   const { user } = useAuthStore();
   const { validateModels } = useValidateModels();
+  const { generateChatName } = useGenerateChatName();
   const runIdRef = useRef(0);
 
   useEffect(() => {
@@ -188,6 +190,12 @@ const ChatView: FC = () => {
         }
       } catch (err) {
         console.error("Error waiting for responses:", err);
+      }
+
+      try {
+        await generateChatName(promptWithoutResponse, currentChatUuid);
+      } catch (err) {
+        console.error("Error generating chat name:", err);
       }
     };
 
