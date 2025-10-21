@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional } from "class-validator";
 import { Period } from "../enum/statistic.enum";
 
-export class GetTopModelsDto {
+export class GetLeaderboardDto {
   @IsOptional()
   @IsEnum(Period)
   period?: Period;

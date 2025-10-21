@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/modules/prisma/service/prisma.service';
 import {
   CreateChatResponse,
   GetChatByUuidResponse,

@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, Logger } from "@nestjs/common";
-import { PrismaService } from "src/prisma/service/prisma.service";
-import { TopModelsResponse } from "../response/statistic.response";
+import { PrismaService } from "src/modules/prisma/service/prisma.service";
+import { LeaderboardResponse } from "../response/statistic.response";
 import { Period } from "../enum/statistic.enum";
+import { GetLeaderboardDto } from "../dto/statistic.dto";
 
 @Injectable()
 export class StatisticService {
@@ -11,12 +12,15 @@ export class StatisticService {
 
   private readonly logger = new Logger(StatisticService.name);
 
-  async getTopModels(period: Period): Promise<TopModelsResponse> {
+  async getLeaderboard(dto: GetLeaderboardDto): Promise<LeaderboardResponse> {
     try {
+      if (!dto.period) {
+        dto.period = Period.ALL;
+      }
       let dateFilter: Date | undefined;
       const now = new Date();
 
-      switch (period) {
+      switch (dto.period) {
         case Period.ALL:
           break;
         case Period.YEAR:
@@ -54,7 +58,7 @@ export class StatisticService {
 
       return { models };
     } catch (err) {
-      this.logger.error(`Failed to get top models: ${err.message}`, err.stack);
+      this.logger.error(`Failed to get leaderboard: ${err.message}`, err.stack);
       throw err;
     }
   }

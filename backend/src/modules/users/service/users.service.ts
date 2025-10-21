@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dto/users.dto';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/modules/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import {

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/modules/prisma/service/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

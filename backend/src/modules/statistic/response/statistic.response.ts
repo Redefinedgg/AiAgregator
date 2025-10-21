@@ -1,4 +1,4 @@
-export class TopModelsResponse {
+export class LeaderboardResponse {
   models: {
     name: string;
     messages: number;
