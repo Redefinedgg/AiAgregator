@@ -1,20 +1,17 @@
-import { Controller, Get, Query } from "@nestjs/common";
-import { StatisticService } from "../service/statistic.service";
-import { TopModelsResponse } from "../response/statistic.response";
-import { Period } from "../enum/statistic.enum";
-import { GetTopModelsDto } from "../dto/statistic.dto";
+import { Controller, Get, Query } from '@nestjs/common';
+import { StatisticService } from '../service/statistic.service';
+import { LeaderboardResponse } from '../response/statistic.response';
+import { Period } from '../enum/statistic.enum';
+import { GetLeaderboardDto } from '../dto/statistic.dto';
 
-@Controller("statistic")
+@Controller('statistic')
 export class StatisticController {
-  constructor(
-    private readonly statisticService: StatisticService
-  ) { }
+  constructor(private readonly statisticService: StatisticService) {}
 
-  @Get("top-models")
-  async getTopModels(
-    @Query() query: GetTopModelsDto
-  ): Promise<TopModelsResponse> {
-    const period = query.period ?? Period.ALL;
-    return await this.statisticService.getTopModels(period);
+  @Get('leaderboard')
+  async getLeaderboard(
+    @Query() query: GetLeaderboardDto,
+  ): Promise<LeaderboardResponse> {
+    return await this.statisticService.getLeaderboard(query);
   }
 }

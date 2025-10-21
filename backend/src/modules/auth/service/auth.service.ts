@@ -7,7 +7,7 @@ import {
 import { RegisterDto, LoginDto } from '../dto/auth.dto';
 import { RegisterResponse, LoginResponse } from '../response/auth.response';
 import { UsersService } from 'src/modules/users/service/users.service';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/modules/prisma/service/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EmailOrNickname } from '../types/auth.type';

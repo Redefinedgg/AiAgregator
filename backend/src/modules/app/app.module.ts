@@ -1,0 +1,30 @@
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { AppController } from './controller/app.controller';
+import { AppService } from './service/app.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { AiModule } from '../ai/ai.module';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
+import { ChatsModule } from '../chats/chats.module';
+import { MessagesModule } from '../messages/messages.module';
+import { HttpLoggerMiddleware } from 'src/common/middlewares/HttpLogger/httpLogger.middleware';
+import { StatisticModule } from 'src/modules/statistic/statistic.module';
+
+@Module({
+  imports: [
+    PrismaModule,
+    AiModule,
+    AuthModule,
+    UsersModule,
+    ChatsModule,
+    MessagesModule,
+    StatisticModule
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HttpLoggerMiddleware).forRoutes("*")
+  }
+}
