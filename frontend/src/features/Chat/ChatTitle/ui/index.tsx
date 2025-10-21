@@ -1,41 +1,19 @@
 "use client";
 
-import { useChatStore } from "@/shared/stores/chat";
-import EditChatTitleButton from "../../../../entities/Chat/EditChatTitleButton";
-import { useGetChatsName } from "@/shared/hooks/chats/useGetChatsName";
-import Button from "@/shared/ui/Button";
-import { useHandleSmartMerge } from "@/shared/hooks/ai/useHandleSmartMerge";
-import ChatTileNameInput from "../../../../entities/Chat/ChatTileNameInput";
+import ChatTitleButtons from "../../../../entities/Chat/ChatTitleButtons";
+import ChatTitleEntity from "../../../../entities/Chat/ChatTitle";
+import ChatTitleContext from "@/entities/Chat/ChatTitleContext";
 
 export default function ChatTitle() {
-  const { currentChatUuid, editingHeader, startEditingHeader } = useChatStore();
-  const { getChatsName } = useGetChatsName();
-  const { handleSmartMerge } = useHandleSmartMerge();
-
   return (
-    <div className="flex items-center gap-[12px] w-full">
-      <div className="flex justify-between items-center w-full">
-        <div className="flex items-center gap-[12px]">
-          {editingHeader === currentChatUuid ? (
-            <ChatTileNameInput />
-          ) : (
-            <h1 className="block p-2 rounded text-[30px] px-[25px] py-[15px] rounded-[12px]">
-              {getChatsName() || "New Chat"}
-            </h1>
-          )}
-          <EditChatTitleButton
-            onClick={() => startEditingHeader(getChatsName() || "New Chat")}
-          />
-        </div>
-        <div className="flex items-center gap-[12px]">
-          <Button
-            onClick={handleSmartMerge}
-            label="Smart merge"
-            className="text-[24px] mr-[25px]"
-            title="Absolutely free"
-          />
+    <div className="flex flex-col gap-[12px] w-full">
+      <div className="flex items-center gap-[12px] w-full">
+        <div className="flex justify-between items-center w-full">
+          <ChatTitleEntity />
+          <ChatTitleButtons />
         </div>
       </div>
+      <ChatTitleContext />
     </div>
   );
 }

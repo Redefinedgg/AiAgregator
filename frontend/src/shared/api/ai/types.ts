@@ -39,6 +39,11 @@ export interface SmartMergeResponse {
 export interface LuckyPromptDto {
   prompt?: string;
   model?: Model;
+  params?: LuckyPromptParams;
+}
+
+export interface LuckyPromptParams {
+  setPrompts: ((prompt: string) => void)[];
 }
 
 export interface LuckyPromptResponse {

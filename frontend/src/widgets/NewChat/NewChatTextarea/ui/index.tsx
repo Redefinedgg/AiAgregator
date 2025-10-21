@@ -1,37 +1,27 @@
 "use client";
-import Textarea from "@/shared/ui/Textarea";
+
 import { useChatStore } from "@/shared/stores/chat";
 import { useSidebarStore } from "@/shared/stores/sidebar";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
-import Button from "@/shared/ui/Button";
 import { useLuckyPrompt } from "@/shared/hooks/ai/useLuckyPrompt";
+import { useNewChatNavigateToChat } from "@/shared/hooks/newChat/useNewChatNavigateToChat";
+
+import Textarea from "@/shared/ui/Textarea";
+import Button from "@/shared/ui/Button";
 
 export default function NewChatTextarea() {
   const {
     prompt,
     setPrompt,
-    setPromptWithoutResponse,
     setOldPrompt,
     selectedModels,
-    setCurrentChatUuid,
     luckyPromptIsLoading,
   } = useChatStore();
   const { luckyPrompt } = useLuckyPrompt();
-
-  const router = useRouter();
+  const { navigateToChat } = useNewChatNavigateToChat();
   const { widthOfSidebar } = useSidebarStore();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const navigateToChat = async () => {
-    setPromptWithoutResponse(prompt);
-    setPrompt("");
-    const uuid = uuidv4();
-    router.push(`/chat/${uuid}`);
-    setCurrentChatUuid(uuid);
-  };
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -48,7 +38,10 @@ export default function NewChatTextarea() {
         sendButton={true}
         placeholder="Write your prompt..."
         className="mt-[20px] text-[30px] overflow-hidden"
-        style={{ width: `calc(92vw - ${widthOfSidebar}px)`, paddingRight: "150px" }}
+        style={{
+          width: `calc(92vw - ${widthOfSidebar}px)`,
+          paddingRight: "150px",
+        }}
         value={prompt}
         onChange={(value) => {
           setPrompt(value);

@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import ChatResponses from "@/widgets/Chat/ChatResponses";
-import ChatWithoutResponses from "@/widgets/Chat/ChatWithoutResponses";
+import ChatWithoutResponses from "@/features/Chat/ChatWithoutResponses";
 import { useChatStore } from "@/shared/stores/chat";
 import { useValidateModels } from "@/shared/hooks/ai/useValidateModels";
 import { toast } from "react-toastify";
@@ -16,8 +16,8 @@ import { useAuthStore } from "@/shared/stores/auth";
 import { CreateMessageDto } from "@/shared/api/messages/types";
 import ChatTitle from "@/features/Chat/ChatTitle";
 import { v4 as uuidv4 } from "uuid";
-import ChatSelectedResponse from "@/widgets/Chat/ChatSelectedResponse";
-import ChatResizableParts from "@/widgets/Chat/ChatResizableParts";
+import ChatSelectedResponse from "@/features/Chat/ChatSelectedResponse";
+import ChatResizableParts from "@/features/Chat/ChatResizableParts";
 import { useGenerateChatName } from "@/shared/hooks/chats/useGenerateChatName";
 
 const ChatView: FC = () => {
@@ -216,21 +216,7 @@ const ChatView: FC = () => {
   return (
     <>
       <ChatTitle />
-      <section className="w-full p-[12px] h-[100%]">
-        {chatResponses.length > 0 ? (
-          <div className="flex min-h-full max-w-[calc(100%-16px)] ">
-            {selectedResponse !== null && (
-              <>
-                <ChatSelectedResponse />
-                <ChatResizableParts />
-              </>
-            )}
-            <ChatResponses />
-          </div>
-        ) : (
-          <ChatWithoutResponses />
-        )}
-      </section>
+      <ChatResponses />
     </>
   );
 };

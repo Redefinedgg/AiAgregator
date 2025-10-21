@@ -13,7 +13,11 @@ import { ChatItemsSlice, chatItemsSlice } from "./slices/chatItems";
 import chatTitleSlice, { ChatTitleSlice } from "./slices/chatTitle";
 import promptSlice, { PromptSlice } from "./slices/prompts";
 import luckyPromptSlice, { LuckyPromptSlice } from "./slices/luckyPrompt";
-import { SelectedResponseSlice, selectedResponseSlice } from "./slices/selectedResponse.index";
+import {
+  selectedResponseSlice,
+  SelectedResponseSlice,
+} from "./slices/selectedResponse";
+import contextSlice, { ContextSlice } from "./slices/context";
 
 export interface ChatStore
   extends PromptSlice,
@@ -23,7 +27,8 @@ export interface ChatStore
     ChatItemsSlice,
     ChatTitleSlice,
     LuckyPromptSlice,
-    SelectedResponseSlice {
+    SelectedResponseSlice,
+    ContextSlice {
   // State
   isNewChat: boolean;
   chatResponses: ChatResponse[];
@@ -85,7 +90,6 @@ export const useChatStore = createPersistedStore<ChatStore>(
     setSelectedModelsCount: (selectedModelsCount: SelectedModelsCount[]) =>
       set({ selectedModelsCount }),
 
-    // Подключаем слайсы
     ...columnsSlice(set, get, ...args),
     ...chatsSlice(set, get, ...args),
     ...processingSlice(set, get, ...args),
@@ -94,5 +98,6 @@ export const useChatStore = createPersistedStore<ChatStore>(
     ...promptSlice(set, get, ...args),
     ...luckyPromptSlice(set, get, ...args),
     ...selectedResponseSlice(set, get, ...args),
+    ...contextSlice(set, get, ...args),
   })
 );

@@ -25,6 +25,7 @@ model User {
   updatedAt       DateTime  @updatedAt
   chats           Chat[]
   messages        Message[]
+  prompts         Prompt[]
 }
 
 model Chat {
@@ -37,6 +38,7 @@ model Chat {
   updatedAt      DateTime  @updatedAt
   author         User      @relation(fields: [authorId], references: [id])
   messages       Message[]
+  prompts        Prompt[]
   smartMerges    Int       @default(0)
   levelOfContext Int       @default(0)
 }
@@ -57,6 +59,22 @@ model Message {
   updatedAt      DateTime @updatedAt
   author         User     @relation(fields: [authorId], references: [id])
   chat           Chat     @relation(fields: [chatId], references: [id])
+}
+
+model Prompt {
+  id             Int      @id @default(autoincrement())
+  uuid           String   @unique
+  
+  levelOfContext Int      @default(0)
+  text           String
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  chatId   Int
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+  chat     Chat @relation(fields: [chatId], references: [id])
 }
 
 enum Role {
