@@ -1,13 +1,26 @@
-крч, проект устанавливается вот так:
+# AiAgregator
+**AiAgregator - is a service for talking with multiple AIs in the same chat**
 
-надо иметь nodejs, git(giuthub), pgadmin17 (postgresql17), VScode (ну или любую другую IDE-шку)
+## Features
+- lucky-prompt (ask an AI to generate you random interesting prompt)
+- chat context (you can send multiple prompts in the same chat and AIs shouldn't forget them)
+- AI leaderboard
+- chatgpt-type sidebar with chats
 
-1. скачиваем зависимости `npm i` в bash терминале фронта и бэка
-2. создаем бдшку в pgadmin17
-3. делаем .env по .env.example образцу
-4. прописываем `npm run gm` (generate + migrate) на бэкенд
-5. выходим в корневую папку и запускам проект `npm run df` (dev full (backend, frontend, prisma studio))
+## Demo from Redefined (only core features showed)
+https://www.youtube.com/watch?v=n3oxCIKLvSc
 
-по дэфолту - фронт на 3000, бэкенд на 3001
+## Tech stack
 
-если хотите чет контрибутить - есть еще файлик в корневой - `КОНТРИБУТАМ_СЮДА!!!.md`
+### backend
+- nestjs
+- postgresql
+- prismaORM
+
+### frontend
+- nextjs
+- zustand
+
+### deploy (only dev)
+- docker
+- docker compose
